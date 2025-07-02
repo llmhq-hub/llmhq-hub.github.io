@@ -1,0 +1,28 @@
+- name: PromptOps
+  id: promptops
+  description: "Git-native prompt management and testing framework"
+  status: "stable"
+  version: "0.1.1"
+  pypi: "https://pypi.org/project/llmhq-promptops/"
+  github: "https://github.com/llmhq-hub/promptops"
+  docs: "/tools/promptops"
+  tags: ["prompts", "versioning", "testing", "git"]
+  features:
+    - "Automated semantic versioning"
+    - "Uncommitted change testing"
+    - "Framework-agnostic design"
+    - "Version-aware testing"
+
+- name: ModelEval
+  id: modeleval
+  description: "LLM model evaluation and comparison framework"
+  status: "planned"
+  version: "coming-soon"
+  pypi: ""
+  github: ""
+  docs: ""
+  tags: ["evaluation", "benchmarking", "models"]
+  features:
+    - "Model comparison"
+    - "Performance benchmarking"
+    - "Automated evaluation"

@@ -1,0 +1,37 @@
+# Site settings
+title: "LLM Headquarters"
+description: "Production-ready tools for LLM workflows"
+url: "https://llmhq-hub.github.io"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Navigation
+navigation:
+  - title: "Home"
+    url: "/"
+  - title: "Tools"
+    url: "/tools/"
+  - title: "Documentation"
+    url: "/docs/"
+  - title: "GitHub"
+    url: "https://github.com/llmhq-hub"
+
+# Social links
+github_username: llmhq-hub
+organization_name: "LLM Headquarters"
+
+# SEO
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Collections
+collections:
+  tools:
+    output: true
+    permalink: /tools/:name/
