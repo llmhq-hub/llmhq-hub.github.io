@@ -13,16 +13,17 @@
     - "Framework-agnostic design"
     - "Version-aware testing"
 
-- name: ModelEval
-  id: modeleval
-  description: "LLM model evaluation and comparison framework"
-  status: "planned"
-  version: "coming-soon"
-  pypi: ""
-  github: ""
-  docs: ""
-  tags: ["evaluation", "benchmarking", "models"]
+- name: ReleaseOps
+  id: releaseops
+  description: "Release engineering infrastructure for AI agent behavior"
+  status: "alpha"
+  version: "0.1.0"
+  pypi: "https://pypi.org/project/llmhq-releaseops/"
+  github: "https://github.com/llmhq-hub/releaseops"
+  docs: "/tools/releaseops"
+  tags: ["release", "bundles", "promotion", "evaluation", "telemetry"]
   features:
-    - "Model comparison"
-    - "Performance benchmarking"
-    - "Automated evaluation"
+    - "Bundle versioning with SHA-256 content addressing"
+    - "Gated promotion through dev → staging → prod"
+    - "Automated evaluation with pluggable judges"
+    - "OpenTelemetry integration for production observability"
