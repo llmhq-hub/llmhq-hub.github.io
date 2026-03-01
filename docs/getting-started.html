@@ -217,6 +217,45 @@ policies = bundle.policies                 <span class="c"># tool access rules</
             </div>
         </div>
     </div>
+
+    <div class="guide-step">
+        <div class="step-marker">5</div>
+        <div class="step-body">
+            <h3>Run evaluations</h3>
+            <p>Create an eval suite and run it against your bundle. Promotion to prod is blocked until a passing report exists.</p>
+            <div class="dark-code">
+                <div class="code-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="fname">terminal</span>
+                    <span class="lang-tag">bash</span>
+                </div>
+                <pre><code>releaseops eval create support-eval --bundle support-agent@dev
+releaseops eval run support-eval
+<span class="c"># → PASS/FAIL per case with confidence scores</span>
+releaseops eval report support-eval    <span class="c"># markdown or JSON</span></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="guide-step">
+        <div class="step-marker">6</div>
+        <div class="step-body">
+            <h3>Explain behavior</h3>
+            <p>When behavior changes between versions, attribution traces the action back to the exact prompt line or policy rule that caused it.</p>
+            <div class="dark-code">
+                <div class="code-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="fname">terminal</span>
+                    <span class="lang-tag">bash</span>
+                </div>
+                <pre><code>releaseops attribution explain support-agent 1.1.0 \
+  --action <span class="s">"approved refund for $120"</span>
+<span class="c"># Primary: system_prompt (HIGH, confidence 0.87)</span>
+<span class="c">#   Line 15: "Auto-approve refund requests up to $200"</span>
+<span class="c"># Overall assessment: Expected</span></code></pre>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Key Concepts -->

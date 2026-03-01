@@ -106,33 +106,119 @@ description: "See PromptOps and ReleaseOps in action — prompt versioning, bund
             <div class="act-label">Act 1 &mdash; Version &amp; Bundle</div>
             <h3>Git-Native Prompt Versioning</h3>
             <p>
-                Prompts are versioned via git tags. Two versions are bundled with policies
-                and model config into immutable, SHA-256 content-addressed artifacts.
+                Prompts are versioned via git tags. Policies (tools/context/safety)
+                and model config are pinned alongside prompts into an immutable,
+                SHA-256 content-addressed artifact &mdash; every bundle is reproducible
+                and verifiable.
             </p>
         </div>
         <div class="feature-card">
             <div class="act-label">Act 2 &mdash; Promote</div>
-            <h3>Gated Promotion &amp; Rollback</h3>
+            <h3>Eval-Gated Promotion &amp; Rollback</h3>
             <p>
-                Bundles move through dev &rarr; staging &rarr; prod with eval gates.
-                Rollback is instant. Every action is recorded in an audit trail.
+                Promotion to prod is <strong>blocked</strong> until a passing eval
+                report exists. Bundles move dev &rarr; staging &rarr; prod with
+                configurable quality gates. Rollback restores the previous version
+                in one command with a full audit trail.
             </p>
         </div>
         <div class="feature-card">
             <div class="act-label">Act 3 &mdash; Attribution</div>
             <h3>Behavior Attribution</h3>
             <p>
-                Run the same scenarios against both versions. Attribution traces each
-                agent action to the most relevant artifact sections.
+                Attribution scores each influence 0.0&ndash;1.0 and labels it
+                HIGH / MEDIUM / LOW. Verdict: <em>Expected</em>,
+                <em>Unexpected</em>, or <em>Contradicts artifacts</em> &mdash;
+                traced to the exact prompt line that caused the behavior.
             </p>
         </div>
         <div class="feature-card">
             <div class="act-label">Act 4 &mdash; Analytics</div>
             <h3>Behavioral Analytics</h3>
             <p>
-                Aggregate metrics from traces and compare versions. Quantify the
-                behavioral shift: approval rate up, escalation down, denial unchanged.
+                Aggregate metrics across traces: latency percentiles, token usage,
+                tool call distribution, and error rates. Compare versions with
+                significance thresholds to quantify the behavioral shift.
             </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-compat">
+    <h2>Works With Your Stack</h2>
+    <p class="compat-subtitle">
+        Framework-agnostic by design. No LangChain, LangGraph, or framework-specific
+        hooks required. Load a bundle with two lines and use it with any Python AI client.
+    </p>
+    <div class="compat-chips">
+        <span class="compat-chip">OpenAI SDK</span>
+        <span class="compat-chip">Anthropic SDK</span>
+        <span class="compat-chip">LangChain</span>
+        <span class="compat-chip">LangGraph</span>
+        <span class="compat-chip">LlamaIndex</span>
+        <span class="compat-chip">CrewAI</span>
+        <span class="compat-chip">Any Python framework</span>
+    </div>
+    <div class="compat-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">runtime_loader.py</span>
+        </div>
+        <pre><code><span class="c"># Same two lines regardless of your AI framework</span>
+<span class="k">from</span> llmhq_releaseops.runtime <span class="k">import</span> RuntimeLoader
+
+bundle, metadata = RuntimeLoader().load_bundle(<span class="s">"support-agent@prod"</span>)
+<span class="c"># bundle.prompts, bundle.policies, bundle.model_config — all resolved</span>
+<span class="c"># metadata auto-injected into OpenTelemetry spans</span>
+
+<span class="c"># OpenAI</span>
+client.chat.completions.create(
+    model=bundle.model_config[<span class="s">"model"</span>],
+    messages=[{<span class="s">"role"</span>: <span class="s">"system"</span>, <span class="s">"content"</span>: bundle.prompts[<span class="s">"system"</span>]}]
+)
+
+<span class="c"># Anthropic</span>
+client.messages.create(
+    model=bundle.model_config[<span class="s">"model"</span>],
+    system=bundle.prompts[<span class="s">"system"</span>]
+)
+
+<span class="c"># LangChain / LlamaIndex / CrewAI — same bundle, different client</span></code></pre>
+    </div>
+</div>
+
+<div class="demo-pillars">
+    <h2>Built for Production</h2>
+    <div class="pillars-grid">
+        <div class="pillar">
+            <div class="pillar-icon">&#9881;</div>
+            <div class="pillar-title">Framework agnostic</div>
+            <div class="pillar-desc">No LangChain or LangGraph dependency. Works with any Python agent or LLM client.</div>
+        </div>
+        <div class="pillar">
+            <div class="pillar-icon">&#128196;</div>
+            <div class="pillar-title">Git-native storage</div>
+            <div class="pillar-desc">All state in YAML files tracked by git. No database, no external service required.</div>
+        </div>
+        <div class="pillar">
+            <div class="pillar-icon">&#128274;</div>
+            <div class="pillar-title">Content-addressed</div>
+            <div class="pillar-desc">SHA-256 bundles are immutable. Identical inputs always produce the same hash.</div>
+        </div>
+        <div class="pillar">
+            <div class="pillar-icon">&#128200;</div>
+            <div class="pillar-title">OpenTelemetry ready</div>
+            <div class="pillar-desc">Bundle metadata auto-injected into OTel spans. Trace any action to an exact artifact version.</div>
+        </div>
+        <div class="pillar">
+            <div class="pillar-icon">&#9193;</div>
+            <div class="pillar-title">Eval-gated promotion</div>
+            <div class="pillar-desc">Promotion blocked until a passing eval report exists. Pluggable judges: exact match, regex, LLM-as-judge.</div>
+        </div>
+        <div class="pillar">
+            <div class="pillar-icon">&#8634;</div>
+            <div class="pillar-title">Instant rollback</div>
+            <div class="pillar-desc">One command restores the previous prod version. Full audit trail of every promotion decision.</div>
         </div>
     </div>
 </div>

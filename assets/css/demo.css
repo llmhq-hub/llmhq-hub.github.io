@@ -667,3 +667,139 @@
         justify-content: center;
     }
 }
+
+/* ─── Works With Your Stack ─── */
+.demo-compat {
+    max-width: 960px;
+    margin: 0 auto 3rem;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.demo-compat h2 {
+    font-size: 1.5rem;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.compat-subtitle {
+    color: #6b7280;
+    font-size: 0.95rem;
+    max-width: 580px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.6;
+}
+
+.compat-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-bottom: 1.75rem;
+}
+
+.compat-chip {
+    padding: 0.35rem 0.9rem;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+.compat-code {
+    background: #1e1e2e;
+    border-radius: 8px;
+    text-align: left;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.compat-code .code-bar {
+    background: #181825;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-bottom: 1px solid #313244;
+}
+
+.compat-code .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.compat-code .dot.r { background: #f38ba8; }
+.compat-code .dot.y { background: #f9e2af; }
+.compat-code .dot.g { background: #a6e3a1; }
+
+.compat-code .fname {
+    font-size: 0.75rem;
+    color: #6c7086;
+    font-family: monospace;
+    margin-left: 0.25rem;
+}
+
+.compat-code pre {
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+}
+
+.compat-code code {
+    color: #cdd6f4;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+}
+
+.compat-code .c { color: #6c7086; }
+.compat-code .k { color: #cba6f7; }
+.compat-code .s { color: #a6e3a1; }
+
+/* ─── Built for Production pillars ─── */
+.demo-pillars {
+    max-width: 960px;
+    margin: 0 auto 3rem;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.demo-pillars h2 {
+    font-size: 1.5rem;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+}
+
+.pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    text-align: left;
+}
+
+.pillar {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.pillar-icon { font-size: 1.4rem; }
+.pillar-title { font-weight: 600; font-size: 0.95rem; color: #1f2937; }
+.pillar-desc { font-size: 0.85rem; color: #6b7280; line-height: 1.5; }
+
+@media (max-width: 768px) {
+    .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+    .pillars-grid { grid-template-columns: 1fr; }
+    .compat-chips { gap: 0.4rem; }
+}

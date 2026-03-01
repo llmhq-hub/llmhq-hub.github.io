@@ -1236,3 +1236,26 @@ a:hover {
     color: #4b5563;
     font-weight: 500;
 }
+
+/* ─── Judge type chips (releaseops eval section) ─── */
+.judge-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.judge-chip {
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: monospace;
+    border: 1px solid;
+}
+
+.judge-chip.exact    { background: #eff6ff; color: #1d4ed8; border-color: #93c5fd; }
+.judge-chip.contains { background: #f0fdf4; color: #15803d; border-color: #86efac; }
+.judge-chip.regex    { background: #fdf4ff; color: #7e22ce; border-color: #d8b4fe; }
+.judge-chip.llm      { background: #fff7ed; color: #c2410c; border-color: #fdba74; }
+.judge-chip.composite{ background: #f8fafc; color: #334155; border-color: #cbd5e1; }
