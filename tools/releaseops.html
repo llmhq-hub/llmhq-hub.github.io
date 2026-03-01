@@ -1,0 +1,212 @@
+---
+layout: docs
+title: "ReleaseOps"
+description: "Release engineering infrastructure for AI agent behavior — bundle, promote, evaluate, and observe"
+---
+
+<div class="docs-hero">
+    <h1>ReleaseOps</h1>
+    <p class="docs-subtitle">Release engineering for AI agent behavior &mdash; bundle, promote, evaluate, and observe behavior artifacts</p>
+    <div class="docs-badges">
+        <span class="docs-badge alpha">Alpha</span>
+        <span class="docs-badge version">v0.1.0</span>
+        <span class="docs-badge python">Python 3.10+</span>
+    </div>
+</div>
+
+<!-- Why -->
+<div class="docs-section">
+    <h2>Why ReleaseOps?</h2>
+    <p>
+        AI agents ship behavior through prompts, policies, and model configurations &mdash; not deterministic code.
+        When something breaks in production, there's no <code>git blame</code> for "why did the agent start approving
+        refunds it shouldn't?"
+    </p>
+    <p>
+        ReleaseOps brings standard release engineering to these behavior artifacts, so you always know
+        what's running, what changed, and why.
+    </p>
+</div>
+
+<!-- Features -->
+<div class="docs-section">
+    <h2>Features</h2>
+    <div class="feature-grid-docs">
+        <div class="feature-item">
+            <h3>Bundle Creation</h3>
+            <p>Compose prompts, policies, and model configs into immutable, content-addressed artifacts verified with SHA-256.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Gated Promotion</h3>
+            <p>Move bundles through dev &rarr; staging &rarr; prod with configurable quality gates: evaluation, approval, and soak time.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Instant Rollback</h3>
+            <p>Revert to any previous bundle version instantly with a full audit trail of every promotion and rollback.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Automated Evaluation</h3>
+            <p>Run test suites with pluggable judges &mdash; exact match, regex, LLM-as-judge, or composite judges.</p>
+        </div>
+        <div class="feature-item">
+            <h3>OpenTelemetry Integration</h3>
+            <p>Automatically inject bundle metadata into OTel spans for production observability and tracing.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Behavior Attribution</h3>
+            <p>Trace agent behavior back to specific prompt lines and policy rules with confidence scoring.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Installation -->
+<div class="docs-section">
+    <h2>Installation</h2>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">terminal</span>
+            <span class="lang-tag">bash</span>
+        </div>
+        <pre><code>pip install llmhq-releaseops</code></pre>
+    </div>
+
+    <table class="extras-table">
+        <thead>
+            <tr><th>Extra</th><th>Install</th><th>Adds</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><code>eval</code></td><td><code>pip install llmhq-releaseops[eval]</code></td><td>LLM-as-judge (OpenAI, Anthropic)</td></tr>
+            <tr><td><code>langsmith</code></td><td><code>pip install llmhq-releaseops[langsmith]</code></td><td>LangSmith trace queries</td></tr>
+            <tr><td><code>dev</code></td><td><code>pip install llmhq-releaseops[dev]</code></td><td>pytest, black, mypy</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Quick Start -->
+<div class="docs-section">
+    <h2>Quick Start</h2>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">terminal</span>
+            <span class="lang-tag">bash</span>
+        </div>
+        <pre><code><span class="c"># Initialize release infrastructure</span>
+releaseops init
+
+<span class="c"># Create a bundle from prompts and model config</span>
+releaseops bundle create support-agent \
+  --artifact system=onboarding:v1.2.0 \
+  --model claude-sonnet-4-5 --provider anthropic
+
+<span class="c"># Promote through environments</span>
+releaseops promote promote support-agent 1.0.0 dev
+releaseops promote promote support-agent 1.0.0 staging
+releaseops promote promote support-agent 1.0.0 prod
+
+<span class="c"># Check environment status</span>
+releaseops env list
+
+<span class="c"># Compare versions when something changes</span>
+releaseops analytics compare support-agent@1.0.0 support-agent@1.1.0</code></pre>
+    </div>
+</div>
+
+<!-- Python SDK -->
+<div class="docs-section">
+    <h2>Python SDK</h2>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">app.py</span>
+            <span class="lang-tag">python</span>
+        </div>
+        <pre><code><span class="k">from</span> <span class="f">llmhq_releaseops.runtime</span> <span class="k">import</span> RuntimeLoader
+
+loader = RuntimeLoader()
+bundle, metadata = loader.<span class="f">load_bundle</span>(<span class="s">"support-agent@prod"</span>)
+
+<span class="c"># Access bundle data</span>
+model       = bundle.model_config.model        <span class="c"># "claude-sonnet-4-5"</span>
+temperature = bundle.model_config.temperature  <span class="c"># 0.7</span>
+prompts     = bundle.prompts                   <span class="c"># Dict[str, ArtifactRef]</span>
+policies    = bundle.policies                  <span class="c"># Dict[str, ArtifactRef]</span>
+
+<span class="c"># Metadata auto-injected into OpenTelemetry spans</span></code></pre>
+    </div>
+
+    <h3>Async support</h3>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">async_app.py</span>
+            <span class="lang-tag">python</span>
+        </div>
+        <pre><code><span class="k">from</span> <span class="f">llmhq_releaseops.runtime</span> <span class="k">import</span> AsyncRuntimeLoader
+
+async_loader = AsyncRuntimeLoader()
+bundle, metadata = <span class="k">await</span> async_loader.<span class="f">load_bundle</span>(<span class="s">"support-agent@prod"</span>)</code></pre>
+    </div>
+</div>
+
+<!-- Key Concepts -->
+<div class="docs-section">
+    <h2>Key concepts</h2>
+    <div class="concept-grid">
+        <div class="concept-card">
+            <dt>Bundle</dt>
+            <dd>Immutable, content-addressed manifest of prompts + policies + model config (SHA-256 verified)</dd>
+        </div>
+        <div class="concept-card">
+            <dt>Environment</dt>
+            <dd>Named deployment target (dev/staging/prod) with a pinned bundle version</dd>
+        </div>
+        <div class="concept-card">
+            <dt>Promotion</dt>
+            <dd>Moving a bundle through environments with optional quality gates (eval, approval, soak)</dd>
+        </div>
+        <div class="concept-card">
+            <dt>Telemetry</dt>
+            <dd>Automatic injection of bundle metadata into OpenTelemetry spans</dd>
+        </div>
+        <div class="concept-card">
+            <dt>Attribution</dt>
+            <dd>Trace agent behavior back to specific prompt lines and policy rules</dd>
+        </div>
+        <div class="concept-card">
+            <dt>Analytics</dt>
+            <dd>Aggregate behavioral metrics and compare versions to quantify behavioral shifts</dd>
+        </div>
+    </div>
+</div>
+
+<!-- Requirements -->
+<div class="docs-section">
+    <h2>Requirements</h2>
+    <ul class="req-list">
+        <li>Python 3.10+</li>
+        <li>Git (required for storage)</li>
+        <li>Dependencies: Typer, PyYAML, Jinja2, GitPython, OpenTelemetry, llmhq-promptops</li>
+    </ul>
+</div>
+
+<!-- Links -->
+<div class="docs-section">
+    <h2>Links</h2>
+    <div class="link-cards">
+        <a href="https://pypi.org/project/llmhq-releaseops/" class="link-card">PyPI Package</a>
+        <a href="https://github.com/llmhq-hub/releaseops" class="link-card">GitHub</a>
+        <a href="https://github.com/llmhq-hub/releaseops/issues" class="link-card">Report Issues</a>
+        <a href="https://github.com/orgs/llmhq-hub/discussions" class="link-card">Discussions</a>
+    </div>
+</div>
+
+<div class="docs-next">
+    <h2>See it in action</h2>
+    <p>Watch ReleaseOps bundle prompts, promote through environments, and trace behavioral changes.</p>
+    <div class="hero-buttons">
+        <a href="/demo/" class="btn btn-lg">Interactive Demo</a>
+        <a href="/tools/promptops" class="btn-ghost btn-lg">PromptOps Docs</a>
+    </div>
+</div>

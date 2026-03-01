@@ -1,0 +1,165 @@
+---
+layout: docs
+title: "PromptOps"
+description: "Git-native prompt management and testing framework for production LLM workflows"
+---
+
+<div class="docs-hero">
+    <h1>PromptOps</h1>
+    <p class="docs-subtitle">Git-native prompt management and testing framework for production LLM workflows</p>
+    <div class="docs-badges">
+        <span class="docs-badge stable">Stable</span>
+        <span class="docs-badge version">v0.1.1</span>
+        <span class="docs-badge python">Python 3.8+</span>
+    </div>
+</div>
+
+<!-- Features -->
+<div class="docs-section">
+    <h2>Features</h2>
+    <div class="feature-grid-docs">
+        <div class="feature-item">
+            <h3>Automated Git Versioning</h3>
+            <p>Zero-manual versioning with git hooks and semantic version detection. Every commit auto-tags your prompts.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Uncommitted Change Testing</h3>
+            <p>Test prompts instantly with <code>:unstaged</code>, <code>:working</code>, <code>:latest</code> references before committing.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Version-Aware Testing</h3>
+            <p>Test different prompt versions with comprehensive validation. Compare outputs across versions.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Git Hook Automation</h3>
+            <p>Pre-commit and post-commit hooks for seamless developer workflow. No manual versioning steps.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Installation -->
+<div class="docs-section">
+    <h2>Installation</h2>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">terminal</span>
+            <span class="lang-tag">bash</span>
+        </div>
+        <pre><code>pip install llmhq-promptops</code></pre>
+    </div>
+</div>
+
+<!-- Quick Start -->
+<div class="docs-section">
+    <h2>Quick Start</h2>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">terminal</span>
+            <span class="lang-tag">bash</span>
+        </div>
+        <pre><code><span class="c"># Create a new project with git hooks</span>
+promptops init repo
+
+<span class="c"># Create a new prompt template</span>
+promptops create prompt welcome-message
+
+<span class="c"># Test uncommitted changes</span>
+promptops test --prompt welcome-message:unstaged
+
+<span class="c"># Check status of all prompts</span>
+promptops test status</code></pre>
+    </div>
+</div>
+
+<!-- Python SDK -->
+<div class="docs-section">
+    <h2>Python SDK</h2>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">app.py</span>
+            <span class="lang-tag">python</span>
+        </div>
+        <pre><code><span class="k">from</span> <span class="f">llmhq_promptops</span> <span class="k">import</span> get_prompt
+
+<span class="c"># Smart default (unstaged if different, else working)</span>
+prompt = get_prompt(<span class="s">"user-onboarding"</span>)
+
+<span class="c"># Specific version references</span>
+prompt = get_prompt(<span class="s">"user-onboarding:v1.2.1"</span>)
+prompt = get_prompt(<span class="s">"user-onboarding:unstaged"</span>)
+prompt = get_prompt(<span class="s">"user-onboarding:working"</span>)
+
+<span class="c"># With variables</span>
+rendered = get_prompt(<span class="s">"user-onboarding"</span>, {
+    <span class="s">"user_name"</span>: <span class="s">"Alice"</span>,
+    <span class="s">"plan"</span>: <span class="s">"Pro"</span>
+})</code></pre>
+    </div>
+</div>
+
+<!-- Framework Integration -->
+<div class="docs-section">
+    <h2>Framework Integration</h2>
+    <p>Works with any LLM framework. Get a versioned prompt, pass it to your provider.</p>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">integrations.py</span>
+            <span class="lang-tag">python</span>
+        </div>
+        <pre><code><span class="k">from</span> <span class="f">llmhq_promptops</span> <span class="k">import</span> get_prompt
+
+prompt_text = get_prompt(<span class="s">"user-onboarding:working"</span>, {
+    <span class="s">"user_name"</span>: <span class="s">"John"</span>,
+    <span class="s">"plan"</span>: <span class="s">"Enterprise"</span>
+})
+
+<span class="c"># Use with OpenAI</span>
+<span class="k">import</span> openai
+response = openai.chat.completions.<span class="f">create</span>(
+    model=<span class="s">"gpt-4"</span>,
+    messages=[{<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: prompt_text}]
+)
+
+<span class="c"># Use with Anthropic</span>
+<span class="k">import</span> anthropic
+client = anthropic.<span class="f">Anthropic</span>()
+response = client.messages.<span class="f">create</span>(
+    model=<span class="s">"claude-sonnet-4-5-20250929"</span>,
+    messages=[{<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: prompt_text}]
+)</code></pre>
+    </div>
+</div>
+
+<!-- Requirements -->
+<div class="docs-section">
+    <h2>Requirements</h2>
+    <ul class="req-list">
+        <li>Python 3.8+</li>
+        <li>Git (required for versioning)</li>
+        <li>Dependencies: Typer, Jinja2, PyYAML, GitPython</li>
+    </ul>
+</div>
+
+<!-- Links -->
+<div class="docs-section">
+    <h2>Links</h2>
+    <div class="link-cards">
+        <a href="https://pypi.org/project/llmhq-promptops/" class="link-card">PyPI Package</a>
+        <a href="https://github.com/llmhq-hub/promptops" class="link-card">GitHub</a>
+        <a href="https://github.com/llmhq-hub/promptops/issues" class="link-card">Report Issues</a>
+        <a href="https://github.com/llmhq-hub/promptops/discussions" class="link-card">Discussions</a>
+    </div>
+</div>
+
+<div class="docs-next">
+    <h2>See it in action</h2>
+    <p>Watch PromptOps version prompts and feed them into ReleaseOps bundles.</p>
+    <div class="hero-buttons">
+        <a href="/demo/" class="btn btn-lg">Interactive Demo</a>
+        <a href="/tools/releaseops" class="btn-ghost btn-lg">ReleaseOps Docs</a>
+    </div>
+</div>

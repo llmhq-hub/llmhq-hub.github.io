@@ -1,0 +1,228 @@
+---
+layout: home
+title: "LLM Headquarters"
+description: "Prompt versioning and release engineering for AI agents. Git-native control over the artifacts that define your agent's behavior."
+---
+
+<!-- Hero -->
+<div class="home-hero">
+    <h1>Prompt versioning and release engineering for AI agents</h1>
+    <p class="lead">
+        Change a prompt. Version it. Bundle it with policies and model config.
+        Ship it through gated environments. Know exactly why behavior changed.
+    </p>
+    <div class="hero-buttons">
+        <a href="/demo/" class="btn btn-lg">See the Demo</a>
+        <a href="/docs/getting-started" class="btn-ghost btn-lg">Get Started</a>
+        <a href="https://github.com/llmhq-hub" class="btn-ghost btn-lg">GitHub</a>
+    </div>
+</div>
+
+<!-- Pipeline -->
+<div class="pipeline-section">
+    <h2>One workflow, two tools</h2>
+
+    <div class="pipeline">
+        <div class="pipeline-step promptops">
+            <div class="pipeline-icon">1</div>
+            <div class="step-label">Write</div>
+            <div class="step-desc">YAML prompt template with variables</div>
+        </div>
+        <div class="pipeline-step promptops">
+            <div class="pipeline-icon">2</div>
+            <div class="step-label">Version</div>
+            <div class="step-desc">Git commit auto-tags v1.2.0</div>
+        </div>
+        <div class="pipeline-step releaseops">
+            <div class="pipeline-icon">3</div>
+            <div class="step-label">Bundle</div>
+            <div class="step-desc">Prompt + policy + model config</div>
+        </div>
+        <div class="pipeline-step releaseops">
+            <div class="pipeline-icon">4</div>
+            <div class="step-label">Promote</div>
+            <div class="step-desc">dev &rarr; staging &rarr; prod with gates</div>
+        </div>
+        <div class="pipeline-step releaseops">
+            <div class="pipeline-icon">5</div>
+            <div class="step-label">Monitor</div>
+            <div class="step-desc">Attribution + behavioral analytics</div>
+        </div>
+    </div>
+
+    <div class="pipeline-tools">
+        <div class="pipeline-tool-label promptops-label">PromptOps</div>
+        <div class="pipeline-tool-label bridge-label">&rarr;</div>
+        <div class="pipeline-tool-label releaseops-label">ReleaseOps</div>
+    </div>
+</div>
+
+<!-- How It Works -->
+<div class="workflow-section">
+    <h2>How it works</h2>
+
+    <!-- Step 1 -->
+    <div class="workflow-step">
+        <div class="step-text">
+            <div class="step-number">1</div>
+            <span class="tool-badge promptops">PromptOps</span>
+            <h3>Version your prompts</h3>
+            <p>
+                Write prompts as YAML templates with variables.
+                PromptOps auto-versions them on every git commit &mdash;
+                semantic tags, diff tracking, and version history
+                out of the box.
+            </p>
+            <p>
+                Reference any version in code: <code>:v1.2.0</code>,
+                <code>:latest</code>, or even <code>:unstaged</code>
+                for testing uncommitted changes.
+            </p>
+        </div>
+        <div class="step-code">
+            <div class="code-header">
+                <span class="code-dot red"></span>
+                <span class="code-dot yellow"></span>
+                <span class="code-dot green"></span>
+                <span class="code-filename">support-system.yaml</span>
+            </div>
+            <pre><code><span class="kw">id:</span> <span class="st">support-system</span>
+<span class="kw">description:</span> <span class="st">Customer support agent</span>
+<span class="kw">variables:</span>
+  <span class="kw">customer_name:</span> <span class="di">{ required: true }</span>
+  <span class="kw">request:</span> <span class="di">{ required: true }</span>
+<span class="kw">template:</span> <span class="op">|</span>
+  You are a support agent for Acme Corp.
+
+  REFUND POLICY:
+  <span class="hl">- Auto-approve refunds up to $200</span>
+  <span class="hl">- Escalate refunds over $200</span>
+  - Never approve if customer is abusive</code></pre>
+        </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="workflow-step">
+        <div class="step-text">
+            <div class="step-number">2</div>
+            <span class="tool-badge releaseops">ReleaseOps</span>
+            <h3>Bundle and promote</h3>
+            <p>
+                ReleaseOps reads your versioned prompt via
+                <strong>PromptBridge</strong>, bundles it with tool policies
+                and model config into an immutable, SHA-256 content-addressed
+                artifact.
+            </p>
+            <p>
+                Promote through environments with eval gates.
+                Rollback instantly. Every action recorded in an audit trail.
+            </p>
+        </div>
+        <div class="step-code">
+            <div class="code-header">
+                <span class="code-dot red"></span>
+                <span class="code-dot yellow"></span>
+                <span class="code-dot green"></span>
+                <span class="code-filename">app.py</span>
+            </div>
+            <pre><code><span class="kw">from</span> <span class="fn">llmhq_releaseops.runtime</span> <span class="kw">import</span> RuntimeLoader
+
+loader = RuntimeLoader()
+bundle, metadata = loader.<span class="fn">load_bundle</span>(<span class="st">"support-agent@prod"</span>)
+
+<span class="cm"># Everything resolved and verified</span>
+model    = bundle.model_config.model       <span class="cm"># claude-sonnet-4-5</span>
+prompts  = bundle.prompts                  <span class="cm"># versioned refs</span>
+policies = bundle.policies                 <span class="cm"># tool access rules</span>
+
+<span class="cm"># Metadata auto-injected into OTel spans</span></code></pre>
+        </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="workflow-step">
+        <div class="step-text">
+            <div class="step-number">3</div>
+            <span class="tool-badge both">Attribution</span>
+            <h3>Know why behavior changed</h3>
+            <p>
+                When behavior shifts between versions, attribution traces
+                each agent action back to the specific prompt lines and
+                policy rules that influenced it.
+            </p>
+            <p>
+                Pattern matching with confidence scoring &mdash; not causal
+                claims. Points engineers to the right place to investigate.
+            </p>
+        </div>
+        <div class="step-code">
+            <div class="code-header">
+                <span class="code-dot red"></span>
+                <span class="code-dot yellow"></span>
+                <span class="code-dot green"></span>
+                <span class="code-filename">terminal</span>
+            </div>
+            <pre><code><span class="cm"># Why did v1.0.0 ESCALATE the $120 refund?</span>
+<span class="fn">Primary influence</span> (confidence: 0.70):
+  <span class="kw">Source:</span> prompt (support-system@v1.0.0)
+  <span class="kw">Line 15:</span> <span class="hl">"Escalate any refund over $50"</span>
+
+<span class="cm"># Why did v1.1.0 APPROVE it?</span>
+<span class="fn">Primary influence</span> (confidence: 0.70):
+  <span class="kw">Source:</span> prompt (support-system@v1.1.0)
+  <span class="kw">Line 13:</span> <span class="st">"Auto-approve up to $200"</span></code></pre>
+        </div>
+    </div>
+</div>
+
+<!-- The Aha Moment -->
+<div class="aha-section">
+    <div class="aha-card">
+        <h3>The key moment: one line changes everything</h3>
+        <div class="aha-comparison">
+            <div class="aha-version conservative">
+                <div class="ver-label">v1.0.0 &mdash; Conservative</div>
+                <div class="ver-rule">"Escalate any refund over <strong>$50</strong>"</div>
+                <div class="ver-result">$120 refund &rarr; escalate_ticket</div>
+            </div>
+            <div class="aha-version permissive">
+                <div class="ver-label">v1.1.0 &mdash; Permissive</div>
+                <div class="ver-rule">"Auto-approve up to <strong>$200</strong>"</div>
+                <div class="ver-result">$120 refund &rarr; approve_refund</div>
+            </div>
+        </div>
+        <div class="aha-trace">
+            Attribution traced to: line 15 in system prompt &mdash; threshold changed from $50 to $200
+        </div>
+    </div>
+</div>
+
+<!-- Demo CTA -->
+<div class="home-cta">
+    <h2>See the full workflow</h2>
+    <p>
+        The interactive demo runs both tools end-to-end with a real scenario:
+        5 customer requests, two prompt versions, one behavioral divergence.
+        No API keys needed.
+    </p>
+    <div class="hero-buttons">
+        <a href="/demo/" class="btn btn-lg">Watch the Demo</a>
+    </div>
+</div>
+
+<!-- Install -->
+<div class="install-section">
+    <h2>Get started</h2>
+    <pre><code>pip install llmhq-promptops llmhq-releaseops</code></pre>
+</div>
+
+<!-- Community -->
+<div class="community-section">
+    <h2>Community</h2>
+    <div class="community-links">
+        <a href="https://github.com/llmhq-hub">GitHub</a>
+        <a href="https://pypi.org/project/llmhq-promptops/">PromptOps on PyPI</a>
+        <a href="https://pypi.org/project/llmhq-releaseops/">ReleaseOps on PyPI</a>
+        <a href="https://github.com/orgs/llmhq-hub/discussions">Discussions</a>
+    </div>
+</div>

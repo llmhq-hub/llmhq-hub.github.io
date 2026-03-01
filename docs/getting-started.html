@@ -1,0 +1,276 @@
+---
+layout: docs
+title: "Getting Started"
+description: "Get up and running with PromptOps and ReleaseOps in 5 minutes"
+---
+
+<div class="docs-hero">
+    <h1>Getting Started</h1>
+    <p class="docs-subtitle">
+        Version your prompts with PromptOps, then bundle and ship them with ReleaseOps.
+        Both tools work standalone or together.
+    </p>
+    <div class="docs-badges">
+        <span class="docs-badge python">Python 3.8+</span>
+        <span class="docs-badge version">Git required</span>
+    </div>
+</div>
+
+<!-- Install -->
+<div class="docs-section">
+    <h2>Install</h2>
+
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">terminal</span>
+            <span class="lang-tag">bash</span>
+        </div>
+        <pre><code><span class="c"># Install both tools</span>
+pip install llmhq-promptops llmhq-releaseops
+
+<span class="c"># Or install individually</span>
+pip install llmhq-promptops     <span class="c"># prompt versioning only</span>
+pip install llmhq-releaseops    <span class="c"># bundles, promotion, attribution</span></code></pre>
+    </div>
+</div>
+
+<!-- PromptOps Quick Start -->
+<div class="docs-section">
+    <h2>PromptOps &mdash; Version your prompts</h2>
+
+    <div class="guide-step">
+        <div class="step-marker">1</div>
+        <div class="step-body">
+            <h3>Initialize a repository</h3>
+            <p>Set up PromptOps in a new or existing git repo. This creates <code>.promptops/</code> with prompt storage and git hooks.</p>
+            <div class="dark-code">
+                <div class="code-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="fname">terminal</span>
+                    <span class="lang-tag">bash</span>
+                </div>
+                <pre><code><span class="c"># New project</span>
+promptops init repo
+
+<span class="c"># Existing git repo</span>
+<span class="k">cd</span> your-project
+promptops init</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="guide-step">
+        <div class="step-marker">2</div>
+        <div class="step-body">
+            <h3>Create a prompt</h3>
+            <p>Prompts are YAML templates with metadata and variables. Create one with the CLI or by hand.</p>
+            <div class="dark-code">
+                <div class="code-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="fname">terminal</span>
+                    <span class="lang-tag">bash</span>
+                </div>
+                <pre><code>promptops create prompt welcome-message</code></pre>
+            </div>
+            <div class="dark-code">
+                <div class="code-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="fname">.promptops/prompts/welcome-message.yaml</span>
+                    <span class="lang-tag">yaml</span>
+                </div>
+                <pre><code><span class="k">id:</span> <span class="s">welcome-message</span>
+<span class="k">description:</span> <span class="s">User onboarding prompt</span>
+<span class="k">variables:</span>
+  <span class="k">user_name:</span> <span class="d">{ required: true }</span>
+  <span class="k">plan:</span> <span class="d">{ required: true }</span>
+<span class="k">template:</span> <span class="o">|</span>
+  Welcome {{ user_name }}! You're on the {{ plan }} plan.
+  Here's how to get started...</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="guide-step">
+        <div class="step-marker">3</div>
+        <div class="step-body">
+            <h3>Test and use in code</h3>
+            <p>Reference any version &mdash; <code>:latest</code>, <code>:v1.2.0</code>, or <code>:unstaged</code> for testing uncommitted changes.</p>
+            <div class="dark-code">
+                <div class="code-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="fname">app.py</span>
+                    <span class="lang-tag">python</span>
+                </div>
+                <pre><code><span class="k">from</span> <span class="f">llmhq_promptops</span> <span class="k">import</span> get_prompt
+
+<span class="c"># Smart default (unstaged if different, else working)</span>
+prompt = get_prompt(<span class="s">"welcome-message"</span>)
+
+<span class="c"># With variables</span>
+prompt = get_prompt(<span class="s">"welcome-message"</span>, {
+    <span class="s">"user_name"</span>: <span class="s">"Alice"</span>,
+    <span class="s">"plan"</span>: <span class="s">"Pro"</span>
+})
+
+<span class="c"># Specific version</span>
+prompt = get_prompt(<span class="s">"welcome-message:v1.2.1"</span>)
+
+<span class="c"># Test uncommitted changes</span>
+prompt = get_prompt(<span class="s">"welcome-message:unstaged"</span>)</code></pre>
+            </div>
+            <div class="dark-code">
+                <div class="code-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="fname">terminal</span>
+                    <span class="lang-tag">bash</span>
+                </div>
+                <pre><code><span class="c"># CLI testing</span>
+promptops test --prompt welcome-message:unstaged
+promptops test status</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ReleaseOps Quick Start -->
+<div class="docs-section">
+    <h2>ReleaseOps &mdash; Bundle and ship</h2>
+
+    <div class="guide-step">
+        <div class="step-marker">1</div>
+        <div class="step-body">
+            <h3>Initialize release infrastructure</h3>
+            <p>Creates <code>.releaseops/</code> with environments (dev, staging, prod), bundle storage, and eval directories.</p>
+            <div class="dark-code">
+                <div class="code-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="fname">terminal</span>
+                    <span class="lang-tag">bash</span>
+                </div>
+                <pre><code>releaseops init</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="guide-step">
+        <div class="step-marker">2</div>
+        <div class="step-body">
+            <h3>Create a bundle</h3>
+            <p>A bundle is an immutable artifact containing your prompt, tool policies, and model config &mdash; all content-addressed with SHA-256.</p>
+            <div class="dark-code">
+                <div class="code-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="fname">terminal</span>
+                    <span class="lang-tag">bash</span>
+                </div>
+                <pre><code>releaseops bundle create support-agent \
+  --artifact system=welcome-message:v1.2.0 \
+  --model claude-sonnet-4-5 --provider anthropic</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="guide-step">
+        <div class="step-marker">3</div>
+        <div class="step-body">
+            <h3>Promote through environments</h3>
+            <p>Move bundles from dev to staging to prod. Each environment can have eval gates that must pass before promotion.</p>
+            <div class="dark-code">
+                <div class="code-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="fname">terminal</span>
+                    <span class="lang-tag">bash</span>
+                </div>
+                <pre><code>releaseops promote promote support-agent 1.0.0 dev
+releaseops promote promote support-agent 1.0.0 staging   <span class="c"># eval gate</span>
+releaseops promote promote support-agent 1.0.0 prod      <span class="c"># eval gate</span>
+
+<span class="c"># Check what's running</span>
+releaseops env list</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="guide-step">
+        <div class="step-marker">4</div>
+        <div class="step-body">
+            <h3>Load at runtime</h3>
+            <p>One-liner to load the current production bundle with all artifacts resolved and telemetry auto-injected.</p>
+            <div class="dark-code">
+                <div class="code-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="fname">app.py</span>
+                    <span class="lang-tag">python</span>
+                </div>
+                <pre><code><span class="k">from</span> <span class="f">llmhq_releaseops.runtime</span> <span class="k">import</span> RuntimeLoader
+
+loader = RuntimeLoader()
+bundle, metadata = loader.<span class="f">load_bundle</span>(<span class="s">"support-agent@prod"</span>)
+
+<span class="c"># Everything resolved</span>
+model    = bundle.model_config.model       <span class="c"># claude-sonnet-4-5</span>
+prompts  = bundle.prompts                  <span class="c"># versioned refs</span>
+policies = bundle.policies                 <span class="c"># tool access rules</span>
+
+<span class="c"># Metadata auto-injected into OpenTelemetry spans</span></code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Key Concepts -->
+<div class="docs-section">
+    <h2>Key concepts</h2>
+
+    <h3>PromptOps version references</h3>
+    <div class="concept-grid">
+        <div class="concept-card">
+            <dt><code>:unstaged</code></dt>
+            <dd>Test uncommitted changes before committing</dd>
+        </div>
+        <div class="concept-card">
+            <dt><code>:working</code></dt>
+            <dd>Current working directory state</dd>
+        </div>
+        <div class="concept-card">
+            <dt><code>:latest</code></dt>
+            <dd>Latest git-tagged version</dd>
+        </div>
+        <div class="concept-card">
+            <dt><code>:v1.2.3</code></dt>
+            <dd>Specific version by tag</dd>
+        </div>
+    </div>
+
+    <h3>ReleaseOps core concepts</h3>
+    <div class="concept-grid">
+        <div class="concept-card">
+            <dt>Bundle</dt>
+            <dd>Immutable manifest of prompts + policies + model config, SHA-256 verified</dd>
+        </div>
+        <div class="concept-card">
+            <dt>Environment</dt>
+            <dd>Deployment target (dev/staging/prod) with a pinned bundle version</dd>
+        </div>
+        <div class="concept-card">
+            <dt>Promotion</dt>
+            <dd>Moving a bundle through environments with quality gates</dd>
+        </div>
+        <div class="concept-card">
+            <dt>Attribution</dt>
+            <dd>Trace agent behavior back to specific prompt lines and policy rules</dd>
+        </div>
+    </div>
+</div>
+
+<!-- Next Steps -->
+<div class="docs-next">
+    <h2>Next steps</h2>
+    <p>Explore the full documentation or see both tools in action.</p>
+    <div class="hero-buttons">
+        <a href="/tools/promptops" class="btn btn-lg">PromptOps Docs</a>
+        <a href="/tools/releaseops" class="btn btn-lg">ReleaseOps Docs</a>
+        <a href="/demo/" class="btn-ghost btn-lg">Interactive Demo</a>
+    </div>
+</div>
