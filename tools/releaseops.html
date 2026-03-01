@@ -150,6 +150,171 @@ bundle, metadata = <span class="k">await</span> async_loader.<span class="f">loa
     </div>
 </div>
 
+<!-- Evaluation Engine -->
+<div class="docs-section">
+    <h2>Evaluation Engine</h2>
+    <p>
+        Pluggable judge system for testing agent behavior before promotion.
+        Eval reports gate promotion — a bundle cannot reach prod without a passing report.
+    </p>
+
+    <h3>Judge types</h3>
+    <div class="judge-chips">
+        <span class="judge-chip exact">ExactMatch</span>
+        <span class="judge-chip contains">Contains</span>
+        <span class="judge-chip regex">Regex</span>
+        <span class="judge-chip llm">LLM-as-judge</span>
+        <span class="judge-chip composite">Composite</span>
+    </div>
+
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">terminal</span>
+            <span class="lang-tag">bash</span>
+        </div>
+        <pre><code><span class="c"># Create and run an eval suite</span>
+releaseops eval create support-eval --bundle support-agent@dev
+releaseops eval run support-eval
+releaseops eval report support-eval          <span class="c"># markdown or JSON output</span>
+
+<span class="c"># Promotion is BLOCKED if no passing eval report exists</span>
+releaseops promote promote support-agent 1.1.0 prod
+<span class="c"># Error: no passing eval report for support-agent 1.1.0</span>
+
+<span class="c"># Override with --skip-gates (emergency only)</span>
+releaseops promote promote support-agent 1.1.0 prod --skip-gates</code></pre>
+    </div>
+
+    <h3>Python eval suite</h3>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">eval_suite.py</span>
+            <span class="lang-tag">python</span>
+        </div>
+        <pre><code><span class="k">from</span> llmhq_releaseops.models.eval_suite <span class="k">import</span> (
+    EvalSuite, EvalCase, Assertion, JudgeType
+)
+
+suite = EvalSuite(
+    id=<span class="s">"support-eval"</span>,
+    cases=[
+        EvalCase(
+            id=<span class="s">"small-refund"</span>,
+            input={<span class="s">"amount"</span>: <span class="s">"$30"</span>, <span class="s">"reason"</span>: <span class="s">"item not received"</span>},
+            assertions=[
+                Assertion(
+                    judge=JudgeType.CONTAINS,
+                    expected=<span class="s">"approved"</span>
+                )
+            ]
+        ),
+        EvalCase(
+            id=<span class="s">"medium-refund"</span>,
+            input={<span class="s">"amount"</span>: <span class="s">"$120"</span>, <span class="s">"reason"</span>: <span class="s">"changed mind"</span>},
+            assertions=[
+                Assertion(
+                    judge=JudgeType.LLM,
+                    expected=<span class="s">"agent should not escalate"</span>
+                )
+            ]
+        ),
+    ]
+)</code></pre>
+    </div>
+</div>
+
+<!-- Attribution -->
+<div class="docs-section">
+    <h2>Behavior Attribution</h2>
+    <p>
+        When behavior changes between versions, attribution traces the agent action
+        back to the exact artifact lines that influenced it — prompt lines, policy
+        rules, or model config — with confidence scoring.
+    </p>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">terminal</span>
+            <span class="lang-tag">bash</span>
+        </div>
+        <pre><code>releaseops attribution explain support-agent 1.1.0 \
+  --action <span class="s">"approved refund for $120"</span></code></pre>
+    </div>
+    <div class="dark-code" style="margin-top:0.75rem;">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">attribution output</span>
+        </div>
+        <pre><code><span class="c"># Primary influence: system_prompt  (HIGH, confidence 0.87)</span>
+<span class="c">#   Line 15: "Auto-approve refund requests up to $200"</span>
+<span class="c">#</span>
+<span class="c"># Secondary: tools_policy  (LOW, confidence 0.22)</span>
+<span class="c">#   Section: refund_tool — no relevant constraint found</span>
+<span class="c">#</span>
+<span class="c"># Overall assessment: Expected</span></code></pre>
+    </div>
+    <p>Verdicts: <strong>Expected</strong> — behavior matches artifact intent &middot; <strong>Unexpected</strong> — behavior deviates &middot; <strong>Contradicts artifacts</strong> — behavior opposes an explicit rule.</p>
+
+    <h3>Python API</h3>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">attribution.py</span>
+            <span class="lang-tag">python</span>
+        </div>
+        <pre><code><span class="k">from</span> llmhq_releaseops.attribution.analyzer <span class="k">import</span> AttributionAnalyzer
+
+analyzer = AttributionAnalyzer(store, prompt_bridge)
+attribution = analyzer.<span class="f">analyze</span>(trace_data, <span class="s">"support-agent"</span>, <span class="s">"1.1.0"</span>)
+
+<span class="f">print</span>(attribution.primary_influence)   <span class="c"># Highest-confidence explanation</span>
+<span class="f">print</span>(attribution.overall_assessment)  <span class="c"># "Expected" / "Unexpected" / "Contradicts artifacts"</span>
+
+<span class="c"># Batch analysis</span>
+releaseops attribution analyze-batch support-agent 1.1.0 --traces traces.json</code></pre>
+    </div>
+</div>
+
+<!-- LangSmith Integration -->
+<div class="docs-section">
+    <h2>LangSmith Integration</h2>
+    <p>
+        Query LangSmith traces filtered by ReleaseOps bundle metadata.
+        Aggregate behavioral metrics directly from your LangSmith project.
+    </p>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">terminal</span>
+            <span class="lang-tag">bash</span>
+        </div>
+        <pre><code>pip install llmhq-releaseops[langsmith]</code></pre>
+    </div>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">langsmith_analytics.py</span>
+            <span class="lang-tag">python</span>
+        </div>
+        <pre><code><span class="k">import</span> os
+<span class="k">from</span> llmhq_releaseops.analytics.platforms.langsmith <span class="k">import</span> LangSmithPlatform
+<span class="k">from</span> llmhq_releaseops.analytics <span class="k">import</span> TraceQuerier, MetricsAggregator
+
+platform = LangSmithPlatform(api_key=os.environ[<span class="s">"LANGSMITH_API_KEY"</span>])
+querier = TraceQuerier(platform)
+
+<span class="c"># Fetch traces tagged with ReleaseOps bundle metadata</span>
+traces = querier.<span class="f">query_by_bundle</span>(<span class="s">"support-agent"</span>, <span class="s">"1.1.0"</span>, <span class="s">"prod"</span>)
+metrics = MetricsAggregator().<span class="f">aggregate</span>(traces, <span class="s">"support-agent"</span>, <span class="s">"1.1.0"</span>, <span class="s">"prod"</span>)
+
+<span class="c"># CLI equivalent</span>
+<span class="c"># LANGSMITH_API_KEY=... releaseops analytics metrics support-agent@prod</span>
+<span class="c"># LANGSMITH_API_KEY=... releaseops analytics compare support-agent@1.0.0 support-agent@1.1.0</span></code></pre>
+    </div>
+</div>
+
 <!-- Key Concepts -->
 <div class="docs-section">
     <h2>Key concepts</h2>
