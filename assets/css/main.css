@@ -256,6 +256,15 @@ a:hover {
     padding: 3rem 20px 2rem;
 }
 
+.hero-kicker {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #2563eb;
+    letter-spacing: 0.01em;
+    margin-bottom: 1rem;
+    text-transform: none;
+}
+
 .home-hero h1 {
     font-size: 2.4rem;
     color: #1f2937;
@@ -667,6 +676,12 @@ a:hover {
 }
 
 .install-section h2 {
+    margin-bottom: 0.5rem;
+}
+
+.install-note {
+    font-size: 0.9rem;
+    color: #6b7280;
     margin-bottom: 1rem;
 }
 

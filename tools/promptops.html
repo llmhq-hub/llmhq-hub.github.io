@@ -1,17 +1,34 @@
 ---
 layout: docs
 title: "PromptOps"
-description: "Git-native prompt management and testing framework for production LLM workflows"
+description: "Git-native prompt versioning for production LLM agents. Auto-version prompts on every commit, test any version by name, no manual tagging."
 ---
 
 <div class="docs-hero">
     <h1>PromptOps</h1>
-    <p class="docs-subtitle">Git-native prompt management and testing framework for production LLM workflows</p>
+    <p class="docs-subtitle">Git-native prompt versioning for production LLM agents</p>
     <div class="docs-badges">
         <span class="docs-badge stable">Stable</span>
-        <span class="docs-badge version">v0.1.1</span>
+        <span class="docs-badge version">v0.1.0</span>
         <span class="docs-badge python">Python 3.8+</span>
     </div>
+</div>
+
+<!-- Why -->
+<div class="docs-section">
+    <h2>Why PromptOps?</h2>
+    <p>
+        Your agent's behavior is defined by prompt text &mdash; but most teams ship prompts as
+        raw strings baked into code, with no version history, no rollback, and no way to test
+        a change before it hits production.
+    </p>
+    <p>
+        PromptOps turns prompts into first-class versioned artifacts. Every <code>git commit</code>
+        auto-tags your prompts with a semantic version. Reference any version in code by name:
+        <code>:latest</code> for production, <code>:v1.2.0</code> for a specific release,
+        or <code>:unstaged</code> to test uncommitted changes without touching anything live.
+        No more "what prompt was running last Tuesday?"
+    </p>
 </div>
 
 <!-- Features -->
@@ -27,12 +44,12 @@ description: "Git-native prompt management and testing framework for production 
             <p>Test prompts instantly with <code>:unstaged</code>, <code>:working</code>, <code>:latest</code> references before committing.</p>
         </div>
         <div class="feature-item">
-            <h3>Version-Aware Testing</h3>
-            <p>Test different prompt versions with comprehensive validation. Compare outputs across versions.</p>
+            <h3>Cross-Version Comparison</h3>
+            <p>Test and compare any two prompt versions side-by-side. Catch behavioral changes before they reach production.</p>
         </div>
         <div class="feature-item">
-            <h3>Git Hook Automation</h3>
-            <p>Pre-commit and post-commit hooks for seamless developer workflow. No manual versioning steps.</p>
+            <h3>Zero-Config Git Hooks</h3>
+            <p>Pre-commit and post-commit hooks installed automatically. Versioning happens on every commit &mdash; nothing to remember.</p>
         </div>
     </div>
 </div>
