@@ -1,0 +1,82 @@
+---
+layout: docs
+title: "Tools"
+description: "Production-ready tools for LLM workflows"
+---
+
+<div class="docs-hero">
+    <h1>Tools</h1>
+    <p class="docs-subtitle">Production-ready infrastructure for managing AI agent behavior</p>
+</div>
+
+<div class="docs-section">
+    <div class="tool-cards-grid">
+        {% for tool in site.data.tools %}
+        <a href="{{ tool.docs }}" class="tool-card-large">
+            <div class="tool-card-header">
+                <h2>{{ tool.name }}</h2>
+                <div class="docs-badges">
+                    <span class="docs-badge {% if tool.status == 'stable' %}stable{% else %}alpha{% endif %}">{{ tool.status }}</span>
+                    {% if tool.version != "coming-soon" %}
+                    <span class="docs-badge version">v{{ tool.version }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <p class="tool-card-desc">{{ tool.description }}</p>
+            {% if tool.features %}
+            <ul class="tool-card-features">
+                {% for feature in tool.features %}
+                <li>{{ feature }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="tool-card-links">
+                {% if tool.pypi != "" %}
+                <span class="link-card-inline">PyPI</span>
+                {% endif %}
+                {% if tool.github != "" %}
+                <span class="link-card-inline">GitHub</span>
+                {% endif %}
+                <span class="link-card-inline">Documentation &rarr;</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="docs-section">
+    <h2>How they work together</h2>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">workflow</span>
+            <span class="lang-tag">overview</span>
+        </div>
+        <pre><code><span class="c"># 1. PromptOps versions your prompts</span>
+promptops create prompt support-system
+<span class="k">git commit</span> <span class="c"># → auto-tags v1.0.0</span>
+
+<span class="c"># 2. ReleaseOps bundles and ships them</span>
+releaseops bundle create support-agent \
+  --artifact system=support-system:v1.0.0 \
+  --model <span class="s">claude-sonnet-4-5</span> --provider anthropic
+
+<span class="c"># 3. Promote through environments</span>
+releaseops promote promote support-agent 1.0.0 dev
+releaseops promote promote support-agent 1.0.0 staging
+releaseops promote promote support-agent 1.0.0 prod
+
+<span class="c"># 4. Trace behavior back to prompts</span>
+releaseops attribution explain support-agent 1.0.0 \
+  --action <span class="s">"approved refund for $120"</span></code></pre>
+    </div>
+</div>
+
+<div class="docs-next">
+    <h2>Get started</h2>
+    <p>Set up both tools in under 5 minutes.</p>
+    <div class="hero-buttons">
+        <a href="/docs/getting-started" class="btn btn-lg">Getting Started Guide</a>
+        <a href="/demo/" class="btn-ghost btn-lg">Interactive Demo</a>
+    </div>
+</div>

@@ -1,0 +1,556 @@
+---
+layout: demo
+title: "Interactive Demo"
+description: "See PromptOps and ReleaseOps in action — prompt versioning, bundle management, promotion gates, attribution analysis, and behavioral analytics."
+---
+
+<div class="demo-hero">
+    <h1>PromptOps + ReleaseOps Demo</h1>
+    <p class="subtitle">
+        Two prompt versions. Same customer requests. Different agent behavior.
+        Watch every change get versioned, bundled, and traced.
+    </p>
+</div>
+
+<div class="demo-scenario">
+    <div class="scenario-card">
+        <div class="scenario-header">
+            <span class="scenario-icon">&#128172;</span>
+            <div>
+                <h2>The Scenario</h2>
+                <p>A customer support agent handles 5 refund requests. One prompt change shifts the threshold.</p>
+            </div>
+        </div>
+
+        <div class="scenario-message">
+            <span class="msg-label">Customer</span>
+            <span class="msg-bubble">"I'd like a refund for my $120 purchase"</span>
+        </div>
+
+        <div class="scenario-responses">
+            <div class="scenario-response v1">
+                <div class="response-badge">v1.0.0</div>
+                <div class="response-icon">&#9888;</div>
+                <div class="response-action">Escalate to supervisor</div>
+                <div class="response-reason">Rule: escalate refunds over $50</div>
+            </div>
+            <div class="scenario-vs">vs</div>
+            <div class="scenario-response v2">
+                <div class="response-badge">v1.1.0</div>
+                <div class="response-icon">&#10003;</div>
+                <div class="response-action">Auto-approve refund</div>
+                <div class="response-reason">Rule: auto-approve up to $200</div>
+            </div>
+        </div>
+
+        <div class="scenario-footer">
+            One prompt line changed this. The demo below shows how PromptOps versioned it
+            and ReleaseOps tracked the behavioral impact — bundling, promotion, attribution,
+            and analytics — back to the exact change.
+        </div>
+    </div>
+</div>
+
+<div class="demo-intro">
+    <span class="version-badge conservative">
+        <span class="label">v1.0.0</span>
+        <span class="value">Escalate > $50</span>
+    </span>
+    <span class="version-badge permissive">
+        <span class="label">v1.1.0</span>
+        <span class="value">Auto-approve up to $200</span>
+    </span>
+</div>
+
+<div class="terminal-container">
+    <div class="terminal">
+        <div class="terminal-toolbar">
+            <div class="terminal-controls">
+                <button class="terminal-btn play-btn">Play</button>
+                <button class="terminal-btn skip-btn">Show All</button>
+                <div class="speed-control">
+                    <label>Speed:</label>
+                    <input type="range" class="speed-slider" min="0.5" max="5" step="0.5" value="1">
+                    <span class="speed-label">1.0x</span>
+                </div>
+            </div>
+            <span class="terminal-status"></span>
+        </div>
+        <div class="terminal-output">
+        </div>
+    </div>
+</div>
+
+<div class="key-moment">
+    <div class="key-moment-card">
+        <span class="icon">&#128269;</span>
+        <div>
+            <h3>The Key Moment: $120 Refund</h3>
+            <p>
+                The medium refund scenario ($120 purchase) is where behavior diverges.
+                <strong>v1.0.0</strong> escalates it to a supervisor (over the $50 limit),
+                while <strong>v1.1.0</strong> auto-approves it (under the $200 limit).
+            </p>
+            <p>
+                Attribution traces this decision back to the exact line in the system prompt
+                where the threshold changed: <code>$50 &rarr; $200</code>.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-explanation">
+    <h2>What the Demo Shows</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="act-label">Act 1 &mdash; Version &amp; Bundle</div>
+            <h3>Git-Native Prompt Versioning</h3>
+            <p>
+                Prompts are versioned via git tags. Two versions are bundled with policies
+                and model config into immutable, SHA-256 content-addressed artifacts.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 2 &mdash; Promote</div>
+            <h3>Gated Promotion &amp; Rollback</h3>
+            <p>
+                Bundles move through dev &rarr; staging &rarr; prod with eval gates.
+                Rollback is instant. Every action is recorded in an audit trail.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 3 &mdash; Attribution</div>
+            <h3>Behavior Attribution</h3>
+            <p>
+                Run the same scenarios against both versions. Attribution traces each
+                agent action to the most relevant artifact sections.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 4 &mdash; Analytics</div>
+            <h3>Behavioral Analytics</h3>
+            <p>
+                Aggregate metrics from traces and compare versions. Quantify the
+                behavioral shift: approval rate up, escalation down, denial unchanged.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-cta">
+    <h2>Try It Yourself</h2>
+    <p>
+        The demo runs locally with no API keys.
+        Install both packages and run the demo script.
+    </p>
+    <div style="text-align: left; max-width: 400px; margin: 0 auto 1.5rem;">
+        <pre><code>pip install llmhq-promptops llmhq-releaseops
+git clone https://github.com/llmhq-hub/releaseops
+cd releaseops/examples
+python demo.py</code></pre>
+    </div>
+    <div class="cta-buttons">
+        <a href="/tools/promptops" class="btn">PromptOps Docs</a>
+        <a href="/tools/releaseops" class="btn">ReleaseOps Docs</a>
+        <a href="https://github.com/llmhq-hub" class="btn-outline">GitHub</a>
+    </div>
+</div>
+
+<!-- Demo output data (hidden, consumed by demo.js) -->
+<script type="text/plain" id="demo-data">
+============================================================
+  ReleaseOps + PromptOps Demo
+============================================================
+
+  A customer support agent handles refund requests.
+  Two prompt versions change the auto-approval threshold:
+
+    v1.0.0  Conservative: escalate refunds over $50
+    v1.1.0  Permissive:   auto-approve up to $200
+
+  Same 5 customer requests, two different outcomes.
+  Watch the $120 refund -- that's where behavior diverges.
+
+
+============================================================
+  Act 1: Version & Bundle
+============================================================
+
+  Prompts are behavior configuration. They deserve versioning.
+  This act creates versioned prompts with PromptOps, then bundles
+  them into immutable artifacts with ReleaseOps.
+
+--- Prompt Versioning (PromptOps) ---------------------
+
+  + Found 1 prompt(s): support-system
+
+  Version history:
+      v1.1.0  72d9a727  Permissive refund policy (approve up to $200) (latest)
+      v1.0.0  52735959  Conservative refund policy (escalate > $50)
+
+  Prompt ID:    support-system
+  Description:  Customer support agent system prompt
+  Variables:    customer_name, request
+
+--- Render Template -----------------------------------
+
+  Rendered v1.0.0 (first 3 lines):
+    | You are a customer support agent for Acme Corp.
+    |
+    | Your job is to help customers with refund requests
+    | by following company policy.
+    | ...
+
+--- Prompt Diff: v1.0.0 vs v1.1.0 --------------------
+
+    - Approve refund requests of $50 or less if the product is defective.
+    + Auto-approve refund requests up to $200 if the product is defective.
+    - Escalate any refund request over $50 to a human supervisor.
+    + Escalate any refund request over $200 to a human supervisor.
+
+  + Single-line change in template: refund threshold $50 -> $200
+
+--- Bundle Creation (ReleaseOps) ----------------------
+
+  PromptBridge connects PromptOps prompts to ReleaseOps bundles.
+
+  Prompt ref (v1): prompts/support-system@v1.0.0
+  Content hash:    sha256:b54e94dcdfd4039e1e35de5...
+
+  + Bundle support-agent v1.0.0 created
+    Prompt:      prompts/support-system@v1.0.0
+    Prompt hash: sha256:b54e94dcdfd4039e1e35de5...
+    Policy:      policies/tools/support_tools.yaml
+    Policy hash: sha256:fa9f32bd8470d16daf5c016...
+    Model:       claude-sonnet-4-5-20250929 (temp=0.3)
+    Bundle hash: sha256:00c1a78e9b93a4251f8824f...
+
+  + Bundle support-agent v1.1.0 created
+    Prompt:      prompts/support-system@v1.1.0
+    Prompt hash: sha256:e54d8d12ee7e2adfad2af5f...
+    Policy hash: sha256:fa9f32bd8470d16daf5c016...
+    Bundle hash: sha256:d3ae8d2d63b880e2085a4f5...
+
+  + Prompt hashes differ (threshold change detected)
+  + Policy hashes match (tools unchanged)
+
+--- Bundle Diff ---------------------------------------
+
+  Comparing support-agent v1.0.0 vs v1.1.0:
+    Prompts changed:      ['system']
+    Prompts unchanged:    []
+    Policies changed:     []
+    Policies unchanged:   ['tools']
+    Model config changed: False
+    Bundle hash changed:  True
+
+--- Verify Integrity ----------------------------------
+
+  + v1.0.0: All content hashes verified
+  + v1.0.0: Bundle hash verified
+  + v1.1.0: All content hashes verified
+  + v1.1.0: Bundle hash verified
+
+  --------------------------------------------------------
+  Two versioned prompts (PromptOps) -> two immutable bundles
+  (ReleaseOps). Every artifact is content-addressed with SHA-256.
+  The only difference: one line in the system prompt.
+
+  No telemetry. No platform. Just versioned, verified artifacts.
+  --------------------------------------------------------
+
+
+============================================================
+  Act 2: Promote
+============================================================
+
+  The problem: deploying prompt changes with no gates, no rollback,
+  no audit trail. Just yolo-copy the file and hope for the best.
+
+  ReleaseOps adds a promotion state machine with quality gates.
+
+--- Environments --------------------------------------
+
+  Three environments, each with promotion policies:
+    dev:      No gates (fast iteration)
+    staging:  Requires passing eval suite
+    prod:     Requires passing eval suite
+
+--- Eval Suite ----------------------------------------
+
+  + Created eval suite 'smoke-test' with 3 test cases
+    small-refund-approve:   Small refunds should be approved
+    abusive-deny:           Abusive customers should be denied
+    large-refund-escalate:  Large refunds should be escalated
+
+  Running eval suite against v1.0.0...
+  + small-refund-approve: PASS
+  + abusive-deny: PASS
+  + large-refund-escalate: PASS
+  Score: 3/3 (100%) - Gate: PASS
+
+--- Promote v1.0.0: dev -> staging -> prod ------------
+
+  + dev: v1.0.0 deployed (no gates)
+  + staging: eval gate -> PASS
+  + staging: v1.0.0 deployed
+  + prod: eval gate -> PASS
+  + prod: v1.0.0 deployed
+
+  Environment state after promoting v1.0.0:
+         dev: support-agent v1.0.0
+     staging: support-agent v1.0.0
+        prod: support-agent v1.0.0
+
+--- Promote v1.1.0 to dev -----------------------------
+
+  Running eval suite against v1.1.0...
+  Score: 3/3 (100%) - Gate: PASS
+
+  + dev: v1.1.0 deployed
+
+  Environment state:
+         dev: support-agent v1.1.0
+     staging: support-agent v1.0.0
+        prod: support-agent v1.0.0
+
+  dev has the new version. staging and prod are untouched.
+
+--- Rollback ------------------------------------------
+
+  Scenario: Production incidents detected. Roll back immediately.
+
+  + prod: Rolled back from v1.1.0 to v1.0.0
+    Reason: Approval rate spike detected
+    Rolled back from: 1.1.0
+    Performed by: oncall-engineer
+
+  Environment state after rollback:
+         dev: support-agent v1.1.0
+     staging: support-agent v1.1.0
+        prod: support-agent v1.0.0
+
+--- Audit Trail ---------------------------------------
+
+  Timestamp               Version      Env      Action       By
+  ---------------------- -------- -------- ------------ ----------------
+  2026-02-28T10:55:15    v1.0.0      prod ROLLBACK     oncall-engineer
+  2026-02-28T10:55:15    v1.1.0      prod PROMOTE      demo
+  2026-02-28T10:55:14    v1.1.0   staging PROMOTE      demo
+  2026-02-28T10:55:14    v1.1.0       dev PROMOTE      demo
+  2026-02-28T10:55:13    v1.0.0      prod PROMOTE      demo
+  2026-02-28T10:55:13    v1.0.0   staging PROMOTE      demo
+  2026-02-28T10:55:13    v1.0.0       dev PROMOTE      demo
+
+  --------------------------------------------------------
+  Promotion state machine: dev -> staging -> prod
+  Eval gates run automatically at staging and prod.
+  Rollback is instant (pointer change, not a new deploy).
+  Full audit trail with timestamps, reasons, gate results.
+
+  Still no telemetry. No observability platform needed.
+  --------------------------------------------------------
+
+
+============================================================
+  Act 3: Attribution
+============================================================
+
+  ! ReleaseOps does NOT observe your agent at runtime.
+  It reads your artifacts (prompts, policies, model config) and
+  matches patterns in the trace data to explain where behavior
+  likely came from.
+
+--- Run Scenarios: v1.0.0 (Conservative) --------------
+
+  + Ran 5 scenarios against v1.0.0 (threshold: $50)
+    small_refund           -> approve_refund
+    medium_refund          -> escalate_ticket
+    large_refund           -> escalate_ticket
+    abusive_customer       -> deny_refund
+    ambiguous_request      -> escalate_ticket
+
+--- Run Scenarios: v1.1.0 (Permissive) ----------------
+
+  + Ran 5 scenarios against v1.1.0 (threshold: $200)
+    small_refund           -> approve_refund
+    medium_refund          -> approve_refund
+    large_refund           -> escalate_ticket
+    abusive_customer       -> deny_refund
+    ambiguous_request      -> escalate_ticket
+
+--- Side-by-Side Comparison ---------------------------
+
+    Scenario              Amount  v1.0.0 Action       v1.1.0 Action       Changed?
+    --------------------- ------- -------------------- -------------------- --------
+    small_refund          $   30  approve_refund       approve_refund
+    medium_refund         $  120  escalate_ticket      approve_refund       <-- !
+    large_refund          $  500  escalate_ticket      escalate_ticket
+    abusive_customer      $   85  deny_refund          deny_refund
+    ambiguous_request     $   95  escalate_ticket      escalate_ticket
+
+  The $120 medium refund is the divergence point.
+
+--- Attribution: The $120 Refund ----------------------
+
+  Why did v1.0.0 ESCALATE but v1.1.0 APPROVE the $120 refund?
+
+  --- v1.0.0: Why ESCALATE? ---
+
+    Action:     escalate_ticket({'reason': 'Refund exceeds auto-approval limit'})
+    Bundle:     support-agent v1.0.0
+    Assessment: Likely expected per artifacts
+
+    Primary influence (MEDIUM, 0.70):
+      Source:  prompt (prompts/support-system@v1.0.0)
+      line 15: "Escalate any refund request over $50 to a human supervisor."
+      Reason: keyword match (escalate, refund); action verb match
+
+    Supporting influences:
+      line 20: "Use escalate_ticket when amount exceeds your authority."  (0.55)
+
+  --- v1.1.0: Why APPROVE? ---
+
+    Action:     approve_refund({'amount': 120.0, 'reason': 'Defective product refund'})
+    Bundle:     support-agent v1.1.0
+    Assessment: Likely expected per artifacts
+
+    Primary influence (MEDIUM, 0.70):
+      Source:  prompt (prompts/support-system@v1.1.0)
+      line 13: "Auto-approve refund requests up to $200 if defective or damaged."
+      Reason: keyword match (approve, refund); action verb match
+
+    Supporting influences:
+      line 15: "Escalate any refund request over $200 to a human supervisor."  (0.55)
+
+  -- What attribution does NOT do --
+
+  Attribution is PATTERN MATCHING, not causal analysis.
+  It finds relevant artifact sections and matches keywords
+  from the trace action to the prompt/policy text.
+
+  It does NOT prove that a specific prompt line CAUSED
+  the agent to take a specific action.
+
+  What it IS good for: quickly pointing engineers to the
+  most relevant parts of the prompt when investigating
+  behavioral changes.
+
+  Works with local files. No OTel, no platform needed.
+
+  --------------------------------------------------------
+  Same 5 scenarios, two prompt versions, one behavioral
+  divergence. Attribution traced the $120 refund decision
+  to the exact prompt line where the threshold changed.
+  --------------------------------------------------------
+
+
+============================================================
+  Act 4: Analytics
+============================================================
+
+  ! In production, trace data comes from your observability
+  platform (LangSmith, Datadog, custom OTel collector, etc.).
+
+  For this demo, we use MockPlatform with in-memory traces.
+
+--- Load Traces into Platform -------------------------
+
+  + Loaded 10 traces into MockPlatform (5 per version)
+  + Queried: 5 traces for v1.0.0, 5 traces for v1.1.0
+
+--- Aggregate Metrics ---------------------------------
+
+  v1.0.0 (Conservative - prod):
+    Sample size:    5
+    Avg latency:    124.4 ms
+    P95 latency:    157.1 ms
+    Avg tokens:     263
+    Error rate:     0.0%
+    Success rate:   100.0%
+    Action distribution:
+      approve_refund       1/5 (20%)  ####
+      deny_refund          1/5 (20%)  ####
+      escalate_ticket      3/5 (60%)  ############
+
+  v1.1.0 (Permissive - dev):
+    Sample size:    5
+    Avg latency:    124.4 ms
+    P95 latency:    157.1 ms
+    Avg tokens:     263
+    Error rate:     0.0%
+    Success rate:   100.0%
+    Action distribution:
+      approve_refund       2/5 (40%)  ########
+      deny_refund          1/5 (20%)  ####
+      escalate_ticket      2/5 (40%)  ########
+
+--- Version Comparison --------------------------------
+
+  Overall assessment: neutral
+  Recommendation:     No significant changes detected. Safe to proceed.
+
+    Metric                  Baseline  Candidate    Change  Significance
+    ---------------------- --------- ---------- --------- ------------
+    error_rate                  0.00       0.00      0.0%  negligible
+    avg_latency_ms            124.44     124.44      0.0%  negligible
+    p95_latency_ms            157.08     157.08      0.0%  negligible
+    avg_token_usage           263.40     263.40      0.0%  negligible
+    success_rate                1.00       1.00      0.0%  negligible
+
+--- Action Distribution Shift -------------------------
+
+    Action                  v1.0.0    v1.1.0  Shift
+    -------------------- --------- --------- --------------------
+    approve_refund               1         2  +1
+    escalate_ticket              3         2  -1
+    deny_refund                  1         1   0
+
+  + Approval rate: 1/5 -> 2/5
+  + Escalation rate: 3/5 -> 2/5
+  + Denial rate unchanged (1/5) -- safety behavior preserved
+
+  -- What analytics does NOT do --
+
+  Analytics tells you HOW MUCH behavior shifted.
+  It does NOT tell you whether the shift is GOOD.
+
+  You define what 'good' means for your agent.
+  Analytics gives you the numbers to make that judgment.
+
+  Approval rate went up. Is that good? Depends on your
+  business context. More approvals = happier customers?
+  Or more approvals = more fraud risk? You decide.
+
+  --------------------------------------------------------
+  Metrics aggregated from traces: latency, tokens, error rates.
+  Version comparison quantifies the behavioral shift.
+  Action distribution shows the practical impact.
+  --------------------------------------------------------
+
+
+============================================================
+  Demo Complete
+============================================================
+
+  What you get at each level:
+
+  SETUP                     FEATURES
+  -------------------------------------------------------
+  promptops only            Prompt versioning, rendering,
+                            diffs, git history
+
+  + releaseops              Bundle, promote, rollback,
+                            eval gates, audit trail
+
+  + trace files             Attribution analysis (map actions
+                            to relevant artifact sections)
+
+  + OTel + platform         Telemetry labels, behavioral
+                            analytics, version comparison
+
+  No API keys required. Everything runs locally.
+  Install and try: pip install llmhq-promptops llmhq-releaseops
+
+============================================================
+</script>
