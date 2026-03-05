@@ -2,7 +2,7 @@
   id: promptops
   description: "Git-native prompt management and testing framework"
   status: "stable"
-  version: "0.1.1"
+  version: "0.1.0"
   pypi: "https://pypi.org/project/llmhq-promptops/"
   github: "https://github.com/llmhq-hub/promptops"
   docs: "/tools/promptops"
@@ -16,7 +16,7 @@
 - name: ReleaseOps
   id: releaseops
   description: "Release engineering infrastructure for AI agent behavior"
-  status: "alpha"
+  status: "early-access"
   version: "0.1.0"
   pypi: "https://pypi.org/project/llmhq-releaseops/"
   github: "https://github.com/llmhq-hub/releaseops"

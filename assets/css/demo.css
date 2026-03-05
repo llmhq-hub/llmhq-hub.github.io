@@ -803,3 +803,121 @@
     .pillars-grid { grid-template-columns: 1fr; }
     .compat-chips { gap: 0.4rem; }
 }
+
+/* ─── Demos index page ─── */
+.demos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    padding: 0 20px;
+}
+
+.demo-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    background: #fff;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+a.demo-card:hover {
+    border-color: #2563eb;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+    text-decoration: none;
+}
+
+.demo-card.coming-soon {
+    opacity: 0.7;
+    background: #fafbfc;
+}
+
+.demo-card h3 {
+    font-size: 1rem;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.demo-card p {
+    font-size: 0.88rem;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    flex: 1;
+}
+
+.demo-card p code {
+    font-size: 0.82rem;
+    padding: 0.1rem 0.35rem;
+    background: #f3f4f6;
+    border-radius: 3px;
+}
+
+.demo-tool-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    width: fit-content;
+}
+
+.demo-tool-badge.promptops {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #93c5fd;
+}
+
+.demo-tool-badge.releaseops {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #86efac;
+}
+
+.demo-tool-badge.both {
+    background: #faf5ff;
+    color: #7e22ce;
+    border: 1px solid #d8b4fe;
+}
+
+.demo-cta {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.demo-status {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #9ca3af;
+    font-style: italic;
+}
+
+.demo-cta-section {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    padding: 0 20px;
+}
+
+.demo-cta-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.demo-cta-section p {
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 640px) {
+    .demos-grid {
+        grid-template-columns: 1fr;
+    }
+}

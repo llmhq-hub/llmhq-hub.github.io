@@ -207,12 +207,12 @@ releaseops env list</code></pre>
                 <pre><code><span class="k">from</span> <span class="f">llmhq_releaseops.runtime</span> <span class="k">import</span> RuntimeLoader
 
 loader = RuntimeLoader()
-bundle, metadata = loader.<span class="f">load_bundle</span>(<span class="s">"support-agent@prod"</span>)
+content = loader.<span class="f">load_bundle_content</span>(<span class="s">"support-agent@prod"</span>)
 
-<span class="c"># Everything resolved</span>
-model    = bundle.model_config.model       <span class="c"># claude-sonnet-4-5</span>
-prompts  = bundle.prompts                  <span class="c"># versioned refs</span>
-policies = bundle.policies                 <span class="c"># tool access rules</span>
+<span class="c"># Everything resolved and ready to use</span>
+model    = content[<span class="s">"model"</span>].model          <span class="c"># claude-sonnet-4-5</span>
+prompts  = content[<span class="s">"prompts"</span>]              <span class="c"># {"system": "You are a support agent..."}</span>
+policies = content[<span class="s">"policies"</span>]             <span class="c"># {"tools": {"allowed": [...]}, ...}</span>
 
 <span class="c"># Metadata auto-injected into OpenTelemetry spans</span></code></pre>
             </div>
@@ -311,6 +311,6 @@ releaseops eval report support-eval    <span class="c"># markdown or JSON</span>
     <div class="hero-buttons">
         <a href="/tools/promptops" class="btn btn-lg">PromptOps Docs</a>
         <a href="/tools/releaseops" class="btn btn-lg">ReleaseOps Docs</a>
-        <a href="/demo/" class="btn-ghost btn-lg">Interactive Demo</a>
+        <a href="/demos/" class="btn-ghost btn-lg">Interactive Demos</a>
     </div>
 </div>

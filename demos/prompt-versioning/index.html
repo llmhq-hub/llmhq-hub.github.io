@@ -1,0 +1,418 @@
+---
+layout: demo
+title: "Prompt Versioning Demo"
+description: "See PromptOps auto-version a code review agent's prompts — PATCH, MINOR, and MAJOR bumps detected automatically. Zero manual tagging."
+---
+
+<div class="demo-hero">
+    <h1>Prompt Versioning</h1>
+    <p class="subtitle">
+        A code review agent evolves through four prompt versions.
+        Every edit is auto-versioned with semantic rules &mdash; no manual tagging.
+    </p>
+</div>
+
+<div class="demo-scenario">
+    <div class="scenario-card">
+        <div class="scenario-header">
+            <span class="scenario-icon">&#128221;</span>
+            <div>
+                <h2>The Scenario</h2>
+                <p>An engineering team iterates on their code review agent's system prompt. Tone shifts, new variables, and breaking changes &mdash; all auto-detected.</p>
+            </div>
+        </div>
+
+        <div class="scenario-message">
+            <span class="msg-label">Code Review</span>
+            <span class="msg-bubble">"Review this pull request for correctness and style"</span>
+        </div>
+
+        <div class="scenario-responses">
+            <div class="scenario-response v1">
+                <div class="response-badge">v1.0.0</div>
+                <div class="response-icon">&#10060;</div>
+                <div class="response-action">ERROR: no error handling</div>
+                <div class="response-reason">Tone: flag all issues as errors</div>
+            </div>
+            <div class="scenario-vs">vs</div>
+            <div class="scenario-response v2">
+                <div class="response-badge">v1.0.1</div>
+                <div class="response-icon">&#128161;</div>
+                <div class="response-action">Consider adding error handling</div>
+                <div class="response-reason">Tone: suggest improvements constructively</div>
+            </div>
+        </div>
+
+        <div class="scenario-footer">
+            One tone change, auto-detected as a PATCH bump. Adding a variable triggers MINOR.
+            Removing one triggers MAJOR. The demo below shows every version tracked automatically.
+        </div>
+    </div>
+</div>
+
+<div class="demo-intro">
+    <span class="version-badge conservative">
+        <span class="label">v1.0.0</span>
+        <span class="value">Strict error flagging</span>
+    </span>
+    <span class="version-badge permissive">
+        <span class="label">v2.0.0</span>
+        <span class="value">Constructive + streamlined</span>
+    </span>
+</div>
+
+<div class="terminal-container">
+    <div class="terminal">
+        <div class="terminal-toolbar">
+            <div class="terminal-controls">
+                <button class="terminal-btn play-btn">Play</button>
+                <button class="terminal-btn skip-btn">Show All</button>
+                <div class="speed-control">
+                    <label>Speed:</label>
+                    <input type="range" class="speed-slider" min="0.5" max="5" step="0.5" value="1">
+                    <span class="speed-label">1.0x</span>
+                </div>
+            </div>
+            <span class="terminal-status"></span>
+        </div>
+        <div class="terminal-output">
+        </div>
+    </div>
+</div>
+
+<div class="key-moment">
+    <div class="key-moment-card">
+        <span class="icon">&#128165;</span>
+        <div>
+            <h3>The Key Moment: MAJOR Bump</h3>
+            <p>
+                When the <code>language</code> variable is removed, PromptOps detects a
+                <strong>breaking change</strong>. Any caller passing <code>language</code>
+                will break &mdash; so it bumps from v1.1.0 to <code>v2.0.0</code> automatically.
+            </p>
+            <p>
+                No manual tagging. No forgotten version bumps. The version number
+                tells you exactly what changed &mdash; PATCH (tone), MINOR (new variable),
+                or MAJOR (removed variable).
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-explanation">
+    <h2>What the Demo Shows</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="act-label">Act 1 &mdash; Create</div>
+            <h3>Auto-Versioning via Git</h3>
+            <p>
+                Create a prompt template with variables, commit it, and PromptOps
+                auto-tags <code>v1.0.0</code>. Every commit is versioned &mdash;
+                no manual <code>git tag</code> needed.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 2 &mdash; Evolve</div>
+            <h3>Semantic Bump Rules</h3>
+            <p>
+                Tone change &rarr; PATCH. New required variable &rarr; MINOR.
+                Removed variable &rarr; MAJOR. PromptOps inspects the diff and
+                applies the correct semver bump automatically.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 3 &mdash; Resolve</div>
+            <h3>Version Resolution</h3>
+            <p>
+                <code>get_prompt("name")</code> resolves to latest.
+                <code>get_prompt("name:v1.0.0")</code> pins a specific version.
+                <code>get_prompt("name:unstaged")</code> tests uncommitted edits
+                before committing.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 4 &mdash; Diff</div>
+            <h3>Version Comparison</h3>
+            <p>
+                Diff any two versions side-by-side. See exactly what changed
+                between PATCH, MINOR, and MAJOR bumps &mdash; tone shifts,
+                added variables, removed variables.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-cta">
+    <h2>Try It Yourself</h2>
+    <p>
+        PromptOps runs locally with no API keys.
+        Install the package and start versioning prompts in 60 seconds.
+    </p>
+    <div style="text-align: left; max-width: 400px; margin: 0 auto 1.5rem;">
+        <pre><code>pip install llmhq-promptops
+promptops init
+promptops list</code></pre>
+    </div>
+    <div class="cta-buttons">
+        <a href="/tools/promptops" class="btn">PromptOps Docs</a>
+        <a href="/demos/" class="btn-outline">All Demos</a>
+    </div>
+</div>
+
+<!-- Demo output data (hidden, consumed by demo.js) -->
+<script type="text/plain" id="demo-data">
+============================================================
+  PromptOps Demo — Prompt Versioning
+============================================================
+
+  A code review agent for DevCorp. The engineering team
+  iterates on the system prompt: tone, variables, and
+  breaking changes — all auto-versioned.
+
+  PATCH  = text-only change (tone, wording)
+  MINOR  = new variable added (backward-compatible)
+  MAJOR  = variable removed (breaking change)
+
+
+============================================================
+  Act 1: Create & Version
+============================================================
+
+  Prompts are YAML templates with variables and metadata.
+  PromptOps tracks every change via git.
+
+--- Initialize Project ----------------------------------
+
+  + promptops init repo
+    Created .promptops/config.yaml
+    Created .promptops/prompts/
+
+--- Create Prompt Template ------------------------------
+
+  File: .promptops/prompts/code-reviewer.yaml
+
+  name: code-reviewer
+  description: Code review agent for DevCorp engineering
+  variables:
+    - name: language
+      required: true
+    - name: pull_request
+      required: true
+    - name: diff
+      required: true
+  template: |
+    You are a senior code reviewer at DevCorp.
+    You review {{ language }} pull requests for:
+    1. Correctness — does the code do what it claims?
+    2. Style — does it follow {{ language }} conventions?
+    3. Security — are there any vulnerabilities?
+
+    Flag all issues as errors. Be thorough and strict.
+
+    Pull Request: {{ pull_request }}
+    Diff:
+    {{ diff }}
+
+--- Commit & Auto-Version -------------------------------
+
+  + git add .promptops/prompts/code-reviewer.yaml
+  + git commit -m "Add code reviewer prompt"
+
+  + PromptOps detected new prompt: code-reviewer
+  + Auto-tagged: v1.0.0
+
+  Version history:
+    v1.0.0  a7c3f291  Add code reviewer prompt (latest)
+
+
+============================================================
+  Act 2: Edit & Auto-Bump
+============================================================
+
+  Three edits, three different bump types.
+  PromptOps inspects each diff and applies the right rule.
+
+--- Edit 1: Change Tone (PATCH) -------------------------
+
+  Before: "Flag all issues as errors. Be thorough and strict."
+  After:  "Suggest improvements constructively. Be helpful and specific."
+
+  + git commit -m "Use constructive tone for reviews"
+
+  + PromptOps diff analysis:
+    Template text changed: YES
+    Variables added:       NO
+    Variables removed:     NO
+    Bump type:             PATCH (text-only change)
+
+  + Auto-tagged: v1.0.1
+
+--- Edit 2: Add Variable (MINOR) ------------------------
+
+  Added new required variable:
+    - name: severity_threshold
+      required: true
+      description: "Minimum severity to report (low/medium/high)"
+
+  Template updated:
+    + "Only report issues at {{ severity_threshold }} severity or above."
+
+  + git commit -m "Add severity threshold variable"
+
+  + PromptOps diff analysis:
+    Template text changed: YES
+    Variables added:       ['severity_threshold']
+    Variables removed:     NO
+    Bump type:             MINOR (new variable = backward-compatible addition)
+
+  + Auto-tagged: v1.1.0
+
+--- Edit 3: Remove Variable (MAJOR) ---------------------
+
+  Removed variable: language
+  Template updated:
+    - "You review {{ language }} pull requests for:"
+    + "You review pull requests for:"
+
+  + git commit -m "Remove language variable, use auto-detection"
+
+  + PromptOps diff analysis:
+    Template text changed: YES
+    Variables added:       NO
+    Variables removed:     ['language']
+    Bump type:             MAJOR (removed variable = breaking change)
+
+  ! Breaking change: callers passing 'language' will break
+
+  + Auto-tagged: v2.0.0
+
+--- Full Version History --------------------------------
+
+  Version history:
+    v2.0.0  e91b4d03  Remove language variable, use auto-detection (latest)
+    v1.1.0  3f8a2c17  Add severity threshold variable
+    v1.0.1  c4d6e890  Use constructive tone for reviews
+    v1.0.0  a7c3f291  Add code reviewer prompt
+
+
+============================================================
+  Act 3: Resolve & Render
+============================================================
+
+  Multiple resolution modes: latest, pinned, and unstaged.
+
+--- Resolve Latest --------------------------------------
+
+  + get_prompt("code-reviewer")
+    Resolved: v2.0.0 (latest)
+    Variables: pull_request, diff, severity_threshold
+
+--- Resolve Pinned Version ------------------------------
+
+  + get_prompt("code-reviewer:v1.0.0")
+    Resolved: v1.0.0 (pinned)
+    Variables: language, pull_request, diff
+
+  + get_prompt("code-reviewer:v1.1.0")
+    Resolved: v1.1.0 (pinned)
+    Variables: language, pull_request, diff, severity_threshold
+
+--- Resolve Unstaged (Test Before Commit) ---------------
+
+  ! Editing template locally (not yet committed)...
+  + get_prompt("code-reviewer:unstaged")
+    Resolved: unstaged working copy
+    Status: modified, not committed
+
+  Test your changes before committing. No version created
+  until you commit.
+
+--- Render With Variables -------------------------------
+
+  + Rendering v2.0.0 with:
+    pull_request: "Add caching layer to API responses"
+    diff: "+    cache = Redis(ttl=300)\n+    if cache.get(key): return cache..."
+    severity_threshold: "medium"
+
+  Rendered output (first 5 lines):
+    | You are a senior code reviewer at DevCorp.
+    | You review pull requests for:
+    | 1. Correctness — does the code do what it claims?
+    | 2. Style — does it follow conventions?
+    | 3. Security — are there any vulnerabilities?
+    | ...
+    | Only report issues at medium severity or above.
+
+
+============================================================
+  Act 4: Diff & Compare
+============================================================
+
+  Compare any two versions to see exactly what changed.
+
+--- Diff v1.0.0 vs v1.0.1 (PATCH) ----------------------
+
+  Type: PATCH (text-only change)
+
+    - Flag all issues as errors. Be thorough and strict.
+    + Suggest improvements constructively. Be helpful and specific.
+
+  Variables unchanged: language, pull_request, diff
+  + Tone shift only — no interface change
+
+--- Diff v1.0.1 vs v1.1.0 (MINOR) ----------------------
+
+  Type: MINOR (new variable added)
+
+  Variables added:
+    + severity_threshold (required)
+
+  Template additions:
+    + Only report issues at {{ severity_threshold }} severity or above.
+
+  + Backward-compatible: existing callers still work
+    (new variable is additive)
+
+--- Diff v1.1.0 vs v2.0.0 (MAJOR) ----------------------
+
+  Type: MAJOR (variable removed)
+
+  Variables removed:
+    - language (required)
+
+  Template changes:
+    - You review {{ language }} pull requests for:
+    + You review pull requests for:
+
+  ! Breaking: callers passing 'language' will get an error
+  ! Action required: update all callers before upgrading
+
+  --------------------------------------------------------
+  Four versions of one prompt. Every change auto-versioned.
+  PATCH for tone, MINOR for additions, MAJOR for removals.
+  No manual tagging. No forgotten version bumps.
+
+  Install: pip install llmhq-promptops
+  --------------------------------------------------------
+
+
+============================================================
+  Demo Complete
+============================================================
+
+  PromptOps gives you:
+
+  FEATURE                   WHAT IT DOES
+  -------------------------------------------------------
+  Auto-versioning           Commits auto-tag with semver
+  Semantic bump rules       PATCH / MINOR / MAJOR from diff
+  Version resolution        Latest, pinned, or unstaged
+  Template rendering        Jinja2 with variable injection
+  Diff & compare            Side-by-side version comparison
+  Git-native                All state in YAML + git tags
+
+  No API keys. No database. No external service.
+  Install and try: pip install llmhq-promptops
+
+============================================================
+</script>

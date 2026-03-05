@@ -136,6 +136,26 @@ policies    = bundle.policies                  <span class="c"># Dict[str, Artif
 <span class="c"># Metadata auto-injected into OpenTelemetry spans</span></code></pre>
     </div>
 
+    <h3>Load fully resolved content</h3>
+    <p>Use <code>load_bundle_content()</code> to get resolved prompt text and parsed policy YAML instead of refs.</p>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">app.py</span>
+            <span class="lang-tag">python</span>
+        </div>
+        <pre><code><span class="k">from</span> <span class="f">llmhq_releaseops.runtime</span> <span class="k">import</span> RuntimeLoader
+
+loader = RuntimeLoader()
+content = loader.<span class="f">load_bundle_content</span>(<span class="s">"support-agent@prod"</span>)
+
+<span class="c"># Everything resolved and ready to use</span>
+model    = content[<span class="s">"model"</span>].model          <span class="c"># "claude-sonnet-4-5"</span>
+prompts  = content[<span class="s">"prompts"</span>]              <span class="c"># {"system": "You are a support agent..."}</span>
+policies = content[<span class="s">"policies"</span>]             <span class="c"># {"tools": {"allowed": [...]}, ...}</span>
+metadata = content[<span class="s">"metadata"</span>]             <span class="c"># TelemetryContext (auto-injected into OTel)</span></code></pre>
+    </div>
+
     <h3>Async support</h3>
     <div class="dark-code">
         <div class="code-bar">
@@ -371,7 +391,7 @@ metrics = MetricsAggregator().<span class="f">aggregate</span>(traces, <span cla
     <h2>See it in action</h2>
     <p>Watch ReleaseOps bundle prompts, promote through environments, and trace behavioral changes.</p>
     <div class="hero-buttons">
-        <a href="/demo/" class="btn btn-lg">Interactive Demo</a>
+        <a href="/demos/" class="btn btn-lg">Interactive Demos</a>
         <a href="/tools/promptops" class="btn-ghost btn-lg">PromptOps Docs</a>
     </div>
 </div>
