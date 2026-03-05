@@ -1,0 +1,404 @@
+---
+layout: demo
+title: "Attribution Demo"
+description: "See ReleaseOps attribution trace a hiring decision to the exact prompt line where the experience threshold changed — 5 years vs 3 years."
+---
+
+<div class="demo-hero">
+    <h1>Which Prompt Line Changed the Behavior?</h1>
+    <p class="subtitle">
+        A recruiting agent screens the same candidate differently across two versions.
+        Attribution traces both decisions to the exact line where the experience threshold changed.
+    </p>
+</div>
+
+<div class="demo-scenario">
+    <div class="scenario-card">
+        <div class="scenario-header">
+            <span class="scenario-icon">&#128100;</span>
+            <div>
+                <h2>The Scenario</h2>
+                <p>A recruiting platform screens candidates for Senior Engineer roles. The experience threshold changes between prompt versions.</p>
+            </div>
+        </div>
+
+        <div class="scenario-message">
+            <span class="msg-label">Candidate</span>
+            <span class="msg-bubble">"Sarah Chen — 4 years Python/Django, applying for Senior Backend Engineer"</span>
+        </div>
+
+        <div class="scenario-responses">
+            <div class="scenario-response v1">
+                <div class="response-badge">v1.0.0</div>
+                <div class="response-icon">&#10060;</div>
+                <div class="response-action">Reject candidate</div>
+                <div class="response-reason">Rule: require 5+ years for Senior</div>
+            </div>
+            <div class="scenario-vs">vs</div>
+            <div class="scenario-response v2">
+                <div class="response-badge">v1.1.0</div>
+                <div class="response-icon">&#10003;</div>
+                <div class="response-action">Advance to interview</div>
+                <div class="response-reason">Rule: require 3+ years for Senior</div>
+            </div>
+        </div>
+
+        <div class="scenario-footer">
+            Same candidate, two different outcomes. Attribution traces both decisions
+            to line 12 of the system prompt, where "5 years" changed to "3 years."
+        </div>
+    </div>
+</div>
+
+<div class="demo-intro">
+    <span class="version-badge conservative">
+        <span class="label">v1.0.0</span>
+        <span class="value">Require 5+ years</span>
+    </span>
+    <span class="version-badge permissive">
+        <span class="label">v1.1.0</span>
+        <span class="value">Require 3+ years</span>
+    </span>
+</div>
+
+<div class="terminal-container">
+    <div class="terminal">
+        <div class="terminal-toolbar">
+            <div class="terminal-controls">
+                <button class="terminal-btn play-btn">Play</button>
+                <button class="terminal-btn skip-btn">Show All</button>
+                <div class="speed-control">
+                    <label>Speed:</label>
+                    <input type="range" class="speed-slider" min="0.5" max="5" step="0.5" value="1">
+                    <span class="speed-label">1.0x</span>
+                </div>
+            </div>
+            <span class="terminal-status"></span>
+        </div>
+        <div class="terminal-output">
+        </div>
+    </div>
+</div>
+
+<div class="key-moment">
+    <div class="key-moment-card">
+        <span class="icon">&#128269;</span>
+        <div>
+            <h3>The Key Moment: 5 Years &rarr; 3 Years</h3>
+            <p>
+                Same candidate (Sarah Chen, 4 years experience), two different outcomes.
+                Attribution traces both decisions to <strong>line 12</strong> of the system
+                prompt, where the experience threshold changed from
+                <code>5 years</code> to <code>3 years</code>.
+            </p>
+            <p>
+                v1.0.0 rejects her (4 &lt; 5). v1.1.0 advances her (4 &ge; 3).
+                One line, one number, one completely different hiring decision.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-explanation">
+    <h2>What the Demo Shows</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="act-label">Act 1 &mdash; Versions</div>
+            <h3>Line-Level Tracing</h3>
+            <p>
+                Attribution points to the specific line in the prompt that most
+                likely influenced the agent's decision. Not just "the prompt
+                changed" &mdash; exactly <em>which line</em> matched the action.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 2 &mdash; Compare</div>
+            <h3>Side-by-Side Comparison</h3>
+            <p>
+                Same input, two prompt versions, two different actions.
+                The comparison table makes behavioral divergence immediately
+                visible &mdash; where did the agent start doing something different?
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 3 &mdash; Analyze</div>
+            <h3>Confidence Scoring</h3>
+            <p>
+                Each influence is scored 0.0&ndash;1.0 and labeled HIGH (&ge; 0.80),
+                MEDIUM (&ge; 0.50), or LOW (&lt; 0.50). Primary and supporting
+                influences ranked by confidence.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 4 &mdash; Disclaimer</div>
+            <h3>Honest About Limitations</h3>
+            <p>
+                Attribution is <strong>pattern matching</strong>, not causal proof.
+                It points you to the right section of the prompt &mdash; it does NOT
+                prove that a specific line caused the behavior.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-cta">
+    <h2>Try It Yourself</h2>
+    <p>
+        Attribution runs locally with no API keys.
+        Point it at a bundle and trace data.
+    </p>
+    <div style="text-align: left; max-width: 400px; margin: 0 auto 1.5rem;">
+        <pre><code>pip install llmhq-promptops llmhq-releaseops
+releaseops attribution explain \
+  trace.json --bundle my-agent@1.0.0</code></pre>
+    </div>
+    <div class="cta-buttons">
+        <a href="/tools/releaseops" class="btn">ReleaseOps Docs</a>
+        <a href="/demos/" class="btn-outline">All Demos</a>
+    </div>
+</div>
+
+<!-- Demo output data (hidden, consumed by demo.js) -->
+<script type="text/plain" id="demo-data">
+============================================================
+  ReleaseOps Demo — Attribution
+============================================================
+
+  A recruiting platform screens candidates for tech roles.
+  Two prompt versions with different experience thresholds:
+
+    v1.0.0  Require 5+ years for Senior roles
+    v1.1.0  Require 3+ years for Senior roles
+
+  Same candidate. Two different outcomes.
+  Attribution traces the decision to one line.
+
+
+============================================================
+  Act 1: Two Prompt Versions
+============================================================
+
+  The only difference: one number on one line.
+
+--- v1.0.0: Strict Threshold ----------------------------
+
+  Prompt: hiring-screener@v1.0.0
+
+    line  1: You are a candidate screening agent for TechRecruit.
+    line  2: Evaluate candidates for technical roles based on:
+    line  3:   - Relevant experience (years and depth)
+    line  4:   - Technical skills match
+    line  5:   - Education and certifications
+    line  6:
+    line  7: Role-level requirements:
+    line  8:   Junior: 0-2 years experience
+    line  9:   Mid-level: 2-4 years experience
+    line 10:   Senior: 5+ years experience
+    line 11:
+    line 12: Require minimum 5 years of relevant experience
+    line 13: for Senior-level positions. No exceptions.
+    line 14:
+    line 15: Use reject_candidate for unqualified applicants.
+    line 16: Use advance_candidate for qualified applicants.
+
+--- v1.1.0: Relaxed Threshold --------------------------
+
+  Prompt: hiring-screener@v1.1.0
+
+    line  1: You are a candidate screening agent for TechRecruit.
+    line  2: Evaluate candidates for technical roles based on:
+    line  3:   - Relevant experience (years and depth)
+    line  4:   - Technical skills match
+    line  5:   - Education and certifications
+    line  6:
+    line  7: Role-level requirements:
+    line  8:   Junior: 0-2 years experience
+    line  9:   Mid-level: 2-4 years experience
+    line 10:   Senior: 3+ years experience
+    line 11:
+    line 12: Require minimum 3 years of relevant experience
+    line 13: for Senior-level positions.
+    line 14:
+    line 15: Prioritize demonstrated skill and project impact
+    line 16: over years alone when evaluating Senior candidates.
+    line 17:
+    line 18: Use reject_candidate for unqualified applicants.
+    line 19: Use advance_candidate for qualified applicants.
+
+--- Prompt Diff -----------------------------------------
+
+    - line 10: Senior: 5+ years experience
+    + line 10: Senior: 3+ years experience
+
+    - line 12: Require minimum 5 years of relevant experience
+    + line 12: Require minimum 3 years of relevant experience
+
+    - line 13: for Senior-level positions. No exceptions.
+    + line 13: for Senior-level positions.
+
+    + line 15: Prioritize demonstrated skill and project impact
+    + line 16: over years alone when evaluating Senior candidates.
+
+
+============================================================
+  Act 2: Run Same Candidate
+============================================================
+
+  Candidate: Sarah Chen
+  Experience: 4 years Python/Django
+  Applying for: Senior Backend Engineer
+
+--- v1.0.0: Decision ------------------------------------
+
+  + Ran hiring-screener v1.0.0 with Sarah Chen's profile
+
+  Action: reject_candidate({
+    "candidate": "Sarah Chen",
+    "role": "Senior Backend Engineer",
+    "reason": "Does not meet 5-year minimum for Senior roles.
+               Candidate has 4 years of relevant experience.
+               Consider applying for Mid-level position."
+  })
+
+--- v1.1.0: Decision ------------------------------------
+
+  + Ran hiring-screener v1.1.0 with Sarah Chen's profile
+
+  Action: advance_candidate({
+    "candidate": "Sarah Chen",
+    "role": "Senior Backend Engineer",
+    "stage": "technical_interview",
+    "reason": "4 years of Python/Django experience meets 3-year
+               minimum. Strong project portfolio demonstrates
+               Senior-level capability."
+  })
+
+--- Side-by-Side Comparison -----------------------------
+
+  Candidate     Experience  Role             v1.0.0     v1.1.0       Changed?
+  ------------- ----------- ---------------- ---------- ------------ --------
+  Sarah Chen    4 years     Sr Backend Eng   REJECT     ADVANCE      <-- !
+
+  Same candidate. Same experience. Different outcome.
+
+
+============================================================
+  Act 3: Attribution Analysis
+============================================================
+
+  Why did each version make its decision?
+  Attribution matches trace actions to artifact content.
+
+--- v1.0.0: Why REJECT? --------------------------------
+
+  + releaseops attribution explain trace.json \
+      --bundle hiring-screener@1.0.0
+
+  Action:     reject_candidate(reason="Does not meet 5-year minimum")
+  Bundle:     hiring-screener v1.0.0
+  Assessment: Expected — action matches artifact intent
+
+  Primary influence (HIGH, 0.85):
+    Source:  prompt (hiring-screener@v1.0.0)
+    Line 12: "Require minimum 5 years of relevant experience"
+    Line 13: "for Senior-level positions. No exceptions."
+    Match:   keyword (reject, minimum, years, Senior)
+
+  Supporting influences:
+    Line 10: "Senior: 5+ years experience"          (MEDIUM, 0.60)
+    Line 15: "Use reject_candidate for unqualified"  (LOW, 0.30)
+
+--- v1.1.0: Why ADVANCE? -------------------------------
+
+  + releaseops attribution explain trace.json \
+      --bundle hiring-screener@1.1.0
+
+  Action:     advance_candidate(stage="technical_interview")
+  Bundle:     hiring-screener v1.1.0
+  Assessment: Expected — action matches artifact intent
+
+  Primary influence (HIGH, 0.83):
+    Source:  prompt (hiring-screener@v1.1.0)
+    Line 12: "Require minimum 3 years of relevant experience"
+    Line 13: "for Senior-level positions."
+    Match:   keyword (advance, minimum, years, Senior)
+
+  Supporting influences:
+    Line 15: "Prioritize demonstrated skill and project
+              impact over years alone"                (MEDIUM, 0.55)
+    Line 10: "Senior: 3+ years experience"           (MEDIUM, 0.50)
+
+--- Attribution Summary ---------------------------------
+
+  Both decisions trace to the same line (12) in the prompt:
+
+    v1.0.0 line 12: "Require minimum 5 years..."  ->  REJECT (4 < 5)
+    v1.1.0 line 12: "Require minimum 3 years..."  ->  ADVANCE (4 >= 3)
+
+  One number changed. One hiring decision flipped.
+
+
+============================================================
+  Act 4: Honest Disclaimer
+============================================================
+
+  Attribution is a useful tool. It also has limits.
+  Here is what it can and cannot do.
+
+--- What Attribution IS ---------------------------------
+
+  + Pattern matching that points you to the right section
+  + Keyword extraction from trace actions
+  + Line-by-line search through prompt/policy text
+  + Confidence scoring based on match density
+  + A starting point for investigation
+
+--- What Attribution IS NOT -----------------------------
+
+  ! Causal proof that a line caused the behavior
+  ! A replacement for understanding your agent
+  ! Guaranteed to find the right explanation
+  ! Able to explain emergent or multi-step reasoning
+
+--- Confidence Levels -----------------------------------
+
+  HIGH   (>= 0.80)  Strong keyword overlap with specific lines
+  MEDIUM (>= 0.50)  Partial keyword overlap or general relevance
+  LOW    (< 0.50)   Weak or indirect match
+
+--- Assessment Labels -----------------------------------
+
+  Expected per artifacts:        High-confidence match (>= 0.80)
+  Likely expected per artifacts:  Medium-confidence match (>= 0.50)
+  Contradicts artifacts:         Action opposes an explicit prohibition
+  Unclear:                       Insufficient match to assess
+
+  --------------------------------------------------------
+  Same candidate, two prompt versions, one line changed.
+  Attribution traced both decisions to line 12:
+    "Require minimum 5 years" vs "Require minimum 3 years"
+
+  Pattern matching, not causal proof. But it points you to
+  the right place to start investigating.
+  --------------------------------------------------------
+
+
+============================================================
+  Demo Complete
+============================================================
+
+  Attribution gives you:
+
+  FEATURE                   WHAT IT DOES
+  -------------------------------------------------------
+  Line-level tracing        Points to specific prompt lines
+  Confidence scoring        HIGH / MEDIUM / LOW (0.0 - 1.0)
+  Assessment labels         Expected / Likely expected / Contradicts / Unclear
+  Multi-source analysis     Prompt + policy + model config
+  Honest limitations        Pattern matching, not causation
+
+  No API keys. No runtime observation. Just artifacts + traces.
+  Install and try: pip install llmhq-promptops llmhq-releaseops
+
+============================================================
+</script>

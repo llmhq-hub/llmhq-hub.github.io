@@ -13,8 +13,8 @@ theme: minima
 navigation:
   - title: "Home"
     url: "/"
-  - title: "Demo"
-    url: "/demo/"
+  - title: "Demos"
+    url: "/demos/"
   - title: "Tools"
     url: "/tools/"
   - title: "Documentation"

@@ -1,0 +1,411 @@
+---
+layout: demo
+title: "Bundle & Promote Demo"
+description: "See ReleaseOps bundle a sales qualification agent, promote through dev/staging/prod, and roll back with a full audit trail."
+---
+
+<div class="demo-hero">
+    <h1>Bundle, Promote &amp; Rollback</h1>
+    <p class="subtitle">
+        A sales qualification agent flows through dev, staging, and prod.
+        One threshold change floods the pipeline &mdash; instant rollback with full audit trail.
+    </p>
+</div>
+
+<div class="demo-scenario">
+    <div class="scenario-card">
+        <div class="scenario-header">
+            <span class="scenario-icon">&#128176;</span>
+            <div>
+                <h2>The Scenario</h2>
+                <p>A B2B SaaS sales team manages their lead qualification agent. It scores leads and routes them to reps or automated nurture flows.</p>
+            </div>
+        </div>
+
+        <div class="scenario-message">
+            <span class="msg-label">Inbound Lead</span>
+            <span class="msg-bubble">"We're a 30-person startup looking at your enterprise plan"</span>
+        </div>
+
+        <div class="scenario-responses">
+            <div class="scenario-response v1">
+                <div class="response-badge">v1.0.0</div>
+                <div class="response-icon">&#9888;</div>
+                <div class="response-action">Route to nurture</div>
+                <div class="response-reason">Rule: qualify $50K+ ARR potential</div>
+            </div>
+            <div class="scenario-vs">vs</div>
+            <div class="scenario-response v2">
+                <div class="response-badge">v1.1.0</div>
+                <div class="response-icon">&#10003;</div>
+                <div class="response-action">Route to sales rep</div>
+                <div class="response-reason">Rule: qualify $25K+ ARR potential</div>
+            </div>
+        </div>
+
+        <div class="scenario-footer">
+            Lowering the threshold from $50K to $25K floods reps with small accounts.
+            ReleaseOps rolls back staging in one command with a full audit trail.
+        </div>
+    </div>
+</div>
+
+<div class="demo-intro">
+    <span class="version-badge conservative">
+        <span class="label">v1.0.0</span>
+        <span class="value">Qualify $50K+ ARR</span>
+    </span>
+    <span class="version-badge permissive">
+        <span class="label">v1.1.0</span>
+        <span class="value">Qualify $25K+ ARR</span>
+    </span>
+</div>
+
+<div class="terminal-container">
+    <div class="terminal">
+        <div class="terminal-toolbar">
+            <div class="terminal-controls">
+                <button class="terminal-btn play-btn">Play</button>
+                <button class="terminal-btn skip-btn">Show All</button>
+                <div class="speed-control">
+                    <label>Speed:</label>
+                    <input type="range" class="speed-slider" min="0.5" max="5" step="0.5" value="1">
+                    <span class="speed-label">1.0x</span>
+                </div>
+            </div>
+            <span class="terminal-status"></span>
+        </div>
+        <div class="terminal-output">
+        </div>
+    </div>
+</div>
+
+<div class="key-moment">
+    <div class="key-moment-card">
+        <span class="icon">&#128274;</span>
+        <div>
+            <h3>The Key Moment: Hash Verification</h3>
+            <p>
+                The SHA-256 hash of the bundle in <strong>prod</strong> is identical to
+                what was created in <strong>dev</strong>. Cryptographic proof that nothing
+                changed between environments &mdash; no secret edits, no config drift.
+            </p>
+            <p>
+                <code>sha256:9f3a7b...</code> in dev = <code>sha256:9f3a7b...</code> in prod.
+                Same hash, same behavior, guaranteed.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-explanation">
+    <h2>What the Demo Shows</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="act-label">Act 1 &mdash; Bundle</div>
+            <h3>Immutable Bundles</h3>
+            <p>
+                Prompts, policies, and model config are pinned into a single
+                SHA-256 content-addressed artifact. The bundle manifest records
+                every artifact and its hash &mdash; nothing can change undetected.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 2 &mdash; Promote</div>
+            <h3>Environment Promotion</h3>
+            <p>
+                Bundles promote through dev &rarr; staging &rarr; prod with
+                configurable gates at each stage. The same hash flows through
+                every environment &mdash; what you tested is what you deploy.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 3 &mdash; Rollback</div>
+            <h3>Instant Rollback</h3>
+            <p>
+                One command restores the previous version. Rollback is a
+                pointer change, not a redeploy. The reason, timestamp, and
+                operator are recorded in the promotion history.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 4 &mdash; Audit</div>
+            <h3>Full Audit Trail</h3>
+            <p>
+                Every promotion, rollback, and gate result is recorded with
+                who, when, what version, and which environment. Complete
+                traceability for compliance and incident review.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-cta">
+    <h2>Try It Yourself</h2>
+    <p>
+        ReleaseOps runs locally with no API keys.
+        Bundle, promote, and roll back in minutes.
+    </p>
+    <div style="text-align: left; max-width: 400px; margin: 0 auto 1.5rem;">
+        <pre><code>pip install llmhq-promptops llmhq-releaseops
+releaseops init
+releaseops bundle create my-agent --version 1.0.0</code></pre>
+    </div>
+    <div class="cta-buttons">
+        <a href="/tools/releaseops" class="btn">ReleaseOps Docs</a>
+        <a href="/demos/" class="btn-outline">All Demos</a>
+    </div>
+</div>
+
+<!-- Demo output data (hidden, consumed by demo.js) -->
+<script type="text/plain" id="demo-data">
+============================================================
+  ReleaseOps Demo — Bundle & Promote
+============================================================
+
+  A sales qualification agent for a B2B SaaS company.
+  The agent scores inbound leads and decides:
+    - Route to sales rep (high-value)
+    - Route to automated nurture (low-value)
+
+  v1.0.0  Qualify leads with $50K+ ARR potential
+  v1.1.0  Lower threshold to $25K+ ARR potential
+
+
+============================================================
+  Act 1: Bundle Creation
+============================================================
+
+  A bundle = prompt + policies + model config, pinned together
+  into a single immutable artifact with a SHA-256 hash.
+
+--- Initialize ReleaseOps -------------------------------
+
+  + releaseops init
+    Created .releaseops/bundles/
+    Created .releaseops/environments/
+    Created .releaseops/evals/
+    Created policies/tools/
+    Created policies/context/
+    Created policies/safety/
+
+--- Create Bundle: sales-qualifier v1.0.0 ---------------
+
+  Prompt: lead-scoring@v1.0.0
+    | You are a lead qualification agent for SaaSCorp.
+    | Score inbound leads based on:
+    |   - Company size (employees and revenue)
+    |   - Technology stack fit
+    |   - Budget signals
+    |
+    | Qualification threshold: $50,000 ARR potential
+    | Route qualified leads to sales reps.
+    | Route unqualified leads to automated nurture.
+
+  Policy: crm_tools.yaml
+    allowed_actions:
+      - lookup_company
+      - create_opportunity
+      - schedule_demo
+      - route_to_rep
+      - route_to_nurture
+
+  Model: gpt-4o (temperature=0.2, max_tokens=500)
+
+  + Bundle sales-qualifier v1.0.0 created
+    Prompt hash: sha256:4a8f3c21d9b7e06a5412f8c7...
+    Policy hash: sha256:b91e45f2a8c3d7014e692b38...
+    Model hash:  sha256:7c2d9e6f8a1b34057d8e41c9...
+    Bundle hash: sha256:9f3a7b4e2d1c856f0a93e7d4...
+
+--- Bundle Manifest -------------------------------------
+
+  bundle:
+    name: sales-qualifier
+    version: 1.0.0
+    hash: sha256:9f3a7b4e2d1c856f0a93e7d4...
+    created: 2026-03-05T14:30:00Z
+    artifacts:
+      - type: prompt
+        ref: prompts/lead-scoring@v1.0.0
+        hash: sha256:4a8f3c21d9b7e06a5412f8c7...
+      - type: policy
+        ref: policies/tools/crm_tools.yaml
+        hash: sha256:b91e45f2a8c3d7014e692b38...
+      - type: model_config
+        ref: gpt-4o
+        hash: sha256:7c2d9e6f8a1b34057d8e41c9...
+
+--- Inspect Bundle --------------------------------------
+
+  + releaseops bundle inspect sales-qualifier 1.0.0
+
+  Artifact          Type          Hash
+  ----------------- ------------- ---------------------------
+  lead-scoring      prompt        sha256:4a8f3c21d9b7e06a...
+  crm_tools.yaml    policy        sha256:b91e45f2a8c3d701...
+  gpt-4o            model_config  sha256:7c2d9e6f8a1b3405...
+
+  Bundle hash: sha256:9f3a7b4e2d1c856f0a93e7d4...
+  + All artifact hashes verified
+
+
+============================================================
+  Act 2: Promote Through Environments
+============================================================
+
+  Three environments: dev (no gates), staging (eval gate),
+  prod (eval gate). Same bundle hash flows through all three.
+
+--- Promote to Dev (No Gates) ---------------------------
+
+  + releaseops promote promote sales-qualifier 1.0.0 dev
+  + dev: sales-qualifier v1.0.0 deployed (no gates)
+
+--- Promote to Staging ----------------------------------
+
+  + releaseops promote promote sales-qualifier 1.0.0 staging
+  + staging: eval gate -> PASS
+  + staging: sales-qualifier v1.0.0 deployed
+
+--- Promote to Prod -------------------------------------
+
+  + releaseops promote promote sales-qualifier 1.0.0 prod
+  + prod: eval gate -> PASS
+  + prod: sales-qualifier v1.0.0 deployed
+
+--- Environment State -----------------------------------
+
+  All three environments running v1.0.0:
+
+    Environment   Bundle              Version   Hash
+    ------------- ------------------- --------- ---------------------------
+    dev           sales-qualifier     v1.0.0    sha256:9f3a7b4e2d1c856f...
+    staging       sales-qualifier     v1.0.0    sha256:9f3a7b4e2d1c856f...
+    prod          sales-qualifier     v1.0.0    sha256:9f3a7b4e2d1c856f...
+
+  + Hash in prod matches hash created in dev
+  + Cryptographic proof: nothing changed between environments
+
+
+============================================================
+  Act 3: New Version & Rollback
+============================================================
+
+  A new version lowers the qualification threshold.
+  It reaches staging but causes problems — rollback time.
+
+--- Create v1.1.0: Lower Threshold ---------------------
+
+  Updated prompt: lead-scoring@v1.1.0
+    | Qualification threshold: $25,000 ARR potential
+    | (changed from $50,000)
+
+  + Bundle sales-qualifier v1.1.0 created
+    Bundle hash: sha256:d7c2f91a3b4e8506c1f0a9e2...
+
+--- Promote v1.1.0 to Dev & Staging --------------------
+
+  + releaseops promote promote sales-qualifier 1.1.0 dev
+  + dev: sales-qualifier v1.1.0 deployed
+
+  + releaseops promote promote sales-qualifier 1.1.0 staging
+  + staging: eval gate -> PASS
+  + staging: sales-qualifier v1.1.0 deployed
+
+--- Environment State (Mixed) --------------------------
+
+    Environment   Bundle              Version
+    ------------- ------------------- ---------
+    dev           sales-qualifier     v1.1.0
+    staging       sales-qualifier     v1.1.0
+    prod          sales-qualifier     v1.0.0
+
+  Staging has the new version. Prod is still on v1.0.0.
+
+--- Problem Detected ------------------------------------
+
+  ! Agent over-qualifying small accounts at $25K threshold
+  ! Sales reps flooded with low-value leads
+  ! Decision: roll back staging to v1.0.0
+
+--- Rollback Staging ------------------------------------
+
+  + releaseops rollback staging sales-qualifier
+    Rolled back from: v1.1.0
+    Rolled back to:   v1.0.0
+    Reason:           Over-qualifying small accounts
+    Performed by:     sales-ops-lead
+    Timestamp:        2026-03-05T16:45:12Z
+
+--- Environment State After Rollback --------------------
+
+    Environment   Bundle              Version
+    ------------- ------------------- ---------
+    dev           sales-qualifier     v1.1.0
+    staging       sales-qualifier     v1.0.0
+    prod          sales-qualifier     v1.0.0
+
+  + Staging restored to v1.0.0 in one command
+  + Dev still has v1.1.0 for continued iteration
+
+
+============================================================
+  Act 4: Audit Trail
+============================================================
+
+  Every promotion and rollback is recorded.
+  Full traceability for compliance and incident review.
+
+--- Promotion History -----------------------------------
+
+  Timestamp               Version  Env      Action     By
+  ---------------------- -------- -------- ---------- ----------------
+  2026-03-05T16:45:12    v1.0.0   staging  ROLLBACK   sales-ops-lead
+  2026-03-05T16:30:00    v1.1.0   staging  PROMOTE    sales-ops-lead
+  2026-03-05T16:28:00    v1.1.0   dev      PROMOTE    sales-ops-lead
+  2026-03-05T14:45:00    v1.0.0   prod     PROMOTE    release-manager
+  2026-03-05T14:42:00    v1.0.0   staging  PROMOTE    release-manager
+  2026-03-05T14:40:00    v1.0.0   dev      PROMOTE    release-manager
+
+--- Rollback Detail -------------------------------------
+
+  + Rollback entry:
+    Action:         ROLLBACK
+    Bundle:         sales-qualifier
+    From version:   1.1.0
+    To version:     1.0.0
+    Environment:    staging
+    Reason:         Over-qualifying small accounts
+    Performed by:   sales-ops-lead
+    Timestamp:      2026-03-05T16:45:12Z
+    Gate skipped:   true (rollback bypasses gates)
+
+  --------------------------------------------------------
+  Immutable bundles with SHA-256 content addressing.
+  Promotion through dev -> staging -> prod with gates.
+  Instant rollback with full audit trail.
+
+  Every action recorded: who, when, what, where, and why.
+  --------------------------------------------------------
+
+
+============================================================
+  Demo Complete
+============================================================
+
+  ReleaseOps gives you:
+
+  FEATURE                   WHAT IT DOES
+  -------------------------------------------------------
+  Immutable bundles         SHA-256 content-addressed artifacts
+  Environment promotion     dev -> staging -> prod with gates
+  Hash verification         Prove nothing changed between envs
+  Instant rollback          One command, pointer change
+  Audit trail               Who, when, what, where, why
+
+  No API keys. No database. Just YAML files and git.
+  Install and try: pip install llmhq-promptops llmhq-releaseops
+
+============================================================
+</script>

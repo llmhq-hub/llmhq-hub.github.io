@@ -1,0 +1,371 @@
+---
+layout: demo
+title: "Behavioral Analytics Demo"
+description: "See ReleaseOps analytics compare two versions of an IT helpdesk agent — conservative routing vs autonomous resolution. Metrics quantify the trade-off."
+---
+
+<div class="demo-hero">
+    <h1>What Changed Between Versions?</h1>
+    <p class="subtitle">
+        An IT helpdesk agent handles tickets two ways: conservative (route to humans)
+        vs autonomous (self-resolve). Analytics quantifies the behavioral shift.
+    </p>
+</div>
+
+<div class="demo-scenario">
+    <div class="scenario-card">
+        <div class="scenario-header">
+            <span class="scenario-icon">&#127899;</span>
+            <div>
+                <h2>The Scenario</h2>
+                <p>An IT helpdesk uses an agent to triage and route support tickets. v1.0.0 is conservative, v2.0.0 handles more tickets autonomously.</p>
+            </div>
+        </div>
+
+        <div class="scenario-message">
+            <span class="msg-label">Ticket</span>
+            <span class="msg-bubble">"I can't connect to the VPN from home"</span>
+        </div>
+
+        <div class="scenario-responses">
+            <div class="scenario-response v1">
+                <div class="response-badge">v1.0.0</div>
+                <div class="response-icon">&#128100;</div>
+                <div class="response-action">Route to IT staff</div>
+                <div class="response-reason">Strategy: route most to humans</div>
+            </div>
+            <div class="scenario-vs">vs</div>
+            <div class="scenario-response v2">
+                <div class="response-badge">v2.0.0</div>
+                <div class="response-icon">&#9889;</div>
+                <div class="response-action">Auto-resolve with steps</div>
+                <div class="response-reason">Strategy: self-resolve common issues</div>
+            </div>
+        </div>
+
+        <div class="scenario-footer">
+            v2.0.0 auto-resolves 3x more tickets (20% &rarr; 60%) but uses 56% more tokens
+            and is 76% slower. Analytics surfaces both sides &mdash; you decide if the trade-off is worth it.
+        </div>
+    </div>
+</div>
+
+<div class="demo-intro">
+    <span class="version-badge conservative">
+        <span class="label">v1.0.0</span>
+        <span class="value">Route 70% to humans</span>
+    </span>
+    <span class="version-badge permissive">
+        <span class="label">v2.0.0</span>
+        <span class="value">Auto-resolve 60%</span>
+    </span>
+</div>
+
+<div class="terminal-container">
+    <div class="terminal">
+        <div class="terminal-toolbar">
+            <div class="terminal-controls">
+                <button class="terminal-btn play-btn">Play</button>
+                <button class="terminal-btn skip-btn">Show All</button>
+                <div class="speed-control">
+                    <label>Speed:</label>
+                    <input type="range" class="speed-slider" min="0.5" max="5" step="0.5" value="1">
+                    <span class="speed-label">1.0x</span>
+                </div>
+            </div>
+            <span class="terminal-status"></span>
+        </div>
+        <div class="terminal-output">
+        </div>
+    </div>
+</div>
+
+<div class="key-moment">
+    <div class="key-moment-card">
+        <span class="icon">&#9878;</span>
+        <div>
+            <h3>The Key Moment: The Trade-Off</h3>
+            <p>
+                v2.0.0 auto-resolves <strong>3x more tickets</strong> (20% &rarr; 60%)
+                but uses <strong>56% more tokens</strong> and is <strong>76% slower</strong>.
+            </p>
+            <p>
+                Analytics surfaces both sides: the improvement (fewer tickets to human staff)
+                and the cost (higher latency and token usage). The assessment is
+                <code>MIXED</code> &mdash; you decide if the trade-off is acceptable.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-explanation">
+    <h2>What the Demo Shows</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="act-label">Act 1 &mdash; Load</div>
+            <h3>Metrics Aggregation</h3>
+            <p>
+                Aggregate traces into behavioral metrics: latency percentiles,
+                token usage, error rates, and action distributions. See what
+                your agent actually <em>does</em>, not just how fast it runs.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 2 &amp; 3 &mdash; Measure</div>
+            <h3>Action Distribution</h3>
+            <p>
+                The real story is in what actions the agent takes.
+                How many tickets get auto-resolved vs routed to humans vs
+                escalated? Action distribution shows the practical impact.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 4 &mdash; Compare</div>
+            <h3>Version Comparison</h3>
+            <p>
+                Compare any two versions with significance levels: MAJOR (&gt; 25%),
+                moderate (&gt; 10%), minor (&gt; 5%), negligible. Overall
+                assessment: improvement, regression, mixed, or neutral.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Insight</div>
+            <h3>Significance Levels</h3>
+            <p>
+                Not all changes matter equally. A 2% latency increase is negligible.
+                A 200% increase in auto-resolution is major. Significance levels
+                help you focus on what actually matters.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-cta">
+    <h2>Try It Yourself</h2>
+    <p>
+        Analytics runs locally with MockPlatform for testing.
+        Connect to LangSmith for production trace data.
+    </p>
+    <div style="text-align: left; max-width: 400px; margin: 0 auto 1.5rem;">
+        <pre><code>pip install llmhq-promptops llmhq-releaseops
+releaseops analytics metrics my-agent@1.0.0
+releaseops analytics compare \
+  my-agent@1.0.0 my-agent@2.0.0</code></pre>
+    </div>
+    <div class="cta-buttons">
+        <a href="/tools/releaseops" class="btn">ReleaseOps Docs</a>
+        <a href="/demos/" class="btn-outline">All Demos</a>
+    </div>
+</div>
+
+<!-- Demo output data (hidden, consumed by demo.js) -->
+<script type="text/plain" id="demo-data">
+============================================================
+  ReleaseOps Demo — Behavioral Analytics
+============================================================
+
+  An IT helpdesk ticket routing agent.
+  Two versions with different strategies:
+
+    v1.0.0  Conservative: route most tickets to human agents
+    v2.0.0  Autonomous:   auto-resolve common issues
+
+  20 traces loaded (10 per version).
+  Same 10 ticket types, two different approaches.
+
+
+============================================================
+  Act 1: Load Traces
+============================================================
+
+  In production, traces come from your observability platform
+  (LangSmith, Datadog, custom OTel collector, etc.).
+  For this demo, we use MockPlatform with in-memory traces.
+
+--- Load Traces into Platform ---------------------------
+
+  + Loaded 20 traces into MockPlatform
+  + 10 traces for v1.0.0 (conservative)
+  + 10 traces for v2.0.0 (autonomous)
+
+--- Ticket Types ----------------------------------------
+
+  Ticket                  v1.0.0 Action        v2.0.0 Action
+  ----------------------- --------------------- ---------------------
+  Password reset          route_to_human        auto_resolve
+  VPN connectivity        route_to_human        auto_resolve
+  Hardware request         route_to_human        route_to_human
+  Software install        auto_resolve          auto_resolve
+  Access permission       route_to_human        route_to_human
+  Network outage          escalate_urgent       escalate_urgent
+  Email configuration     route_to_human        auto_resolve
+  Printer setup           route_to_human        auto_resolve
+  Account lockout         auto_resolve          auto_resolve
+  Data recovery           route_to_human        route_to_human
+
+  v1.0.0: 7 routed to humans, 2 auto-resolved, 1 escalated
+  v2.0.0: 3 routed to humans, 6 auto-resolved, 1 escalated
+
+
+============================================================
+  Act 2: Aggregate Metrics — v1.0.0
+============================================================
+
+  Conservative version: route most tickets to human agents.
+  Lower latency (less processing), fewer tokens.
+
+--- Metrics: v1.0.0 (Conservative) ---------------------
+
+  + releaseops analytics metrics helpdesk-agent@1.0.0
+
+  Bundle:         helpdesk-agent v1.0.0
+  Environment:    prod
+  Sample size:    10
+
+  Latency:
+    Average:      89.2 ms
+    P50:          82.1 ms
+    P95:          142.3 ms
+    P99:          155.8 ms
+
+  Tokens:
+    Average:      312 tokens/request
+    Total:        3,120 tokens
+
+  Reliability:
+    Error rate:   0.0%
+    Success rate: 100.0%
+
+  Action Distribution:
+    route_to_human      7/10 (70%)  ##############
+    auto_resolve        2/10 (20%)  ####
+    escalate_urgent     1/10 (10%)  ##
+
+
+============================================================
+  Act 3: Aggregate Metrics — v2.0.0
+============================================================
+
+  Autonomous version: auto-resolve common issues.
+  Higher latency (generating resolution steps), more tokens.
+
+--- Metrics: v2.0.0 (Autonomous) -----------------------
+
+  + releaseops analytics metrics helpdesk-agent@2.0.0
+
+  Bundle:         helpdesk-agent v2.0.0
+  Environment:    prod
+  Sample size:    10
+
+  Latency:
+    Average:      156.8 ms
+    P50:          148.3 ms
+    P95:          234.5 ms
+    P99:          261.2 ms
+
+  Tokens:
+    Average:      487 tokens/request
+    Total:        4,870 tokens
+
+  Reliability:
+    Error rate:   0.0%
+    Success rate: 100.0%
+
+  Action Distribution:
+    auto_resolve        6/10 (60%)  ############
+    route_to_human      3/10 (30%)  ######
+    escalate_urgent     1/10 (10%)  ##
+
+
+============================================================
+  Act 4: Version Comparison
+============================================================
+
+  Compare v1.0.0 vs v2.0.0 with significance levels.
+  The numbers tell the story — you decide what's acceptable.
+
+--- Version Comparison ----------------------------------
+
+  + releaseops analytics compare \
+      helpdesk-agent@1.0.0 helpdesk-agent@2.0.0
+
+  Baseline:   helpdesk-agent v1.0.0 (conservative)
+  Candidate:  helpdesk-agent v2.0.0 (autonomous)
+
+  Metric                  Baseline  Candidate   Change   Significance
+  ---------------------- --------- ---------- --------- -------------
+  avg_latency_ms             89.2      156.8   +75.7%   MAJOR
+  p95_latency_ms            142.3      234.5   +64.8%   MAJOR
+  avg_token_usage             312        487   +56.1%   MAJOR
+  error_rate                 0.0%       0.0%    0.0%    negligible
+  success_rate             100.0%     100.0%    0.0%    negligible
+
+--- Action Distribution Shift ---------------------------
+
+  Action              v1.0.0    v2.0.0   Shift
+  ------------------- --------- --------- --------------------
+  auto_resolve              2         6   +4 (+200%)
+  route_to_human            7         3   -4 (-57.1%)
+  escalate_urgent           1         1    0 (0.0%)
+
+  + Auto-resolve rate: 20% -> 60% (+200%) — MAJOR improvement
+  + Human routing rate: 70% -> 30% (-57.1%) — MAJOR improvement
+  + Escalation rate unchanged (10%) — safety behavior preserved
+
+--- Overall Assessment ----------------------------------
+
+  Assessment:     MIXED
+  Recommendation: Significant behavioral shift detected.
+
+  Improvements:
+    + Auto-resolution increased from 20% to 60%
+    + Human routing decreased from 70% to 30%
+    + Escalation behavior unchanged (safety preserved)
+
+  Regressions:
+    - Average latency increased 75.7% (89ms -> 157ms)
+    - P95 latency increased 64.8% (142ms -> 235ms)
+    - Token usage increased 56.1% (312 -> 487 per request)
+
+  The trade-off:
+    v2.0.0 auto-resolves 3x more tickets but costs ~56%
+    more in tokens and is ~76% slower per request.
+
+    Is this acceptable? Depends on your context:
+    - If staffing costs dominate: v2.0.0 saves human time
+    - If token costs dominate: v1.0.0 is more efficient
+    - If user experience matters: v2.0.0 resolves faster
+      (no waiting for human agent)
+
+  Analytics gives you the numbers. You make the call.
+
+  --------------------------------------------------------
+  20 traces, two versions, one behavioral shift.
+  Analytics quantifies both the improvement (auto-resolution)
+  and the cost (latency + tokens).
+
+  Assessment: MIXED. Not good, not bad — a trade-off.
+  You define what 'good' means for your agent.
+  --------------------------------------------------------
+
+
+============================================================
+  Demo Complete
+============================================================
+
+  Behavioral analytics gives you:
+
+  FEATURE                   WHAT IT DOES
+  -------------------------------------------------------
+  Metrics aggregation       Latency, tokens, error rates
+  Action distribution       What the agent actually does
+  Version comparison        Quantify behavioral shift
+  Significance levels       MAJOR / moderate / minor / negligible
+  Trade-off surfacing       Show both sides of the change
+
+  Connects to LangSmith for production traces.
+  MockPlatform for local testing — no API keys needed.
+  Install and try: pip install llmhq-promptops llmhq-releaseops
+
+============================================================
+</script>

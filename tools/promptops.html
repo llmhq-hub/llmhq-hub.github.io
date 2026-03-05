@@ -117,6 +117,40 @@ rendered = get_prompt(<span class="s">"user-onboarding"</span>, {
     </div>
 </div>
 
+<!-- Version References -->
+<div class="docs-section">
+    <h2>Version References</h2>
+    <p>Every prompt can be resolved at any point in its history.</p>
+    <table class="extras-table">
+        <thead>
+            <tr><th>Reference</th><th>Resolves To</th><th>Use Case</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><code>prompt-name</code></td><td>Smart default (unstaged if different, else working)</td><td>Development</td></tr>
+            <tr><td><code>:unstaged</code></td><td>Uncommitted changes in working directory</td><td>Testing changes</td></tr>
+            <tr><td><code>:working</code></td><td>Latest committed version (HEAD)</td><td>Production</td></tr>
+            <tr><td><code>:latest</code></td><td>Alias for <code>:working</code></td><td>Production</td></tr>
+            <tr><td><code>:v1.2.3</code></td><td>Specific semantic version</td><td>Reproducible builds</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Semantic Versioning -->
+<div class="docs-section">
+    <h2>Semantic Versioning Rules</h2>
+    <p>PromptOps detects what changed and picks the right version bump automatically.</p>
+    <table class="extras-table">
+        <thead>
+            <tr><th>Bump</th><th>Trigger</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>PATCH</strong></td><td>Template content changes only</td><td>1.0.0 &rarr; 1.0.1</td></tr>
+            <tr><td><strong>MINOR</strong></td><td>New variables added (backward compatible)</td><td>1.0.0 &rarr; 1.1.0</td></tr>
+            <tr><td><strong>MAJOR</strong></td><td>Required variables removed (breaking change)</td><td>1.0.0 &rarr; 2.0.0</td></tr>
+        </tbody>
+    </table>
+</div>
+
 <!-- Framework Integration -->
 <div class="docs-section">
     <h2>Framework Integration</h2>
@@ -176,7 +210,7 @@ response = client.messages.<span class="f">create</span>(
     <h2>See it in action</h2>
     <p>Watch PromptOps version prompts and feed them into ReleaseOps bundles.</p>
     <div class="hero-buttons">
-        <a href="/demo/" class="btn btn-lg">Interactive Demo</a>
+        <a href="/demos/" class="btn btn-lg">Interactive Demos</a>
         <a href="/tools/releaseops" class="btn-ghost btn-lg">ReleaseOps Docs</a>
     </div>
 </div>

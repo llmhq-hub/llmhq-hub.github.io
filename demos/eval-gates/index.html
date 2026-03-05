@@ -1,0 +1,415 @@
+---
+layout: demo
+title: "Eval Gates Demo"
+description: "See ReleaseOps eval gates catch a compliance violation — a fintech loan agent auto-approves a $500K mortgage that should go to underwriting."
+---
+
+<div class="demo-hero">
+    <h1>Quality Gates That Block Bad Releases</h1>
+    <p class="subtitle">
+        A fintech loan agent auto-approves a $500K mortgage that should go to underwriting.
+        The eval gate catches the compliance violation before it reaches staging.
+    </p>
+</div>
+
+<div class="demo-scenario">
+    <div class="scenario-card">
+        <div class="scenario-header">
+            <span class="scenario-icon">&#127974;</span>
+            <div>
+                <h2>The Scenario</h2>
+                <p>A fintech company uses an agent to pre-screen loan applications. Regulatory compliance requires certain rules are always enforced.</p>
+            </div>
+        </div>
+
+        <div class="scenario-message">
+            <span class="msg-label">Application</span>
+            <span class="msg-bubble">"$500K mortgage application, credit score 780"</span>
+        </div>
+
+        <div class="scenario-responses">
+            <div class="scenario-response v1">
+                <div class="response-badge">v1.0.0</div>
+                <div class="response-icon">&#9888;</div>
+                <div class="response-action">Escalate to underwriter</div>
+                <div class="response-reason">Rule: escalate mortgages over $100K</div>
+            </div>
+            <div class="scenario-vs">vs</div>
+            <div class="scenario-response v2">
+                <div class="response-badge">v1.1.0</div>
+                <div class="response-icon">&#10003;</div>
+                <div class="response-action">Auto-approve</div>
+                <div class="response-reason">Rule: auto-approve all under $100K (BUG)</div>
+            </div>
+        </div>
+
+        <div class="scenario-footer">
+            v1.1.0 says "auto-approve all loans under $100K" but the $500K mortgage slips through
+            because the prompt no longer mentions escalation.
+            The eval gate catches this before staging.
+        </div>
+    </div>
+</div>
+
+<div class="demo-intro">
+    <span class="version-badge conservative">
+        <span class="label">v1.0.0</span>
+        <span class="value">Escalate mortgages &gt; $100K</span>
+    </span>
+    <span class="version-badge permissive">
+        <span class="label">v1.1.0</span>
+        <span class="value">Auto-approve &lt; $100K (buggy)</span>
+    </span>
+</div>
+
+<div class="terminal-container">
+    <div class="terminal">
+        <div class="terminal-toolbar">
+            <div class="terminal-controls">
+                <button class="terminal-btn play-btn">Play</button>
+                <button class="terminal-btn skip-btn">Show All</button>
+                <div class="speed-control">
+                    <label>Speed:</label>
+                    <input type="range" class="speed-slider" min="0.5" max="5" step="0.5" value="1">
+                    <span class="speed-label">1.0x</span>
+                </div>
+            </div>
+            <span class="terminal-status"></span>
+        </div>
+        <div class="terminal-output">
+        </div>
+    </div>
+</div>
+
+<div class="key-moment">
+    <div class="key-moment-card">
+        <span class="icon">&#128680;</span>
+        <div>
+            <h3>The Key Moment: $500K Mortgage Approved</h3>
+            <p>
+                v1.1.0 auto-approved a <strong>$500K mortgage</strong> instead of escalating
+                it to an underwriter. In fintech, this is a compliance violation &mdash;
+                mortgages above $100K require human review.
+            </p>
+            <p>
+                The eval gate caught it: score dropped from <code>4/4 (100%)</code> to
+                <code>2/4 (50%)</code>. Promotion to staging was <strong>blocked</strong>.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-explanation">
+    <h2>What the Demo Shows</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="act-label">Act 1 &mdash; Define</div>
+            <h3>Eval Suites</h3>
+            <p>
+                Define test cases with inputs, expected behaviors, and assertions.
+                Each case targets a specific scenario: approvals, escalations,
+                rejections, and edge cases.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 2 &mdash; Pass</div>
+            <h3>Pluggable Judges</h3>
+            <p>
+                Assertions use pluggable judges: exact match, contains, regex,
+                LLM-as-judge, or composites. v1.0.0 passes all 4 cases with
+                deterministic judges.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 3 &mdash; Fail</div>
+            <h3>Gate Blocking</h3>
+            <p>
+                v1.1.0 fails 2 of 4 cases. The eval gate blocks promotion &mdash;
+                <code>releaseops promote</code> returns an error with the failing
+                assertions and expected-vs-actual output.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="act-label">Act 4 &mdash; Fix</div>
+            <h3>Eval Reports</h3>
+            <p>
+                Full eval reports in markdown or JSON format. Case-by-case results,
+                score summaries, and gate decisions. Fix the prompt, re-run the
+                eval, and promote once it passes.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="demo-cta">
+    <h2>Try It Yourself</h2>
+    <p>
+        Define eval suites and run them locally. No API keys needed
+        for deterministic judges (exact match, contains, regex).
+    </p>
+    <div style="text-align: left; max-width: 400px; margin: 0 auto 1.5rem;">
+        <pre><code>pip install llmhq-promptops llmhq-releaseops
+releaseops eval create my-suite
+releaseops eval run my-suite -b my-agent -v 1.0.0</code></pre>
+    </div>
+    <div class="cta-buttons">
+        <a href="/tools/releaseops" class="btn">ReleaseOps Docs</a>
+        <a href="/demos/" class="btn-outline">All Demos</a>
+    </div>
+</div>
+
+<!-- Demo output data (hidden, consumed by demo.js) -->
+<script type="text/plain" id="demo-data">
+============================================================
+  ReleaseOps Demo — Eval Gates
+============================================================
+
+  A fintech loan agent pre-screens applications.
+  Regulatory compliance requires:
+    - Small personal loans: auto-approve if credit is good
+    - Large mortgages: always escalate to underwriting
+    - Incomplete applications: reject with reason
+    - High-risk applicants: deny with explanation
+
+  v1.0.0 handles all cases correctly.
+  v1.1.0 introduces a regression.
+
+
+============================================================
+  Act 1: Define Eval Suite
+============================================================
+
+  An eval suite is a set of test cases with assertions.
+  Each case defines an input and the expected behavior.
+
+--- Create Eval Suite -----------------------------------
+
+  + releaseops eval create loan-compliance
+
+  Suite: loan-compliance
+  Cases: 4
+
+--- Test Case 1: Small Personal Loan --------------------
+
+  Case:        small-personal-loan
+  Input:       $5K personal loan, credit score 720
+  Expected:    Agent should approve the loan
+  Assertion:   Contains("approved")
+
+--- Test Case 2: Large Mortgage -------------------------
+
+  Case:        large-mortgage
+  Input:       $500K mortgage, credit score 780
+  Expected:    Agent should escalate to underwriter
+  Assertion:   Contains("escalate")
+
+--- Test Case 3: Incomplete Application -----------------
+
+  Case:        incomplete-application
+  Input:       $50K personal loan, missing income documents
+  Expected:    Agent should reject with reason
+  Assertion:   Contains("missing")
+
+--- Test Case 4: High-Risk Applicant --------------------
+
+  Case:        high-risk-applicant
+  Input:       $200K loan, credit score 520, DTI 65%
+  Expected:    Agent should deny with explanation
+  Assertion:   Contains("denied")
+
+  + Eval suite 'loan-compliance' created with 4 cases
+
+
+============================================================
+  Act 2: Run Eval — All Pass
+============================================================
+
+  Running the eval suite against v1.0.0 (conservative prompt).
+  This version handles all cases correctly.
+
+--- Run Eval: v1.0.0 ------------------------------------
+
+  + releaseops eval run loan-compliance -b loan-agent -v 1.0.0
+
+  Running 4 test cases...
+
+  + small-personal-loan:
+    Agent output: "Application approved. $5K personal loan
+                   at 6.5% APR. Good credit qualifies for
+                   standard terms."
+    Assertion Contains("approved"): PASS
+
+  + large-mortgage:
+    Agent output: "This mortgage application requires
+                   underwriter review. Escalate to senior
+                   underwriting team for $500K+ evaluation."
+    Assertion Contains("escalate"): PASS
+
+  + incomplete-application:
+    Agent output: "Cannot process application. Missing
+                   required income documentation. Please
+                   submit pay stubs or tax returns."
+    Assertion Contains("missing"): PASS
+
+  + high-risk-applicant:
+    Agent output: "Application denied. Credit score 520 is
+                   below minimum threshold. Debt-to-income
+                   ratio of 65% exceeds 43% maximum."
+    Assertion Contains("denied"): PASS
+
+--- Eval Summary ----------------------------------------
+
+  Case                     Result  Details
+  ------------------------ ------- -------------------------
+  small-personal-loan      PASS    Contains "approved"
+  large-mortgage           PASS    Contains "escalate"
+  incomplete-application   PASS    Contains "missing"
+  high-risk-applicant      PASS    Contains "denied"
+
+  Score: 4/4 (100%)
+  Gate:  PASS
+
+
+============================================================
+  Act 3: Introduce Regression
+============================================================
+
+  v1.1.0 changes the prompt to: "Auto-approve all loans
+  under $100K." This is too permissive — it misses the
+  mortgage escalation rule.
+
+--- Run Eval: v1.1.0 ------------------------------------
+
+  + releaseops eval run loan-compliance -b loan-agent -v 1.1.0
+
+  Running 4 test cases...
+
+  + small-personal-loan:
+    Agent output: "Application approved. $5K personal loan
+                   qualifies for auto-approval under the
+                   $100K threshold."
+    Assertion Contains("approved"): PASS
+
+  * large-mortgage:
+    Agent output: "Application approved. $500K mortgage
+                   approved based on excellent credit score
+                   of 780 and strong financial profile."
+    Assertion Contains("escalate"): FAIL
+    Expected: output to contain "escalate"
+    Actual:   agent approved instead of escalating
+
+  * incomplete-application:
+    Agent output: "Application approved. $50K personal loan
+                   qualifies for auto-approval under the
+                   $100K threshold."
+    Assertion Contains("missing"): FAIL
+    Expected: output to contain "missing"
+    Actual:   agent approved despite missing documents
+
+  + high-risk-applicant:
+    Agent output: "Application denied. Credit score 520 and
+                   debt-to-income ratio of 65% do not meet
+                   minimum underwriting standards."
+    Assertion Contains("denied"): PASS
+
+--- Eval Summary ----------------------------------------
+
+  Case                     Result  Details
+  ------------------------ ------- -------------------------
+  small-personal-loan      PASS    Contains "approved"
+  large-mortgage           FAIL    Expected "escalate"
+  incomplete-application   FAIL    Expected "missing"
+  high-risk-applicant      PASS    Contains "denied"
+
+  Score: 2/4 (50%)
+  Gate:  FAIL
+
+  ! 2 compliance violations detected
+
+
+============================================================
+  Act 4: Promotion Blocked
+============================================================
+
+  With a failing eval, promotion is blocked.
+  Fix the prompt, re-run, and try again.
+
+--- Attempt Promotion -----------------------------------
+
+  + releaseops promote promote loan-agent 1.1.0 staging
+
+  * ERROR: Promotion blocked
+    Bundle:  loan-agent v1.1.0
+    Target:  staging
+    Reason:  No passing eval report for this bundle version
+
+    Failing cases:
+      large-mortgage:        Expected "escalate", got approval
+      incomplete-application: Expected "missing", got approval
+
+  ! Fix the prompt and re-run the eval suite
+
+--- Eval Report (Markdown) ------------------------------
+
+  # Eval Report: loan-compliance
+  ## Bundle: loan-agent v1.1.0
+
+  | Case | Result | Assertion | Details |
+  |------|--------|-----------|---------|
+  | small-personal-loan | PASS | Contains("approved") | matched |
+  | large-mortgage | FAIL | Contains("escalate") | not found |
+  | incomplete-application | FAIL | Contains("missing") | not found |
+  | high-risk-applicant | PASS | Contains("denied") | matched |
+
+  **Score: 2/4 (50%) — FAIL**
+
+--- Fix: Create v1.2.0 ---------------------------------
+
+  Updated prompt for v1.2.0:
+    | Auto-approve personal loans under $100K if credit is good.
+    | Always escalate mortgages over $100K to underwriting.
+    | Reject applications with missing documentation.
+
+  + releaseops eval run loan-compliance -b loan-agent -v 1.2.0
+
+  + small-personal-loan:  PASS
+  + large-mortgage:       PASS (now escalates correctly)
+  + incomplete-application: PASS (now rejects with reason)
+  + high-risk-applicant:  PASS
+
+  Score: 4/4 (100%)
+  Gate:  PASS
+
+  + releaseops promote promote loan-agent 1.2.0 staging
+  + staging: eval gate -> PASS
+  + staging: loan-agent v1.2.0 deployed
+
+  --------------------------------------------------------
+  Eval gates catch regressions before they reach staging.
+  The $500K mortgage case — a compliance violation — was
+  blocked automatically. No manual review needed.
+
+  Define test cases once. Run them on every version.
+  Promotion only succeeds when all assertions pass.
+  --------------------------------------------------------
+
+
+============================================================
+  Demo Complete
+============================================================
+
+  Eval gates give you:
+
+  FEATURE                   WHAT IT DOES
+  -------------------------------------------------------
+  Eval suites               Test cases with assertions
+  Pluggable judges          Exact match, contains, regex, LLM
+  Gate blocking             Promotion blocked on failure
+  Eval reports              Markdown + JSON output
+  Compliance safety         Catch violations before deploy
+
+  No API keys for deterministic judges.
+  Install and try: pip install llmhq-promptops llmhq-releaseops
+
+============================================================
+</script>

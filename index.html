@@ -6,18 +6,54 @@ description: "Prompt versioning and release engineering for AI agents. Git-nativ
 
 <!-- Hero -->
 <div class="home-hero">
-    <p class="hero-kicker">Changed a prompt. Agent behaved differently in production. Which line?</p>
-    <h1>Version, bundle, and ship AI agent behavior like software.</h1>
+    <p class="hero-kicker">Operational infrastructure for AI agents</p>
+    <h1>Changed a prompt. Agent behaved differently in production. Which line?</h1>
     <p class="lead">
-        Prompts, policies, and model config define your agent &mdash; but most teams deploy them
-        without versioning, testing, or rollback. PromptOps versions every prompt automatically.
-        ReleaseOps bundles them with policies, promotes through gated environments, and traces
-        exactly why behavior changed.
+        Git-native release engineering for AI agents. Local-first. No lock-in. No data leaving your machine.
     </p>
+    <div class="trust-badges">
+        <span class="trust-badge">Git-Native</span>
+        <span class="trust-badge">Local-First</span>
+        <span class="trust-badge">MIT Licensed</span>
+    </div>
+    <div class="hero-install">
+        <code>pip install llmhq-promptops</code>
+    </div>
     <div class="hero-buttons">
-        <a href="/demo/" class="btn btn-lg">See the Demo</a>
-        <a href="/docs/getting-started" class="btn-ghost btn-lg">Get Started</a>
-        <a href="https://github.com/llmhq-hub" class="btn-ghost btn-lg">GitHub</a>
+        <a href="/docs/getting-started" class="btn btn-lg">Start versioning your prompts</a>
+        <a href="/demos/" class="btn-ghost btn-lg">See the demos &rarr;</a>
+    </div>
+</div>
+
+<!-- Philosophy -->
+<div class="philosophy-section">
+    <h2>What makes this different</h2>
+    <div class="philosophy-cards">
+        <div class="philosophy-card">
+            <h3>Git-Native</h3>
+            <p class="philosophy-oneliner">Powered by the same ol' git.</p>
+            <p class="philosophy-detail">
+                Your prompts, bundles, and promotion history are YAML files in your repo.
+                No new systems to learn. <code>git log</code> is the audit trail.
+                <code>git diff</code> shows what changed.
+            </p>
+        </div>
+        <div class="philosophy-card">
+            <h3>Local-First</h3>
+            <p class="philosophy-oneliner">Your prompts stay in your repo. Your logic stays on your machine.</p>
+            <p class="philosophy-detail">
+                Nothing phones home. No API keys required to version prompts.
+                No SaaS dashboard. Run everything locally with zero external dependencies.
+            </p>
+        </div>
+        <div class="philosophy-card">
+            <h3>No Lock-In</h3>
+            <p class="philosophy-oneliner">MIT licensed. Walk away anytime.</p>
+            <p class="philosophy-detail">
+                Framework-agnostic. Works with OpenAI, Anthropic, or local models.
+                Integrates with existing observability. All artifacts are plain YAML in git.
+            </p>
+        </div>
     </div>
 </div>
 
@@ -58,6 +94,7 @@ description: "Prompt versioning and release engineering for AI agents. Git-nativ
         <div class="pipeline-tool-label bridge-label">&rarr;</div>
         <div class="pipeline-tool-label releaseops-label">ReleaseOps</div>
     </div>
+    <p class="pipeline-callout">Each tool works standalone. Start with what you need.</p>
 </div>
 
 <!-- How It Works -->
@@ -131,12 +168,12 @@ description: "Prompt versioning and release engineering for AI agents. Git-nativ
             <pre><code><span class="kw">from</span> <span class="fn">llmhq_releaseops.runtime</span> <span class="kw">import</span> RuntimeLoader
 
 loader = RuntimeLoader()
-bundle, metadata = loader.<span class="fn">load_bundle</span>(<span class="st">"support-agent@prod"</span>)
+content = loader.<span class="fn">load_bundle_content</span>(<span class="st">"support-agent@prod"</span>)
 
-<span class="cm"># Everything resolved and verified</span>
-model    = bundle.model_config.model       <span class="cm"># claude-sonnet-4-5</span>
-prompts  = bundle.prompts                  <span class="cm"># versioned refs</span>
-policies = bundle.policies                 <span class="cm"># tool access rules</span>
+<span class="cm"># Everything resolved and ready to use</span>
+model    = content[<span class="st">"model"</span>].model          <span class="cm"># claude-sonnet-4-5</span>
+prompts  = content[<span class="st">"prompts"</span>]              <span class="cm"># {"system": "You are a support agent..."}</span>
+policies = content[<span class="st">"policies"</span>]             <span class="cm"># {"tools": {"allowed": [...]}, ...}</span>
 
 <span class="cm"># Metadata auto-injected into OTel spans</span></code></pre>
         </div>
@@ -166,14 +203,51 @@ policies = bundle.policies                 <span class="cm"># tool access rules<
                 <span class="code-filename">terminal</span>
             </div>
             <pre><code><span class="cm"># Why did v1.0.0 ESCALATE the $120 refund?</span>
-<span class="fn">Primary influence</span> (confidence: 0.70):
+<span class="fn">Primary influence</span> (confidence: 0.82, HIGH):
   <span class="kw">Source:</span> prompt (support-system@v1.0.0)
   <span class="kw">Line 15:</span> <span class="hl">"Escalate any refund over $50"</span>
 
 <span class="cm"># Why did v1.1.0 APPROVE it?</span>
-<span class="fn">Primary influence</span> (confidence: 0.70):
+<span class="fn">Primary influence</span> (confidence: 0.82, HIGH):
   <span class="kw">Source:</span> prompt (support-system@v1.1.0)
   <span class="kw">Line 13:</span> <span class="st">"Auto-approve up to $200"</span></code></pre>
+        </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="workflow-step">
+        <div class="step-text">
+            <div class="step-number">4</div>
+            <span class="tool-badge both">Analytics</span>
+            <h3>Compare versions</h3>
+            <p>
+                Aggregate behavioral metrics per version &mdash; latency percentiles,
+                token usage, tool call distributions, error rates. Compare any two
+                versions with weighted significance levels.
+            </p>
+            <p>
+                Overall assessment: improvement, regression, neutral, or mixed.
+                Integrates with OpenTelemetry and LangSmith.
+            </p>
+        </div>
+        <div class="step-code">
+            <div class="code-header">
+                <span class="code-dot red"></span>
+                <span class="code-dot yellow"></span>
+                <span class="code-dot green"></span>
+                <span class="code-filename">terminal</span>
+            </div>
+            <pre><code><span class="cm"># Compare behavioral metrics across versions</span>
+<span class="fn">releaseops analytics compare</span> support-agent@1.0.0 support-agent@1.1.0
+
+  Metric              Baseline  Candidate    Change  Significance
+  ------------------- --------- ---------- --------- -----------
+  error_rate              0.00       0.00      0.0%  negligible
+  avg_latency_ms        124.44     124.44      0.0%  negligible
+  approve_refund          1/5        2/5     +100%   <span class="hl">major</span>
+  escalate_ticket         3/5        2/5      -33%   <span class="hl">major</span>
+
+  <span class="fn">Overall:</span> <span class="st">neutral</span> (performance stable, behavior shifted)</code></pre>
         </div>
     </div>
 </div>
@@ -209,15 +283,26 @@ policies = bundle.policies                 <span class="cm"># tool access rules<
         No API keys needed.
     </p>
     <div class="hero-buttons">
-        <a href="/demo/" class="btn btn-lg">Watch the Demo</a>
+        <a href="/demos/" class="btn btn-lg">Browse the Demos</a>
     </div>
 </div>
 
 <!-- Install -->
 <div class="install-section">
     <h2>Get started in seconds</h2>
-    <p class="install-note">Install both, or start with either &mdash; they work standalone or together.</p>
-    <pre><code>pip install llmhq-promptops llmhq-releaseops</code></pre>
+    <p class="install-note">Start with PromptOps. Add ReleaseOps when you need bundles, promotion, and attribution.</p>
+    <div class="progressive-install">
+        <pre><code><span class="c"># Start with prompt versioning</span>
+pip install llmhq-promptops
+promptops init repo
+
+<span class="c"># Add release engineering when you're ready</span>
+pip install llmhq-releaseops
+releaseops init
+
+<span class="c"># Or install everything</span>
+pip install llmhq-promptops llmhq-releaseops</code></pre>
+    </div>
 </div>
 
 <!-- Community -->
