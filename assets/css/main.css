@@ -314,6 +314,15 @@ a:hover {
     letter-spacing: 0.01em;
 }
 
+/* Hero bridge line */
+.hero-bridge {
+    font-size: 1.05rem;
+    color: #4b5563;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
 /* Philosophy */
 .philosophy-section {
     max-width: 960px;
@@ -333,7 +342,7 @@ a:hover {
 
 .philosophy-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
 }
 
@@ -770,6 +779,123 @@ a:hover {
     background: #181825;
     border-radius: 4px;
     border-left: 3px solid #89b4fa;
+}
+
+/* Aha section CTA */
+.aha-cta {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.aha-cta .btn-ghost {
+    color: #89b4fa;
+    border-color: #45475a;
+}
+
+.aha-cta .btn-ghost:hover {
+    border-color: #89b4fa;
+    color: #cdd6f4;
+}
+
+/* Integration callout */
+.integration-section {
+    max-width: 960px;
+    margin: 0 auto 3rem;
+    padding: 0 20px;
+}
+
+.integration-section > h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Stack diagram */
+.stack-diagram {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.stack-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stack-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+.stack-box {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    background: #fafbfc;
+    text-align: center;
+}
+
+.stack-box-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+}
+
+.stack-box-sub {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.stack-box-accent {
+    border: 2px solid #2563eb;
+    background: #eff6ff;
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.15);
+}
+
+.stack-box-accent .stack-box-title {
+    color: #2563eb;
+}
+
+.stack-box-features {
+    font-size: 0.8rem;
+    color: #3b82f6;
+    font-weight: 500;
+}
+
+.stack-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #6b7280;
+    background: #f3f4f6;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.stack-arrow {
+    color: #d1d5db;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0.25rem 0;
+}
+
+.integration-callout {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-style: italic;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
 }
 
 /* Demo CTA */
@@ -1239,32 +1365,9 @@ a:hover {
         grid-template-columns: 1fr;
     }
 
-    .trust-badges {
-        gap: 0.5rem;
-    }
-
-    .pipeline {
-        flex-direction: column;
-        gap: 1.5rem;
-        align-items: center;
-    }
-
-    .pipeline-step {
-        width: 100%;
-        max-width: 240px;
-    }
-
-    .pipeline-step:not(:last-child)::after {
-        top: auto;
-        bottom: -1rem;
-        left: 50%;
-        width: 2px;
-        height: 1rem;
-    }
-
-    .pipeline-tools {
-        flex-direction: column;
-        gap: 0.5rem;
+    .stack-diagram {
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
 
     .workflow-step {
