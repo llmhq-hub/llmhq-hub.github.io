@@ -1,4 +1,4 @@
-# LLMHQ Website UI Spec
+# LLMHQ Website UI Spec — Final
 
 This document defines the messaging, content, structure, and design direction for the LLM Headquarters website (llmhq-hub.github.io). Use this as the source of truth when building or updating the site.
 
@@ -7,9 +7,7 @@ This document defines the messaging, content, structure, and design direction fo
 ## Brand
 
 - **Name:** LLM Headquarters (LLMhq)
-- **Tagline:** "Operational infrastructure for AI agents."
-- **One-liner:** Git-native release engineering for AI agents. Local-first. No lock-in.
-- **Tone:** Engineering-focused, honest, no hype. Speak like a senior engineer explaining something to a peer. Never say "revolutionary", "game-changing", "AI-powered", or "comprehensive solution".
+- **Tone:** Engineering-focused, honest, no hype. Speak like a senior engineer explaining something to a peer.
 
 ---
 
@@ -28,112 +26,176 @@ LLM Headquarters (umbrella brand)
 
 ---
 
-## Three Core Principles (Must Be Above the Fold)
+## Landing Page Structure
 
-These differentiate LLMhq from every competitor. They are not features — they are the philosophy. Display them prominently near the top of the landing page.
-
-### 1. Git-Native
-All state lives in YAML files tracked by git. No proprietary database. Bundle manifests, environment configs, promotion history, eval reports — all in the repo. `git log` is the audit trail. `git diff` shows what changed.
-
-**Short label:** "Git-Native"
-**One-liner:** "Powered by the same ol' git."
-**Detail:** "Your prompts, bundles, and promotion history are YAML files in your repo. No new systems to learn."
-
-### 2. Local-First
-Nothing phones home. No API keys required to version prompts. No SaaS dashboard. Prompts never leave the machine unless the user pushes them.
-
-**Short label:** "Local-First"
-**One-liner:** "Your prompts stay in your repo. Your logic stays on your machine."
-**Detail:** "No data leaves your environment. Run everything locally with zero external dependencies."
-
-### 3. No Vendor Lock-In
-MIT licensed. Framework-agnostic (works with OpenAI, Anthropic, local models). Integrates with existing observability (OpenTelemetry, LangSmith) rather than replacing it. All data is readable YAML — stop using LLMhq tomorrow and everything is still there.
-
-**Short label:** "No Lock-In"
-**One-liner:** "MIT licensed. Walk away anytime."
-**Detail:** "Framework-agnostic. Works with your existing tools. All artifacts are plain YAML in git."
+The page flow follows a "show → explain → convince" structure. Lead with the visual punch, then explain how it works, then establish principles. Do NOT lead with philosophy or abstract pipeline diagrams.
 
 ---
 
-## Landing Page Structure
-
 ### Section 1: Hero
 
-**Headline:** "Changed a prompt. Agent behaved differently in production. Which line?"
+**Headline:**
+"Every artifact in your stack has version control. Except the ones that define your agent."
 
-**Sub-headline:** "Git-native release engineering for AI agents. Local-first. No lock-in. No data leaving your machine."
+**Sub-headline:**
+"Version, bundle, and ship the artifacts that define your agent. Git-native. Local-first."
 
-**Trust badges (inline, horizontal):** Git-Native | Local-First | MIT Licensed
+**Bridge line (below sub-headline, before visual):**
+"Prompts. Policies. Model configs. These define your agent — and right now, they're unversioned."
 
-**Primary CTA:** `pip install llmhq-promptops` — "Start versioning your prompts"
-**Secondary CTA:** "See the demos →" (links to /demos/ page)
+No trust badges in the hero. No install command in the hero. No "Operational infrastructure for AI agents" category label. The hero is problem → solution → stakes. Nothing else.
 
-### Section 2: Philosophy
+---
 
-Title: "What makes this different"
+### Section 2: The Key Moment (Moved Up — This Is the Visual Punch)
 
-Display the three principles (git-native, local-first, no lock-in) as cards or columns. Each card has the short label, one-liner, and detail text from the section above. Use icons or minimal illustrations — no stock photos.
+This is the first visual the visitor sees after the hero text. It shows the product's value in one image before any explanation.
 
-### Section 3: Progressive Workflow
+**Layout:** Side-by-side comparison.
 
-Title: "One workflow, two tools"
+**Left side:**
+v1.0.0 — Conservative
+"Escalate any refund over **$50**"
+$120 refund → escalate_ticket
 
-Show the numbered pipeline. Make the PromptOps → ReleaseOps boundary explicit.
+**Right side:**
+v1.1.0 — Permissive
+"Auto-approve up to **$200**"
+$120 refund → approve_refund
 
-```
-PromptOps                          ReleaseOps
-─────────                          ──────────
-1. Write    →  YAML template       3. Bundle   →  Prompt + policy + model config
-2. Version  →  Git auto-tags       4. Promote  →  dev → staging → prod with gates
-                                   5. Monitor  →  Attribution + behavioral analytics
-```
+**Below the comparison:**
+"Attribution traced to: line 15 in system prompt — threshold changed from $50 to $200"
 
-Include a callout: "Each tool works standalone. Start with what you need."
+**CTA immediately after:**
+[See the demos →] (links to /demos/)
 
-### Section 4: How It Works (Expanded)
+This section should be visually striking — it's the "aha" moment. Color-code the two sides (e.g., amber/caution for conservative, green for permissive). Make the threshold numbers bold and large.
 
-Four steps with code examples. Each step should feel self-contained — a reader can stop at any step and still get value.
+---
+
+### Section 3: How It Works
+
+Title: "How it works"
+
+Four steps with code examples. Each step is self-contained — a reader can stop at any step and still get value. Tell a continuous story: the same agent (support-agent) and the same scenario (refund threshold) should thread through all four steps.
 
 **Step 1: Version your prompts (PromptOps)**
-- Write prompts as YAML templates with Jinja2 variables
-- Auto-versioned on every git commit via hooks
-- Semantic versioning: PATCH (content change), MINOR (new variable), MAJOR (breaking change)
-- Reference any version: `:v1.2.0`, `:latest`, `:unstaged`
-- Code example: the YAML template + `get_prompt()` call
+
+Description: Write prompts as YAML templates with variables. PromptOps auto-versions them on every git commit — semantic tags, diff tracking, and version history out of the box. Reference any version in code: `:v1.2.0`, `:latest`, or even `:unstaged` for testing uncommitted changes.
+
+Code block — support-system.yaml:
+```yaml
+id: support-system
+description: Customer support agent
+variables:
+  customer_name: { required: true }
+  request: { required: true }
+template: |
+  You are a support agent for Acme Corp.
+
+  REFUND POLICY:
+  - Auto-approve refunds up to $200
+  - Escalate refunds over $200
+  - Never approve if customer is abusive
+```
 
 **Step 2: Bundle and promote (ReleaseOps)**
-- Bundles prompt refs + tool policies + model config into an immutable artifact
-- SHA-256 content-addressed — cryptographic proof that staging = prod
-- Promotion state machine: DRAFT → CANDIDATE → STAGED → PROD
-- Eval gates block promotion if quality thresholds aren't met
-- Rollback promotes previous version forward, creates audit entry
-- Code example: `RuntimeLoader().load_bundle("support-agent@prod")`
+
+Description: ReleaseOps bundles your versioned prompts with tool policies and model config into an immutable, SHA-256 content-addressed artifact. Promote through environments with eval gates. Rollback in one command. Every action recorded in an audit trail.
+
+Code block — app.py:
+```python
+from llmhq_releaseops.runtime import RuntimeLoader
+
+loader = RuntimeLoader()
+content = loader.load_bundle_content("support-agent@prod")
+
+# Everything resolved and ready to use
+model    = content["model"]       # {"model": "claude-sonnet-4-5", ...}
+prompts  = content["prompts"]     # {"system": "You are a support agent..."}
+policies = content["policies"]    # {"tools": {"allowed": [...]}, ...}
+
+# Metadata auto-injected into OTel spans (silent no-op if OTel not configured)
+```
+
+Note: Do NOT mention "PromptBridge" in user-facing copy — it's an internal implementation detail. Just say "ReleaseOps reads your versioned prompts."
+
+Note: Do NOT say "Rollback instantly" — say "Rollback in one command." The mechanism is promoting the previous version forward.
 
 **Step 3: Know why behavior changed (Attribution)**
-- Three analyzers: prompt, policy, model config
-- Confidence scoring (0.0–1.0): HIGH >= 0.80, MEDIUM >= 0.50, LOW < 0.50
-- Line-level attribution: traces behavior to specific prompt lines
-- Code example: the attribution terminal output showing v1.0.0 vs v1.1.0
 
-**Important framing for attribution:** Always include the honest disclaimer: "Pattern matching with confidence scoring — not causal claims. Points engineers to the right place to investigate." This builds trust. Never remove this.
+Description: When behavior shifts between versions, attribution traces each agent action back to the specific prompt lines and policy rules that influenced it. Pattern matching with confidence scoring — not causal claims. Points engineers to the right place to investigate.
+
+Code block — terminal:
+```
+# Why did v1.0.0 ESCALATE the $120 refund?
+Primary influence (confidence: 0.82, HIGH):
+  Source: prompt (support-system@v1.0.0)
+  Line 15: "Escalate any refund over $50"
+
+# Why did v1.1.0 APPROVE it?
+Primary influence (confidence: 0.82, HIGH):
+  Source: prompt (support-system@v1.1.0)
+  Line 13: "Auto-approve up to $200"
+```
+
+**CRITICAL:** Always include the honest disclaimer "Pattern matching with confidence scoring — not causal claims." Never remove this. It builds trust.
+
+**CRITICAL:** Attribution confidence labels must be accurate. HIGH >= 0.80, MEDIUM >= 0.50, LOW < 0.50. Never show a confidence of 0.70 labeled as HIGH.
 
 **Step 4: Compare versions (Analytics)**
-- Latency percentiles, token usage, tool call distributions, error rates
-- Version comparison with significance levels (major/moderate/minor)
-- Overall assessment: improvement / regression / neutral / mixed
-- Integrates with OpenTelemetry and LangSmith
 
-### Section 5: Demos
+Description: Aggregate behavioral metrics per version — latency percentiles, token usage, tool call distributions, error rates. Compare any two versions with weighted significance levels. Overall assessment: improvement, regression, neutral, or mixed. Integrates with OpenTelemetry and LangSmith.
 
-Title: "See it in action"
-
-Link to each standalone demo with a one-line description. See the Demos section below for full specs.
-
-### Section 6: Get Started
-
-Progressive install, not all-or-nothing.
-
+Code block — terminal:
 ```
+# Compare behavioral metrics across versions
+releaseops analytics compare support-agent@1.0.0 support-agent@1.1.0
+
+  Metric              Baseline  Candidate    Change  Significance
+  ------------------- --------- ---------- --------- -----------
+  error_rate              0.00       0.00      0.0%  negligible
+  avg_latency_ms        124.44     124.44      0.0%  negligible
+  approve_refund          1/5        2/5     +100%   major
+  escalate_ticket         3/5        2/5      -33%   major
+
+  Overall: neutral (performance stable, behavior shifted)
+```
+
+**Integration callout (after the four steps, before the install section):**
+
+Title: "Fits into what you already run"
+
+Display as a two-column before/after stack diagram. Communicates one idea: **"Your stack stays the same. LLMhq adds one layer."**
+
+**Left column — "Your current stack"** (3 boxes, top-to-bottom with arrows):
+1. **Agent Framework** — subtitle: "LangChain, CrewAI, raw API calls"
+2. **LLM Provider** — subtitle: "OpenAI, Anthropic, local models"
+3. **Observability** — subtitle: "OpenTelemetry, LangSmith, Datadog"
+
+**Right column — "With LLMhq"** (4 boxes, LLMhq inserted between Agent Framework and LLM Provider):
+1. **Agent Framework** — tag: "unchanged"
+2. **LLMhq** — visually distinct (accent blue border + subtle glow), features: "Versioning · Bundling · Promotion · Attribution"
+3. **LLM Provider** — tag: "unchanged"
+4. **Observability** — tag: "enriched with release metadata"
+
+Visual rules:
+- Stack boxes identical in both columns (same size, border, bg) — except the LLMhq box
+- LLMhq box uses accent color (#2563eb) border + blue glow
+- Down-arrows between boxes as connectors
+- Responsive: columns stack vertically on mobile (≤768px)
+
+Below the diagram, italic callout: "LLMhq sits between your agent artifacts and your existing infrastructure. It doesn't replace anything — it adds version control, release engineering, and behavioral observability to whatever you're already running."
+
+---
+
+### Section 4: Product Relationship + Install
+
+**Lead sentence:**
+"Start with PromptOps. Add ReleaseOps when you need bundles, promotion, and attribution."
+
+**Install block — progressive, not all-or-nothing:**
+```bash
 # Start with prompt versioning
 pip install llmhq-promptops
 promptops init repo
@@ -146,19 +208,57 @@ releaseops init
 pip install llmhq-promptops llmhq-releaseops
 ```
 
-### Section 7: Community / Footer
+---
 
-- GitHub: https://github.com/llmhq-hub
-- PromptOps on PyPI
-- ReleaseOps on PyPI
-- Discussions link
-- MIT License
+### Section 5: What Makes This Different (Philosophy)
+
+Title: "What makes this different"
+
+Display as four cards or a 2x2 grid. Each card has a short label, one-liner, and detail text.
+
+**Card 1: Git-Native**
+- One-liner: "Powered by the same ol' git."
+- Detail: "Your prompts, bundles, and promotion history are YAML files in your repo. No new systems to learn. `git log` is the audit trail. `git diff` shows what changed."
+
+**Card 2: Local-First**
+- One-liner: "Your prompts stay in your repo. Your logic stays on your machine."
+- Detail: "Nothing phones home. No API keys required to version prompts. No SaaS dashboard. Run everything locally with zero external dependencies."
+
+**Card 3: No Lock-In**
+- One-liner: "MIT licensed. Walk away anytime."
+- Detail: "Framework-agnostic. Works with OpenAI, Anthropic, or local models. All artifacts are plain YAML in git. Stop using LLMhq tomorrow — everything is still in your repo."
+
+**Card 4: Works With Your Existing Stack**
+- One-liner: "Adds to your tools. Replaces none of them."
+- Detail: "Already using OpenTelemetry? Release metadata auto-injects into your existing spans. Using LangSmith? Query your existing traces filtered by bundle version. Not using either? Everything still works — observability integrations are additive, never required. Keep your LLM provider, your agent framework, your monitoring setup. LLMhq layers on top."
 
 ---
 
-## Demos (/demos/)
+### Section 6: Demos Link
 
-Each demo is standalone, runs in the browser or terminal, requires no API keys, and demonstrates one clear value proposition. They should be listed on a /demos/ index page with short descriptions.
+Title: "See the full workflow"
+
+"The interactive demos run both tools end-to-end with real scenarios. No API keys needed."
+
+[Browse the Demos →] (links to /demos/)
+
+---
+
+### Section 7: Community / Footer
+
+- GitHub: https://github.com/llmhq-hub
+- PromptOps on PyPI: https://pypi.org/project/llmhq-promptops/
+- ReleaseOps on PyPI: https://pypi.org/project/llmhq-releaseops/
+- Discussions: https://github.com/orgs/llmhq-hub/discussions
+- © 2026 LLM Headquarters. Built for the LLM development community.
+
+---
+
+## Demos Page (/demos/)
+
+Demos are already built. The task is presenting them on the demos page in an embedded terminal replay format (asciinema-style).
+
+Each demo is standalone, requires no API keys, and demonstrates one clear value proposition. List them on the /demos/ index page with short descriptions and embedded replays.
 
 ### Demo 1: Prompt Versioning (PromptOps)
 
@@ -170,7 +270,6 @@ Each demo is standalone, runs in the browser or terminal, requires no API keys, 
 - Show that git hooks auto-increment the version (PATCH/MINOR/MAJOR detection)
 - Resolve `:unstaged` vs `:working` vs `:v1.0.0` — same prompt, different content
 - Render with variables using `get_prompt("name", {"key": "value"})`
-**Standalone value:** Even without ReleaseOps, users understand why auto-versioned prompts in git are better than text files or hardcoded strings.
 
 ### Demo 2: Bundle & Promote (ReleaseOps Core)
 
@@ -182,7 +281,6 @@ Each demo is standalone, runs in the browser or terminal, requires no API keys, 
 - Promote dev → staging → prod (show enforced path — can't skip to prod)
 - Verify integrity: the hash in staging matches what was created in dev
 - Rollback: promote previous version forward, see the audit trail entry
-**Standalone value:** Users see the promotion state machine and understand why immutable, content-addressed releases matter for AI agents.
 
 ### Demo 3: Eval Gates
 
@@ -195,7 +293,6 @@ Each demo is standalone, runs in the browser or terminal, requires no API keys, 
 - Modify the prompt to introduce a regression
 - Run eval again → failing assertions → promotion blocked
 - Show the eval report (markdown or JSON)
-**Standalone value:** Users see that promotions can be gated by automated quality checks — not just manual approval.
 
 ### Demo 4: Attribution
 
@@ -205,13 +302,8 @@ Each demo is standalone, runs in the browser or terminal, requires no API keys, 
 - Two prompt versions: v1.0.0 (escalate refunds over $50) vs v1.1.0 (auto-approve up to $200)
 - Same customer request: $120 refund
 - v1.0.0 escalates, v1.1.0 approves
-- Attribution output showing:
-  - Primary influence with confidence score and level (e.g., confidence: 0.82, HIGH)
-  - Source: prompt (support-system@v1.0.0), Line 15
-  - Source: prompt (support-system@v1.1.0), Line 13
-- The "key moment" visualization: one line changes everything
-**Important:** Show realistic confidence values. HIGH requires >= 0.80. MEDIUM >= 0.50. LOW < 0.50. Don't show 0.70 labeled as HIGH — that's MEDIUM. Always include the disclaimer: "Pattern matching with confidence scoring — not causal claims."
-**Standalone value:** Users see that when behavior diverges between versions, attribution narrows it down to the specific artifact and line.
+- Attribution output with confidence score and level (e.g., confidence: 0.82, HIGH)
+**Important:** HIGH requires >= 0.80. MEDIUM >= 0.50. LOW < 0.50. Always include "Pattern matching with confidence scoring — not causal claims."
 
 ### Demo 5: Behavioral Analytics
 
@@ -219,28 +311,29 @@ Each demo is standalone, runs in the browser or terminal, requires no API keys, 
 **What it shows:** Comparing behavioral metrics across two bundle versions — latency, token usage, tool call distributions, error rates — with significance assessment.
 **Key moments:**
 - Run both versions against the same set of scenarios
-- Aggregate metrics per version: latency percentiles, token distribution, tool call patterns
-- Compare: show which metrics improved, regressed, or stayed neutral
-- Significance levels: major (>25% change), moderate (>10%), minor (>5%)
+- Aggregate metrics per version
+- Compare with significance levels: major (>25% change), moderate (>10%), minor (>5%)
 - Overall assessment: improvement / regression / neutral / mixed
-**Standalone value:** Users see quantified behavioral differences between versions without needing to guess.
 
 ### Demo 6: Full Lifecycle (End-to-End)
 
 **Title:** "The full workflow: version → bundle → promote → monitor"
-**What it shows:** The complete pipeline across both tools — from writing a prompt to understanding production behavior.
+**What it shows:** The complete pipeline across both tools.
 **Scenario:** 5 customer requests, two prompt versions, one behavioral divergence (the $120 refund).
 **Four acts:**
 1. PromptOps: version two prompts (conservative and permissive refund thresholds)
 2. ReleaseOps: bundle each into a release, promote through environments
 3. Attribution: trace the behavioral divergence to the exact prompt line
 4. Analytics: compare metrics across the two versions
-**This is the existing demo (`examples/demo_full.py`) expanded into an interactive format.**
 
-### Demo Format Options
-- **Interactive web demos** (hosted on GitHub Pages): step-through walkthroughs with simulated terminal output, code highlighting, and annotations. No backend required — all simulated.
-- **Terminal demos** (runnable locally): `python demo_X.py` scripts that run in ~30 seconds with no API keys. Output is styled terminal text.
-- Both formats should exist where possible. Web demos for discoverability, terminal demos for credibility ("it actually runs").
+### Demo Format
+
+All demos use embedded terminal replay (asciinema-style) on the demos page. This means:
+- Pre-recorded terminal sessions embedded in the page
+- Playback controls (play, pause, speed)
+- Dark terminal aesthetic with syntax-highlighted output
+- No backend required — static assets hosted on GitHub Pages
+- Each demo should be watchable in under 2 minutes
 
 ---
 
@@ -325,7 +418,8 @@ releaseops analytics metrics/compare/report
 - Clean, minimal, developer-focused. Think Stripe docs meets Vercel's landing page.
 - Dark mode friendly. Monospace code blocks should feel native, not bolted on.
 - No stock photography. No abstract AI imagery. No gradients-on-gradients.
-- If using color, keep it functional — highlight the PromptOps → ReleaseOps boundary, color-code promotion states, use green/red for attribution confidence levels.
+- Color-code functionally: PromptOps → ReleaseOps boundary, promotion states, attribution confidence (green for HIGH, amber for MEDIUM, red for LOW).
+- The "key moment" side-by-side should be visually striking — amber/caution for conservative, green for permissive.
 
 ### Typography
 - Monospace for anything code-related (install commands, CLI output, code snippets)
@@ -334,14 +428,15 @@ releaseops analytics metrics/compare/report
 
 ### Code Examples
 - Always show real, working code — not pseudocode
-- Keep examples minimal. The `RuntimeLoader` one-liner is the hook. Don't bury it.
-- Terminal output should look like a real terminal (dark background, monospace, colored output where appropriate)
+- Keep examples minimal. The `load_bundle_content()` one-liner is the hook.
+- Terminal output should look like a real terminal (dark background, monospace, colored output)
+- NEVER show truncated code with `# claude...` or `# {"syst...` — either show the full output or trim the example to fewer lines that display completely
 
 ### Key Visual Moments
-1. The YAML prompt template — readers should immediately recognize this as "oh, this is just a YAML file in my repo"
-2. The `load_bundle()` one-liner — the "wow, that's all?" moment
-3. The attribution output — two versions side by side, tracing to the exact line
-4. The promotion pipeline — visual flow from dev → staging → prod with gates
+1. The v1.0.0 vs v1.1.0 side-by-side — the "aha" moment (hero section)
+2. The YAML prompt template — "oh, it's just a YAML file in my repo"
+3. The `load_bundle_content()` one-liner — "that's all?"
+4. The attribution terminal output — tracing to the exact line
 
 ---
 
@@ -356,6 +451,7 @@ releaseops analytics metrics/compare/report
 - "promotion gates" (not "deployment")
 - "framework-agnostic" (not "works with LangChain")
 - "immutable bundles" (not "snapshots")
+- "rollback in one command" (not "rollback instantly")
 
 ### Never Use
 - "AI-powered" (the tools manage AI artifacts, they aren't AI themselves)
@@ -363,6 +459,7 @@ releaseops analytics metrics/compare/report
 - "comprehensive solution" (implies all-or-nothing)
 - "root cause" (overpromises attribution)
 - "platform" (implies hosted SaaS — say "infrastructure" or "toolkit")
+- "PromptBridge" in user-facing copy (internal implementation detail)
 
 ---
 
@@ -385,17 +482,6 @@ prompt = get_prompt("user-onboarding:unstaged")
 rendered = get_prompt("user-onboarding", {"user_name": "Alice", "plan": "Pro"})
 ```
 
-### ReleaseOps — Load a bundle at runtime (simple)
-```python
-from llmhq_releaseops.runtime import RuntimeLoader
-
-loader = RuntimeLoader()
-bundle, metadata = loader.load_bundle("support-agent@prod")
-
-model = bundle.model_config.model  # "claude-sonnet-4-5"
-# metadata auto-injected into OTel spans (silent no-op if OTel not configured)
-```
-
 ### ReleaseOps — Load fully resolved content
 ```python
 from llmhq_releaseops.runtime import RuntimeLoader
@@ -404,10 +490,11 @@ loader = RuntimeLoader()
 content = loader.load_bundle_content("support-agent@prod")
 
 # Everything resolved and ready to use
-model     = content["model"]        # {"model": "claude-sonnet-4-5", "provider": "anthropic", ...}
-prompts   = content["prompts"]      # {"system": "You are a support agent..."}
-policies  = content["policies"]     # {"tools": {"allowed": [...]}, "safety": {...}}
-metadata  = content["metadata"]     # TelemetryContext (auto-injected into OTel)
+model    = content["model"]       # {"model": "claude-sonnet-4-5", ...}
+prompts  = content["prompts"]     # {"system": "You are a support agent..."}
+policies = content["policies"]    # {"tools": {"allowed": [...]}, ...}
+
+# Metadata auto-injected into OTel spans (silent no-op if OTel not configured)
 ```
 
 ### ReleaseOps — Promotion
@@ -421,7 +508,7 @@ releaseops promote promote support-agent 1.0.0 staging
 releaseops promote promote support-agent 1.0.0 prod
 ```
 
-### Attribution Output (Corrected Confidence Labels)
+### Attribution Output
 ```
 # Why did v1.0.0 ESCALATE the $120 refund?
 Primary influence (confidence: 0.82, HIGH):
@@ -433,8 +520,6 @@ Primary influence (confidence: 0.82, HIGH):
   Source: prompt (support-system@v1.1.0)
   Line 13: "Auto-approve up to $200"
 ```
-
-Note: HIGH requires confidence >= 0.80. MEDIUM >= 0.50. LOW < 0.50. Always use accurate labels in demos and site content.
 
 ### YAML Prompt Template
 ```yaml

@@ -6,95 +6,42 @@ description: "Prompt versioning and release engineering for AI agents. Git-nativ
 
 <!-- Hero -->
 <div class="home-hero">
-    <p class="hero-kicker">Operational infrastructure for AI agents</p>
-    <h1>Changed a prompt. Agent behaved differently in production. Which line?</h1>
+    <h1>Every artifact in your stack has version control. Except the ones that define your agent.</h1>
     <p class="lead">
-        Git-native release engineering for AI agents. Local-first. No lock-in. No data leaving your machine.
+        Version, bundle, and ship the artifacts that define your agent. Git-native. Local-first.
     </p>
-    <div class="trust-badges">
-        <span class="trust-badge">Git-Native</span>
-        <span class="trust-badge">Local-First</span>
-        <span class="trust-badge">MIT Licensed</span>
-    </div>
-    <div class="hero-install">
-        <code>pip install llmhq-promptops</code>
-    </div>
+    <p class="hero-bridge">
+        Prompts. Policies. Model configs. These define your agent &mdash; and right now, they're unversioned.
+    </p>
     <div class="hero-buttons">
         <a href="/docs/getting-started" class="btn btn-lg">Start versioning your prompts</a>
         <a href="/demos/" class="btn-ghost btn-lg">See the demos &rarr;</a>
     </div>
 </div>
 
-<!-- Philosophy -->
-<div class="philosophy-section">
-    <h2>What makes this different</h2>
-    <div class="philosophy-cards">
-        <div class="philosophy-card">
-            <h3>Git-Native</h3>
-            <p class="philosophy-oneliner">Powered by the same ol' git.</p>
-            <p class="philosophy-detail">
-                Your prompts, bundles, and promotion history are YAML files in your repo.
-                No new systems to learn. <code>git log</code> is the audit trail.
-                <code>git diff</code> shows what changed.
-            </p>
+<!-- The Key Moment -->
+<div class="aha-section">
+    <div class="aha-card">
+        <h3>The key moment: one line changes everything</h3>
+        <div class="aha-comparison">
+            <div class="aha-version conservative">
+                <div class="ver-label">v1.0.0 &mdash; Conservative</div>
+                <div class="ver-rule">"Escalate any refund over <strong>$50</strong>"</div>
+                <div class="ver-result">$120 refund &rarr; escalate_ticket</div>
+            </div>
+            <div class="aha-version permissive">
+                <div class="ver-label">v1.1.0 &mdash; Permissive</div>
+                <div class="ver-rule">"Auto-approve up to <strong>$200</strong>"</div>
+                <div class="ver-result">$120 refund &rarr; approve_refund</div>
+            </div>
         </div>
-        <div class="philosophy-card">
-            <h3>Local-First</h3>
-            <p class="philosophy-oneliner">Your prompts stay in your repo. Your logic stays on your machine.</p>
-            <p class="philosophy-detail">
-                Nothing phones home. No API keys required to version prompts.
-                No SaaS dashboard. Run everything locally with zero external dependencies.
-            </p>
+        <div class="aha-trace">
+            Attribution traced to: line 15 in system prompt &mdash; threshold changed from $50 to $200
         </div>
-        <div class="philosophy-card">
-            <h3>No Lock-In</h3>
-            <p class="philosophy-oneliner">MIT licensed. Walk away anytime.</p>
-            <p class="philosophy-detail">
-                Framework-agnostic. Works with OpenAI, Anthropic, or local models.
-                Integrates with existing observability. All artifacts are plain YAML in git.
-            </p>
+        <div class="aha-cta">
+            <a href="/demos/" class="btn-ghost">See the demos &rarr;</a>
         </div>
     </div>
-</div>
-
-<!-- Pipeline -->
-<div class="pipeline-section">
-    <h2>One workflow, two tools</h2>
-
-    <div class="pipeline">
-        <div class="pipeline-step promptops">
-            <div class="pipeline-icon">1</div>
-            <div class="step-label">Write</div>
-            <div class="step-desc">YAML prompt template with variables</div>
-        </div>
-        <div class="pipeline-step promptops">
-            <div class="pipeline-icon">2</div>
-            <div class="step-label">Version</div>
-            <div class="step-desc">Git commit auto-tags v1.2.0</div>
-        </div>
-        <div class="pipeline-step releaseops">
-            <div class="pipeline-icon">3</div>
-            <div class="step-label">Bundle</div>
-            <div class="step-desc">Prompt + policy + model config</div>
-        </div>
-        <div class="pipeline-step releaseops">
-            <div class="pipeline-icon">4</div>
-            <div class="step-label">Promote</div>
-            <div class="step-desc">dev &rarr; staging &rarr; prod with gates</div>
-        </div>
-        <div class="pipeline-step releaseops">
-            <div class="pipeline-icon">5</div>
-            <div class="step-label">Monitor</div>
-            <div class="step-desc">Attribution + behavioral analytics</div>
-        </div>
-    </div>
-
-    <div class="pipeline-tools">
-        <div class="pipeline-tool-label promptops-label">PromptOps</div>
-        <div class="pipeline-tool-label bridge-label">&rarr;</div>
-        <div class="pipeline-tool-label releaseops-label">ReleaseOps</div>
-    </div>
-    <p class="pipeline-callout">Each tool works standalone. Start with what you need.</p>
 </div>
 
 <!-- How It Works -->
@@ -148,14 +95,13 @@ description: "Prompt versioning and release engineering for AI agents. Git-nativ
             <span class="tool-badge releaseops">ReleaseOps</span>
             <h3>Bundle and promote</h3>
             <p>
-                ReleaseOps reads your versioned prompt via
-                <strong>PromptBridge</strong>, bundles it with tool policies
-                and model config into an immutable, SHA-256 content-addressed
-                artifact.
+                ReleaseOps reads your versioned prompts, bundles them with
+                tool policies and model config into an immutable, SHA-256
+                content-addressed artifact.
             </p>
             <p>
                 Promote through environments with eval gates.
-                Rollback instantly. Every action recorded in an audit trail.
+                Rollback in one command. Every action recorded in an audit trail.
             </p>
         </div>
         <div class="step-code">
@@ -171,11 +117,11 @@ loader = RuntimeLoader()
 content = loader.<span class="fn">load_bundle_content</span>(<span class="st">"support-agent@prod"</span>)
 
 <span class="cm"># Everything resolved and ready to use</span>
-model    = content[<span class="st">"model"</span>].model          <span class="cm"># claude-sonnet-4-5</span>
-prompts  = content[<span class="st">"prompts"</span>]              <span class="cm"># {"system": "You are a support agent..."}</span>
-policies = content[<span class="st">"policies"</span>]             <span class="cm"># {"tools": {"allowed": [...]}, ...}</span>
+model    = content[<span class="st">"model"</span>]       <span class="cm"># {"model": "claude-sonnet-4-5", ...}</span>
+prompts  = content[<span class="st">"prompts"</span>]     <span class="cm"># {"system": "You are a support agent..."}</span>
+policies = content[<span class="st">"policies"</span>]    <span class="cm"># {"tools": {"allowed": [...]}, ...}</span>
 
-<span class="cm"># Metadata auto-injected into OTel spans</span></code></pre>
+<span class="cm"># Metadata auto-injected into OTel spans (silent no-op if OTel not configured)</span></code></pre>
         </div>
     </div>
 
@@ -252,39 +198,53 @@ policies = content[<span class="st">"policies"</span>]             <span class="
     </div>
 </div>
 
-<!-- The Aha Moment -->
-<div class="aha-section">
-    <div class="aha-card">
-        <h3>The key moment: one line changes everything</h3>
-        <div class="aha-comparison">
-            <div class="aha-version conservative">
-                <div class="ver-label">v1.0.0 &mdash; Conservative</div>
-                <div class="ver-rule">"Escalate any refund over <strong>$50</strong>"</div>
-                <div class="ver-result">$120 refund &rarr; escalate_ticket</div>
+<!-- Integration Callout -->
+<div class="integration-section">
+    <h2>Fits into what you already run</h2>
+    <div class="stack-diagram">
+        <!-- Left: Current stack -->
+        <div class="stack-column">
+            <div class="stack-label">Your current stack</div>
+            <div class="stack-box">
+                <div class="stack-box-title">Agent Framework</div>
+                <div class="stack-box-sub">LangChain, CrewAI, raw API calls</div>
             </div>
-            <div class="aha-version permissive">
-                <div class="ver-label">v1.1.0 &mdash; Permissive</div>
-                <div class="ver-rule">"Auto-approve up to <strong>$200</strong>"</div>
-                <div class="ver-result">$120 refund &rarr; approve_refund</div>
+            <div class="stack-arrow">&darr;</div>
+            <div class="stack-box">
+                <div class="stack-box-title">LLM Provider</div>
+                <div class="stack-box-sub">OpenAI, Anthropic, local models</div>
+            </div>
+            <div class="stack-arrow">&darr;</div>
+            <div class="stack-box">
+                <div class="stack-box-title">Observability</div>
+                <div class="stack-box-sub">OpenTelemetry, LangSmith, Datadog</div>
             </div>
         </div>
-        <div class="aha-trace">
-            Attribution traced to: line 15 in system prompt &mdash; threshold changed from $50 to $200
+        <!-- Right: With LLMhq -->
+        <div class="stack-column">
+            <div class="stack-label">With LLMhq</div>
+            <div class="stack-box">
+                <div class="stack-box-title">Agent Framework</div>
+                <span class="stack-tag">unchanged</span>
+            </div>
+            <div class="stack-arrow">&darr;</div>
+            <div class="stack-box stack-box-accent">
+                <div class="stack-box-title">LLMhq</div>
+                <div class="stack-box-features">Versioning &middot; Bundling &middot; Promotion &middot; Attribution</div>
+            </div>
+            <div class="stack-arrow">&darr;</div>
+            <div class="stack-box">
+                <div class="stack-box-title">LLM Provider</div>
+                <span class="stack-tag">unchanged</span>
+            </div>
+            <div class="stack-arrow">&darr;</div>
+            <div class="stack-box">
+                <div class="stack-box-title">Observability</div>
+                <span class="stack-tag">enriched with release metadata</span>
+            </div>
         </div>
     </div>
-</div>
-
-<!-- Demo CTA -->
-<div class="home-cta">
-    <h2>See the full workflow</h2>
-    <p>
-        The interactive demo runs both tools end-to-end with a real scenario:
-        5 customer requests, two prompt versions, one behavioral divergence.
-        No API keys needed.
-    </p>
-    <div class="hero-buttons">
-        <a href="/demos/" class="btn btn-lg">Browse the Demos</a>
-    </div>
+    <p class="integration-callout">LLMhq sits between your agent artifacts and your existing infrastructure. It doesn't replace anything &mdash; it adds version control, release engineering, and behavioral observability to whatever you're already running.</p>
 </div>
 
 <!-- Install -->
@@ -302,6 +262,60 @@ releaseops init
 
 <span class="c"># Or install everything</span>
 pip install llmhq-promptops llmhq-releaseops</code></pre>
+    </div>
+</div>
+
+<!-- Philosophy -->
+<div class="philosophy-section">
+    <h2>What makes this different</h2>
+    <div class="philosophy-cards">
+        <div class="philosophy-card">
+            <h3>Git-Native</h3>
+            <p class="philosophy-oneliner">Powered by the same ol' git.</p>
+            <p class="philosophy-detail">
+                Your prompts, bundles, and promotion history are YAML files in your repo.
+                No new systems to learn. <code>git log</code> is the audit trail.
+                <code>git diff</code> shows what changed.
+            </p>
+        </div>
+        <div class="philosophy-card">
+            <h3>Local-First</h3>
+            <p class="philosophy-oneliner">Your prompts stay in your repo. Your logic stays on your machine.</p>
+            <p class="philosophy-detail">
+                Nothing phones home. No API keys required to version prompts.
+                No SaaS dashboard. Run everything locally with zero external dependencies.
+            </p>
+        </div>
+        <div class="philosophy-card">
+            <h3>No Lock-In</h3>
+            <p class="philosophy-oneliner">MIT licensed. Walk away anytime.</p>
+            <p class="philosophy-detail">
+                Framework-agnostic. Works with OpenAI, Anthropic, or local models.
+                All artifacts are plain YAML in git.
+                Stop using LLMhq tomorrow &mdash; everything is still in your repo.
+            </p>
+        </div>
+        <div class="philosophy-card">
+            <h3>Works With Your Existing Stack</h3>
+            <p class="philosophy-oneliner">Adds to your tools. Replaces none of them.</p>
+            <p class="philosophy-detail">
+                Already using OpenTelemetry? Release metadata auto-injects into your existing spans.
+                Using LangSmith? Query your existing traces filtered by bundle version.
+                Not using either? Everything still works &mdash; observability integrations are additive, never required.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Demo CTA -->
+<div class="home-cta">
+    <h2>See the full workflow</h2>
+    <p>
+        The interactive demos run both tools end-to-end with real scenarios.
+        No API keys needed.
+    </p>
+    <div class="hero-buttons">
+        <a href="/demos/" class="btn btn-lg">Browse the Demos</a>
     </div>
 </div>
 
