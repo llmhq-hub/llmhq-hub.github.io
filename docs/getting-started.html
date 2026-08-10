@@ -12,7 +12,7 @@ description: "Get up and running with PromptOps and ReleaseOps in 5 minutes"
         dev &rarr; staging &rarr; prod with eval gates. Both tools work standalone or together.
     </p>
     <div class="docs-badges">
-        <span class="docs-badge python">Python 3.8+</span>
+        <span class="docs-badge python">Python 3.10+</span>
         <span class="docs-badge version">Git required</span>
     </div>
 </div>
@@ -44,19 +44,21 @@ pip install llmhq-releaseops    <span class="c"># bundles, promotion, attributio
         <div class="step-marker">1</div>
         <div class="step-body">
             <h3>Initialize a repository</h3>
-            <p>Set up PromptOps in a new or existing git repo. This creates <code>.promptops/</code> with prompt storage and git hooks.</p>
+            <p>Set up PromptOps in a new or existing git repo. This creates <code>.promptops/</code> with prompt storage and a default config. It does <strong>not</strong> touch <code>.git/hooks/</code>: auto-versioning has been a deliberate second step since v0.4.0.</p>
             <div class="dark-code">
                 <div class="code-bar">
                     <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
                     <span class="fname">terminal</span>
                     <span class="lang-tag">bash</span>
                 </div>
-                <pre><code><span class="c"># New project</span>
+                <pre><code><span class="c"># New or existing git repo: creates .promptops/, leaves .git/hooks/ alone</span>
 promptops init repo
 
-<span class="c"># Existing git repo</span>
-<span class="k">cd</span> your-project
-promptops init</code></pre>
+<span class="c"># Opt in to auto-versioning on commit</span>
+promptops hooks install
+
+<span class="c"># Confirm the setup is sane, including that the hooks can actually run</span>
+promptops doctor</code></pre>
             </div>
         </div>
     </div>
@@ -86,7 +88,7 @@ promptops init</code></pre>
   <span class="k">user_name:</span> <span class="d">{ required: true }</span>
   <span class="k">plan:</span> <span class="d">{ required: true }</span>
 <span class="k">template:</span> <span class="o">|</span>
-  Welcome {{ user_name }}! You're on the {{ plan }} plan.
+  Welcome {% raw %}{{ user_name }}{% endraw %}! You're on the {% raw %}{{ plan }}{% endraw %} plan.
   Here's how to get started...</code></pre>
             </div>
         </div>
@@ -127,7 +129,7 @@ prompt = get_prompt(<span class="s">"welcome-message:unstaged"</span>)</code></p
                     <span class="lang-tag">bash</span>
                 </div>
                 <pre><code><span class="c"># CLI testing</span>
-promptops test --prompt welcome-message:unstaged
+promptops test runtest --prompt welcome-message:unstaged
 promptops test status</code></pre>
             </div>
         </div>
