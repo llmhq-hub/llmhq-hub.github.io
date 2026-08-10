@@ -9,8 +9,8 @@ description: "Git-native prompt versioning for production LLM agents. Auto-versi
     <p class="docs-subtitle">Git-native prompt versioning for production LLM agents</p>
     <div class="docs-badges">
         <span class="docs-badge stable">Stable</span>
-        <span class="docs-badge version">v0.1.0</span>
-        <span class="docs-badge python">Python 3.8+</span>
+        <span class="docs-badge version">v0.6.0</span>
+        <span class="docs-badge python">Python 3.10+</span>
     </div>
 </div>
 
@@ -23,11 +23,16 @@ description: "Git-native prompt versioning for production LLM agents. Auto-versi
         a change before it hits production.
     </p>
     <p>
-        PromptOps turns prompts into first-class versioned artifacts. Every <code>git commit</code>
-        auto-tags your prompts with a semantic version. Reference any version in code by name:
-        <code>:latest</code> for production, <code>:v1.2.0</code> for a specific release,
-        or <code>:unstaged</code> to test uncommitted changes without touching anything live.
-        No more "what prompt was running last Tuesday?"
+        PromptOps turns prompts into first-class versioned artifacts. Opt in to the git
+        hooks once and every <code>git commit</code> grades the change and tags it with a
+        semantic version. Reference any version in code by name: <code>:latest</code> for
+        production, <code>:v1.2.0</code> for a specific release, or <code>:unstaged</code>
+        to test uncommitted changes without touching anything live.
+    </p>
+    <p>
+        And when something does break, <code>promptops blame --at "2026-05-20T14:32:00Z"</code>
+        answers "what was this prompt's text when the incident happened", from the deploy log
+        and git history. No more "what prompt was running last Tuesday?"
     </p>
 </div>
 
@@ -36,20 +41,20 @@ description: "Git-native prompt versioning for production LLM agents. Auto-versi
     <h2>Features</h2>
     <div class="feature-grid-docs">
         <div class="feature-item">
-            <h3>Automated Git Versioning</h3>
-            <p>Zero-manual versioning with git hooks and semantic version detection. Every commit auto-tags your prompts.</p>
+            <h3>Incident archaeology</h3>
+            <p><code>blame --at &lt;timestamp&gt;</code> answers what text was live when something broke, from the deploy log and git history.</p>
         </div>
         <div class="feature-item">
             <h3>Uncommitted Change Testing</h3>
             <p>Test prompts instantly with <code>:unstaged</code>, <code>:working</code>, <code>:latest</code> references before committing.</p>
         </div>
         <div class="feature-item">
-            <h3>Cross-Version Comparison</h3>
-            <p>Test and compare any two prompt versions side-by-side. Catch behavioral changes before they reach production.</p>
+            <h3>Semver impact at review time</h3>
+            <p><code>promptops test diff</code> grades a change MAJOR, MINOR or PATCH from the variable signature, and <code>--exit-code</code> gates CI on the verdict.</p>
         </div>
         <div class="feature-item">
-            <h3>Zero-Config Git Hooks</h3>
-            <p>Pre-commit and post-commit hooks installed automatically. Versioning happens on every commit &mdash; nothing to remember.</p>
+            <h3>Opt-in git hooks</h3>
+            <p>One <code>promptops hooks install</code> and every commit versions your prompts, graded by the same engine as <code>test diff</code>. <code>init</code> never writes to <code>.git/hooks/</code> unless you ask.</p>
         </div>
     </div>
 </div>
@@ -76,17 +81,23 @@ description: "Git-native prompt versioning for production LLM agents. Auto-versi
             <span class="fname">terminal</span>
             <span class="lang-tag">bash</span>
         </div>
-        <pre><code><span class="c"># Create a new project with git hooks</span>
+        <pre><code><span class="c"># Create .promptops/ in your repo. Does NOT touch .git/hooks/.</span>
 promptops init repo
+
+<span class="c"># Opt in to auto-versioning on commit (a deliberate second step)</span>
+promptops hooks install
 
 <span class="c"># Create a new prompt template</span>
 promptops create prompt welcome-message
 
 <span class="c"># Test uncommitted changes</span>
-promptops test --prompt welcome-message:unstaged
+promptops test runtest --prompt welcome-message:unstaged
 
 <span class="c"># Check status of all prompts</span>
-promptops test status</code></pre>
+promptops test status
+
+<span class="c"># Is this setup sane? Checks hooks can actually run.</span>
+promptops doctor</code></pre>
     </div>
 </div>
 
@@ -138,17 +149,50 @@ rendered = get_prompt(<span class="s">"user-onboarding"</span>, {
 <!-- Semantic Versioning -->
 <div class="docs-section">
     <h2>Semantic Versioning Rules</h2>
-    <p>PromptOps detects what changed and picks the right version bump automatically.</p>
+    <p>Impact is derived from the prompt's <strong>variable signature</strong> and its
+    declared models, and from nothing else. Prose is never graded: the variable interface
+    is the only part of a prompt with a caller-facing contract, and a rule that guessed at
+    intent would produce annotations nobody trusts.</p>
     <table class="extras-table">
         <thead>
             <tr><th>Bump</th><th>Trigger</th><th>Example</th></tr>
         </thead>
         <tbody>
-            <tr><td><strong>PATCH</strong></td><td>Template content changes only</td><td>1.0.0 &rarr; 1.0.1</td></tr>
-            <tr><td><strong>MINOR</strong></td><td>New variables added (backward compatible)</td><td>1.0.0 &rarr; 1.1.0</td></tr>
-            <tr><td><strong>MAJOR</strong></td><td>Required variables removed (breaking change)</td><td>1.0.0 &rarr; 2.0.0</td></tr>
+            <tr><td><strong>MAJOR</strong></td><td>Required variable added, removed, renamed or retyped; an optional variable promoted to required; a declared model dropped</td><td>1.2.0 &rarr; 2.0.0</td></tr>
+            <tr><td><strong>MINOR</strong></td><td>Optional variable added or removed; a required variable relaxed to optional; a model added; an optional default changed</td><td>1.2.0 &rarr; 1.3.0</td></tr>
+            <tr><td><strong>PATCH</strong></td><td>Prose changed, signature identical</td><td>1.2.0 &rarr; 1.2.1</td></tr>
+            <tr><td><strong>none</strong></td><td>Nothing a caller depends on moved</td><td>1.2.0 &rarr; 1.2.0</td></tr>
         </tbody>
     </table>
+    <p>The git hook and <code>promptops test diff</code> use the <em>same</em> grader, so a
+    change your CI blocks as breaking cannot be stamped with a minor version on commit:</p>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">terminal</span>
+            <span class="lang-tag">bash</span>
+        </div>
+        <pre><code>git commit -m <span class="s">"feat: tier-aware refund policy"</span></code></pre>
+    </div>
+    <div class="dark-code">
+        <div class="code-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="fname">output</span>
+            <span class="lang-tag">text</span>
+        </div>
+        <pre><code>[promptops]    Impact: MAJOR
+[promptops]    Version: v1.2.0 &rarr; v2.0.0
+[promptops]    &bull; required variable 'account_tier' added
+[promptops] Updated version to v2.0.0
+[promptops] Created tag: prompt-refund-policy-v2.0.0</code></pre>
+    </div>
+    <p>A brand-new prompt keeps the version you declared: there is nothing for a first
+    commit to be backward incompatible with. The bump rewrites the version line and
+    <em>nothing else</em>, so comments and <code>template: |</code> formatting survive.</p>
+    <p><strong>Upgrading?</strong> The git hooks were broken from v0.2.0 through v0.5.0 and
+    are repaired in v0.6.0. If you installed them on an earlier release and versioning never
+    seemed to fire, that is why. See
+    <a href="https://github.com/llmhq-hub/promptops/blob/main/docs/migration-v0.5-to-v0.6.md">upgrading to v0.6.0</a>.</p>
 </div>
 
 <!-- Framework Integration -->
@@ -189,9 +233,9 @@ response = client.messages.<span class="f">create</span>(
 <div class="docs-section">
     <h2>Requirements</h2>
     <ul class="req-list">
-        <li>Python 3.8+</li>
-        <li>Git (required for versioning)</li>
-        <li>Dependencies: Typer, Jinja2, PyYAML, GitPython</li>
+        <li>Python 3.10+</li>
+        <li>Git, for the CLI's git-backed commands. The SDK's snapshot path needs neither the <code>.git/</code> directory nor the git binary, so it runs in a <code>python:3.11-slim</code> image.</li>
+        <li>Dependencies: Typer, Click, Jinja2, PyYAML, GitPython</li>
     </ul>
 </div>
 
