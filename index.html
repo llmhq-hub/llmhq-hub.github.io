@@ -31,7 +31,7 @@ description: "Prompt versioning and release engineering for AI agents. Git-nativ
         <div class="pipeline-step promptops">
             <div class="pipeline-icon">2</div>
             <div class="step-label">Version</div>
-            <div class="step-desc">Git commit auto-tags v1.2.0</div>
+            <div class="step-desc">Commit bumps v1.2.0 &rarr; v2.0.0, graded from the variable signature</div>
         </div>
         <div class="pipeline-step releaseops">
             <div class="pipeline-icon">3</div>
@@ -68,10 +68,11 @@ description: "Prompt versioning and release engineering for AI agents. Git-nativ
             <span class="tool-badge promptops">PromptOps</span>
             <h3>Version your prompts</h3>
             <p>
-                Write prompts as YAML templates with variables.
-                PromptOps auto-versions them on every git commit &mdash;
-                semantic tags, diff tracking, and version history
-                out of the box.
+                Write prompts as YAML templates with variables. Opt in to the
+                git hooks once and every commit grades the change and bumps the
+                version: adding a required variable is MAJOR, rewording is PATCH.
+                The same grader runs in <code>promptops test diff</code>, so review
+                and commit cannot disagree.
             </p>
             <p>
                 Reference any version in code: <code>:v1.2.0</code>,

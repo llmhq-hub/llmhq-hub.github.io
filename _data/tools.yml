@@ -1,17 +1,19 @@
 - name: PromptOps
   id: promptops
-  description: "Git-native prompt management and testing framework"
+  description: "Git blame for prompts: incident archaeology, git-native versioning, and a no-SaaS production runtime"
   status: "stable"
-  version: "0.1.1"
+  version: "0.6.0"
   pypi: "https://pypi.org/project/llmhq-promptops/"
   github: "https://github.com/llmhq-hub/promptops"
   docs: "/tools/promptops"
   tags: ["prompts", "versioning", "testing", "git"]
   features:
-    - "Automated semantic versioning"
-    - "Uncommitted change testing"
-    - "Framework-agnostic design"
-    - "Version-aware testing"
+    - "Incident archaeology: blame --at answers what was live when it broke"
+    - "Production runtime with no .git/, no git binary, no SaaS"
+    - "Semver impact graded from the variable signature, never prose"
+    - "One-command health check with promptops doctor"
+    - "Version and deploy history in one timeline"
+    - "Structured PROMPTOPS_E0XX errors with hints and doc links"
 
 - name: ReleaseOps
   id: releaseops
